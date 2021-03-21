@@ -27,13 +27,11 @@ AppAsset::register($this);
 
 <div class="wrap">
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-        <a class="navbar-brand" href="<?= Url::to('/') ?>">VCSE Észlelések</a>
+        <a class="navbar-brand" href="<?= Url::to('/') ?>">VCSE Észlelések <span style="color: red">BETA</span></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div style="color: red">BETA</div>
 
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav m-auto">

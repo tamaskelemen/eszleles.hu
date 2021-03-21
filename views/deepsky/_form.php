@@ -17,10 +17,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'image')->fileInput() ?>
 
-    <?= $form->field($model, 'constellation')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'object_type')->dropDownList(\app\components\Data::listObjectType()) ?>
-
     <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
 
     <!--    --><?php //= $form->field($model, 'camera')->textInput(['maxlength' => true]) ?>

@@ -65,7 +65,7 @@ class DeepSkyForm extends \yii\base\Model
     {
         return [
             [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['object_name', 'constellation', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['object_name', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
@@ -90,10 +90,9 @@ class DeepSkyForm extends \yii\base\Model
 
         $observe->observer_id = Yii::$app->user->id;
         $observe->object_name = $this->object_name;
-        $observe->constellation = $this->constellation;
+
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
-        $observe->object_type = $this->object_type;
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;

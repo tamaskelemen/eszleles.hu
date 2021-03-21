@@ -47,7 +47,7 @@ class Observe extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['constellation', 'object_type', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['seeing', 'transparency', 'observer_id'], 'default', 'value' => null],
             [['seeing', 'transparency', 'observer_id'], 'integer'],
             [['seeing'], 'in', 'range' => ['min' => 1, 'max' => 10]],
