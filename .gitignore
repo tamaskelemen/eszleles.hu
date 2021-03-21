@@ -34,3 +34,5 @@ tests/_support/_generated
 
 #uploaded pictures
 /web/uploads
+
+config/db_local.php
