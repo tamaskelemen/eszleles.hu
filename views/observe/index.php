@@ -62,6 +62,7 @@ if (!Yii::$app->user->isGuest) {
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => $columns
+        'columns' => $columns,
+        'tableOptions' => ['class' => 'table table-striped'],
     ]); ?>
 </div>

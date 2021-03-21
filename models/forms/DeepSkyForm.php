@@ -65,7 +65,7 @@ class DeepSkyForm extends \yii\base\Model
     {
         return [
             [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['object_name', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],

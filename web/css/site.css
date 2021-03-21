@@ -1,8 +1,24 @@
 html,
 body {
     height: 100%;
+    background-color: #222;
+    color: #f1f1f1;
+}
+.table, .table th, .table tr, .table td {
+    border-color: #596067;
 }
 
+.table {
+    color: unset;
+}
+
+.table a {
+    color: snow
+}
+
+.navbar {
+    background-color: #111;
+}
 .wrap {
     min-height: 100%;
     height: auto;
@@ -16,9 +32,12 @@ body {
 
 .footer {
     height: 60px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #596067;
     padding-top: 20px;
+}
+.footer a {
+    color: unset;
+    font-weight: bold;
 }
 
 .jumbotron {
@@ -135,11 +154,19 @@ form > div.required > label.control-label:after {
     padding-bottom: 20px;
 }
 .list-item a {
-    color: black;
+    color: unset;
     text-decoration: none;
     background-color: transparent;
 }
+.breadcrumb {
+    background-color: #343a40
+}
 
-.list-item .item-title {
-
+.form-control {
+    color: snow;
+    background-color: #343a40;
+    border-color: #596067;
+}
+div .help-block {
+    color: red;
 }

@@ -26,7 +26,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-dark navbar-expand-lg">
         <a class="navbar-brand" href="<?= Url::to('/') ?>">VCSE Észlelések <span style="color: red">BETA</span></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

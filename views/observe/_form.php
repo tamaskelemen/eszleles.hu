@@ -35,9 +35,11 @@ use yii\widgets\ActiveForm;
         'name' => 'date',
         'model'=> $model,
         'attribute' => 'date',
+        'options' => ['autocomplete' => 'off'],
         'pluginOptions' => [
             'format' => 'yyyy-mm-dd',
         ]
+
     ]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>

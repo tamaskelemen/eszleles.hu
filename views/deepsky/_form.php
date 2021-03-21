@@ -27,12 +27,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
-    <?= DatePicker::widget([
-        'name' => 'date',
-        'model'=> $model,
-        'attribute' => 'date',
+    <?= $form->field($model, 'date')->widget(DatePicker::class, [
+        'options' => ['autocomplete' => 'off'],
+        'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+        'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
         'pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
+            'format' => 'yyy-mm-dd',
+            'autoclose'=>true
         ]
     ]) ?>
 
