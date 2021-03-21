@@ -38,7 +38,7 @@ class ObservesQuery extends \yii\db\ActiveQuery
      */
     public function ofUser($id)
     {
-        return $this->where(['observer_id' => $id]);
+        return $this->andWhere(['observer_id' => $id]);
     }
 
     /**
@@ -47,7 +47,7 @@ class ObservesQuery extends \yii\db\ActiveQuery
      */
     public function ofId($id)
     {
-        return $this->where(['id' => $id]);
+        return $this->andWhere(['id' => $id]);
     }
 
 }

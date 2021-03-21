@@ -64,7 +64,7 @@ AppAsset::register($this);
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= Url::to(['/user/view', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
+                    <a class="nav-link" href="<?= Url::to(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
                 </li>
                 <?php } ?>
             </ul>

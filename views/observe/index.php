@@ -13,8 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
-    'catalog_number',
-    'telescope',
+    'object_name',
+    [
+        'attribute' => 'type',
+        'filter' => \app\models\Observe::getAllTypes(),
+    ],
+//    'telescope',
     [
         'attribute' => 'date',
         'filter' => DatePicker::widget([
@@ -30,12 +34,12 @@ $columns = [
             'attribute' => 'observer',
             'value' => 'observer.name'
     ],
-    [
-        'attribute' => 'description',
-        'value' => function ($model) {
-            return substr($model->description, 0, 20);
-        }
-    ],
+//    [
+//        'attribute' => 'description',
+//        'value' => function ($model) {
+//            return substr($model->description, 0, 20);
+//        }
+//    ],
 ];
 
 if (!Yii::$app->user->isGuest) {

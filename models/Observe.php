@@ -47,13 +47,13 @@ class Observe extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['object_name', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['seeing', 'transparency', 'observer_id'], 'default', 'value' => null],
             [['seeing', 'transparency', 'observer_id'], 'integer'],
             [['seeing'], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency'], 'in', 'range' => ['min' => 1, 'max' => 5]],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['uploaded_at', 'edited_at'], 'date'],
+            [['uploaded_at', 'edited_at'], 'safe'],
             [['description', 'type'], 'string'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location'], 'string', 'max' => 255],
             [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
@@ -95,12 +95,21 @@ class Observe extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
-            $this->uploaded_at = new Expression("now()");
+            $this->uploaded_at = new Expression("NOW()");
         }
 
-        $this->edited_at = new Expression("now()");
+        $this->edited_at = new Expression("NOW()");
 
         return parent::beforeSave($insert);
+    }
+
+    public static function getAllTypes()
+    {
+        return [
+            self::TYPE_MOON => 'Hold',
+            self::TYPE_DEEP_SKY => 'Mélyég',
+            self::TYPE_PLANET => 'Bolygó',
+        ];
     }
 
     /**

@@ -23,7 +23,7 @@ class ObserveSearch extends Observe
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'date'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'source', 'description'], 'safe'],
-            [['observer'], 'safe'],
+            [['observer', 'type'], 'safe'],
         ];
     }
 

@@ -90,7 +90,6 @@ class DeepSkyForm extends \yii\base\Model
 
         $observe->observer_id = Yii::$app->user->id;
         $observe->object_name = $this->object_name;
-
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
         $observe->camera = $this->camera;

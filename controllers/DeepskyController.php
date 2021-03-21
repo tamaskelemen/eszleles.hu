@@ -116,26 +116,21 @@ class DeepskyController extends Controller
      */
     public function actionUpdate($id)
     {
-        $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->id)->one();
+        $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->getId())->one();
 
-        $deepSkyForm = new DeepSkyForm();
-
-        $deepSkyForm->setAttributes($observe->attributes);
-
-        if (empty($deepSkyForm)) {
+        if (empty($observe)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if ($deepSkyForm->load(Yii::$app->request->post())) {
+        if ($observe->load(Yii::$app->request->post())) {
 
-            if ($deepSkyForm->register()) {
-                return $this->redirect(['view', 'id' => $deepSkyForm->id]);
+            if ($observe->save()) {
+                return $this->redirect(['view', 'id' => $observe->id]);
             }
-
         }
 
         return $this->render('update', [
-            'model' => $deepSkyForm,
+            'model' => $observe,
         ]);
     }
 

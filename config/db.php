@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'pgsql:host=localhost;dbname=eszleles',
-    'username' => 'root',
-    'password' => '',
+    'username' => 'keltom',
+    'password' => 'asdasd',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
