@@ -117,3 +117,8 @@ a.desc:after {
     padding-right: 3px;
 }
 
+form > div.required > label.control-label:after {
+    content:" * ";
+    color:red;
+}
+

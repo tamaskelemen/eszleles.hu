@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\components\Flash;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +22,27 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'profile', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'update', 'profile'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'denyCallback' =>  function ($rule, $action) {
+                            if (!Yii::$app->user->identity->isAdmin()) {
+                                Flash::addWarning('Ehhez a művelethez nincs elég jogosultságod.');
+                                return $this->goBack();
+                            }
+                        }
+                    ],
+                ],
+
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -63,23 +86,24 @@ class UserController extends Controller
 
         return $this->render('view', ['user' => $user]);
     }
-    /**
-     * Creates a new Users model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new User();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+//    /**
+//     * Creates a new Users model.
+//     * If creation is successful, the browser will be redirected to the 'view' page.
+//     * @return mixed
+//     */
+//    public function actionCreate()
+//    {
+//        $model = new User();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
 
     /**
      * Updates an existing Users model.
@@ -90,6 +114,9 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        if ($id != Yii::$app->user->getId()) {
+            return $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
