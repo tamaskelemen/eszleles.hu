@@ -15,7 +15,7 @@ class DeepSkyForm extends \yii\base\Model
 
     public $id;
 
-    public $catalog_number;
+    public $object_name;
     public $constellation;
     public $object_type;
     public $telescope;
@@ -28,13 +28,23 @@ class DeepSkyForm extends \yii\base\Model
     public $description;
     public $type  = Observe::TYPE_DEEP_SKY;
 
+    /*
+     * TODO:
+     *  -datum helyett pontos ido kell
+     *  -csillagkép, tipust ki kell venni
+     *  -valahol megadni, hogy leírásban add meg a nagyítást
+     *
+     * -feature request:
+     *  több nagyítás? több okulár miatt
+     *
+     */
     /**
      * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'catalog_number' => 'Objektum neve',
+            'object_name' => 'Objektum neve',
             'constellation' => 'Csillagkép',
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
@@ -55,14 +65,14 @@ class DeepSkyForm extends \yii\base\Model
     {
         return [
             [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['catalog_number', 'constellation', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['object_name', 'constellation', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['description'], 'string'],
-            [['catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+            [['object_name', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
         ];
     }
 
@@ -79,7 +89,7 @@ class DeepSkyForm extends \yii\base\Model
         $observe = new Observe();
 
         $observe->observer_id = Yii::$app->user->id;
-        $observe->catalog_number = $this->catalog_number;
+        $observe->object_name = $this->object_name;
         $observe->constellation = $this->constellation;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;

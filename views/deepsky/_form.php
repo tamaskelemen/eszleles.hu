@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'catalog_number')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'image')->fileInput() ?>
 

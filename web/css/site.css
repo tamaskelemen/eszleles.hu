@@ -103,6 +103,10 @@ a.desc:after {
         width: 100%;
         padding: 10px 15px;
     }
+
+    .list-item > .row {
+        width: 100%
+    }
 }
 
 .nav > li > form > button.logout:focus,
@@ -122,3 +126,20 @@ form > div.required > label.control-label:after {
     color:red;
 }
 
+.list-item img {
+    height: 200px;
+
+}
+
+.list-item {
+    padding-bottom: 20px;
+}
+.list-item a {
+    color: black;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.list-item .item-title {
+
+}

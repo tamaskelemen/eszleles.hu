@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\date\DatePicker;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ObserveSearch */
@@ -56,9 +57,20 @@ if (!Yii::$app->user->isGuest) {
 <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
-    <?= GridView::widget([
+
+    <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $columns
-    ]); ?>
+        'itemView' => '_deepskyItem'
+    ])
+
+    ?>
+
+
+
+
+<!--    --><?php //GridView::widget([
+//        'dataProvider' => $dataProvider,
+//        'filterModel' => $searchModel,
+//        'columns' => $columns
+//    ]); ?>
 </div>

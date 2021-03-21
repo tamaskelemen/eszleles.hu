@@ -28,6 +28,18 @@ class MoonForm extends \yii\base\Model
     public $description;
     public $type = Observe::TYPE_MOON;
 
+    /*
+      * TODO:
+      *  -datum helyett pontos ido kell
+      *  -csillagkép, tipust ki kell venni
+      *  -valahol megadni, hogy leírásban add meg a nagyítást
+      *  -hold fázist meg kell adni
+      *
+      * -feature request:
+      *  több nagyítás? több okulár miatt
+      *   libráció?
+      *
+      */
     /**
      * {@inheritdoc}
      */

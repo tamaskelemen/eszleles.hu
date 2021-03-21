@@ -39,7 +39,7 @@ $image = $model->getImage()->one();
         'attributes' => [
             'id',
             'object_name',
-            'catalog_number',
+//            'catalog_number',
             'constellation',
             'object_type',
             'telescope',
