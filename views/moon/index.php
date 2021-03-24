@@ -1,14 +1,14 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use kartik\date\DatePicker;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ObserveSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Hold észlelések';
+$this->title = 'Észlelések';
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
@@ -53,11 +53,18 @@ if (!Yii::$app->user->isGuest) {
 <div class="observe-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-<!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
+    <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $columns
-    ]); ?>
+        'itemView' => '../_common-items/_listItem'
+    ])
+
+    ?>
+
+    <!--    --><?php //GridView::widget([
+    //        'dataProvider' => $dataProvider,
+    //        'filterModel' => $searchModel,
+    //        'columns' => $columns
+    //    ]); ?>
 </div>

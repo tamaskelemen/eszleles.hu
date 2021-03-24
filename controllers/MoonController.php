@@ -119,24 +119,24 @@ class MoonController extends Controller
     {
         $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->id)->one();
 
-        $deepSkyForm = new MoonForm();
+        $moonForm = new MoonForm();
 
-        $deepSkyForm->setAttributes($observe->attributes);
+        $moonForm->setAttributes($observe->attributes);
 
-        if (empty($deepSkyForm)) {
+        if (empty($moonForm)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if ($deepSkyForm->load(Yii::$app->request->post())) {
+        if ($moonForm->load(Yii::$app->request->post())) {
 
-            if ($deepSkyForm->register()) {
-                return $this->redirect(['view', 'id' => $deepSkyForm->id]);
+            if ($moonForm->register()) {
+                return $this->redirect(['view', 'id' => $moonForm->id]);
             }
 
         }
 
         return $this->render('update', [
-            'model' => $deepSkyForm,
+            'model' => $moonForm,
         ]);
     }
 

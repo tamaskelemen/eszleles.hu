@@ -7,7 +7,7 @@ use yii\db\Expression;
 use yii\helpers\Url;
 
 /**
- * This is the model class for table "observes".
+ * This is the model class for table "observations".
  *
  * @property int $id
  * @property string|null $object_name
@@ -39,7 +39,7 @@ class Observe extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'observes';
+        return 'observations';
     }
 
     /**

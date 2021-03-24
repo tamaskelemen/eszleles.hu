@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\forms\DeepSkyForm */
+/* @var $model app\models\forms\MoonForm */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -13,13 +13,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'catalog_number')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'image')->fileInput() ?>
-
-    <?= $form->field($model, 'constellation')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'object_type')->dropDownList(\app\components\Data::listObjectType()) ?>
 
     <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
 
@@ -31,15 +27,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
-    <?= DatePicker::widget([
-        'name' => 'date',
-        'model'=> $model,
-        'attribute' => 'date',
+    <?= $form->field($model, 'date')->widget(DatePicker::class, [
+        'options' => ['autocomplete' => 'off'],
+        'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+        'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
         'pluginOptions' => [
             'format' => 'yyyy-mm-dd',
+            'autoclose'=>true
         ]
     ]) ?>
-
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">

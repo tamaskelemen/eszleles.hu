@@ -8,24 +8,13 @@ use Yii;
 use yii\db\Exception;
 use yii\web\UploadedFile;
 
-class MoonForm extends \yii\base\Model
+class MoonForm extends AbstractObserveForm
 {
-    /** @var UploadedFile */
-    public $image;
-
-    public $id;
-
-    public $catalog_number;
-    public $constellation;
-    public $object_type;
     public $telescope;
     public $camera;
     public $seeing;
     public $transparency;
-    public $location;
     public $source;
-    public $date;
-    public $description;
     public $type = Observe::TYPE_MOON;
 
     /*
@@ -46,8 +35,7 @@ class MoonForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'catalog_number' => 'Objektum neve',
-            'constellation' => 'Csillagkép',
+            'object_name' => 'Objektum neve',
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
@@ -65,17 +53,15 @@ class MoonForm extends \yii\base\Model
      */
     public function rules()
     {
-        return [
-            [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['catalog_number', 'constellation', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+        $rules = [
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
-            [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['description'], 'string'],
-            [['catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+            [['camera', 'location', 'type'], 'string'],
         ];
+
+        return array_merge(parent::rules(), $rules);
     }
 
     /**
@@ -84,6 +70,7 @@ class MoonForm extends \yii\base\Model
     public function register()
     {
         $this->image = UploadedFile::getInstance($this, 'image');
+
         if (!$this->validate()) {
             return false;
         }
@@ -91,15 +78,12 @@ class MoonForm extends \yii\base\Model
         $observe = new Observe();
 
         $observe->observer_id = Yii::$app->user->id;
-        $observe->catalog_number = $this->catalog_number;
-        $observe->constellation = $this->constellation;
+        $observe->object_name = $this->object_name;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
-        $observe->object_type = $this->object_type;
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;
-        $observe->source = $this->source;
         $observe->date = $this->date;
         $observe->description = $this->description;
         $observe->type = $this->type;

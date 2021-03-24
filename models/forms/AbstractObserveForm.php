@@ -14,15 +14,16 @@ class AbstractObserveForm extends Model
     public $description;
     public $date;
 
+
     /** @var UploadedFile */
     public $image;
 
     public function rules() {
         return [
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+            [['object_name', 'telescope', 'location', 'description'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['description'], 'string'],
         ];
     }
 }

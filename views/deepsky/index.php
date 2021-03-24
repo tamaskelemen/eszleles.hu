@@ -60,7 +60,7 @@ if (!Yii::$app->user->isGuest) {
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemView' => '_deepskyItem'
+        'itemView' => '../_common-items/_listItem'
     ])
 
     ?>

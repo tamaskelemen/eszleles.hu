@@ -9,7 +9,7 @@ use kartik\date\DatePicker;
 /* @var $searchModel app\models\ObserveSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Észlelések';
+$this->title = 'Összes észlelés';
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
@@ -57,8 +57,7 @@ if (!Yii::$app->user->isGuest) {
 }
 
 ?>
-<div class="observe-index">
-
+<div class="observe-index homeBlockHeader158">
     <h1><?= Html::encode($this->title) ?></h1>
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 

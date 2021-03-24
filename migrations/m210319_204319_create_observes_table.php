@@ -12,7 +12,7 @@ class m210319_204319_create_observes_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('observes', [
+        $this->createTable('observations', [
             'id' => $this->primaryKey(),
             'object_name' => $this->string(),
             'catalog_number' => $this->string(),
@@ -31,7 +31,7 @@ class m210319_204319_create_observes_table extends Migration
             'edited_at' => $this->date(),
         ]);
 
-        $this->addForeignKey('fk_observes_observer_id_user_id', 'observes', 'observer_id', 'users', 'id', 'NO ACTION', 'CASCADE');
+        $this->addForeignKey('fk_observes_observer_id_user_id', 'observations', 'observer_id', 'users', 'id', 'NO ACTION', 'CASCADE');
     }
 
     /**
@@ -39,6 +39,6 @@ class m210319_204319_create_observes_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('observes');
+        $this->dropTable('observations');
     }
 }
