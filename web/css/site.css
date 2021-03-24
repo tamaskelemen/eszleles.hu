@@ -2,7 +2,14 @@ html,
 body {
     height: 100%;
     background-color: #222;
-    color: #f1f1f1;
+    color: #b1b1b1;
+    font-family: Inter,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+    font-family: Inter;
+    src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
 }
 .table, .table th, .table tr, .table td {
     border-color: #596067;
@@ -10,10 +17,6 @@ body {
 
 .table {
     color: unset;
-}
-
-.table a {
-    color: snow
 }
 
 .navbar {

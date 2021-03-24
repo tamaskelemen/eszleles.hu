@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Observe;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use kartik\date\DatePicker;
@@ -22,9 +23,11 @@ $columns = [
     ],
     [
         'attribute' => 'type',
-        'filter' => \app\models\Observe::getAllTypes(),
+        'filter' => Observe::getAllTypes(),
+        'value' => function ($model) {
+            return Observe::getTypeName($model->type);
+        }
     ],
-//    'telescope',
     [
         'attribute' => 'date',
         'filter' => DatePicker::widget([
@@ -40,12 +43,6 @@ $columns = [
             'attribute' => 'observer',
             'value' => 'observer.name'
     ],
-//    [
-//        'attribute' => 'description',
-//        'value' => function ($model) {
-//            return substr($model->description, 0, 20);
-//        }
-//    ],
 ];
 
 if (!Yii::$app->user->isGuest) {

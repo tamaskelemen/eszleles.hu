@@ -114,6 +114,13 @@ class Observe extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param string $name
+     */
+    public static function getTypeName(string $name)
+    {
+        return self::getAllTypes()[$name];
+    }
+    /**
      * @return \yii\db\ActiveQuery
     */
     public function getImage()
