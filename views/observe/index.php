@@ -13,7 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
-    'object_name',
+    [
+        'attribute' => 'object_name',
+        'format' => 'raw',
+        'value' => function ($model) {
+            return Html::a($model->object_name, $model->getViewUrl());
+        }
+    ],
     [
         'attribute' => 'type',
         'filter' => \app\models\Observe::getAllTypes(),
@@ -44,11 +50,11 @@ $columns = [
 
 if (!Yii::$app->user->isGuest) {
     $isAdmin = Yii::$app->user->identity->isAdmin();
-    $template = '{view} {update}' . ($isAdmin ? '{delete}' : '');
+    $template = ($isAdmin ? '{delete}' : '');
 
     $columns[] = [
         'class' => 'yii\grid\ActionColumn',
-        'template' => $template
+        'template' => $template,
     ];
 
 }

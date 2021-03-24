@@ -84,7 +84,7 @@ use yii\widgets\ActiveForm;
         <?php // echo $form->field($model, 'edited_at') ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Keresés', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Keresés', ['class' => 'btn btn-success']) ?>
             <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
         </div>
 

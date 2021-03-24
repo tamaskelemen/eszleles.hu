@@ -19,6 +19,10 @@ body {
 .navbar {
     background-color: #111;
 }
+
+.navbar .btn-success {
+    background-color: transparent;
+}
 .wrap {
     min-height: 100%;
     height: auto;

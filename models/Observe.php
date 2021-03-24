@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "observes".
@@ -120,7 +121,9 @@ class Observe extends \yii\db\ActiveRecord
         return $this->hasOne(Image::class, ['observe_id' => 'id']);
     }
 
-
+    /**
+     * @return string
+     */
     public function getImagePath()
     {
         if ($this->image != null) {
@@ -128,6 +131,14 @@ class Observe extends \yii\db\ActiveRecord
         }
 
         return "pictures/noimage.jpg";
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewUrl()
+    {
+        return Url::to(["/" . $this->type . "/view", "id" => $this->id]);
     }
 
     /**
