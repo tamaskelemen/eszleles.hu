@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
         'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
         'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
         'pluginOptions' => [
-            'format' => 'yyy-mm-dd',
+            'format' => 'yyyy-mm-dd',
             'autoclose'=>true
         ]
     ]) ?>

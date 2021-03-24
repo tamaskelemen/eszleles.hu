@@ -27,7 +27,7 @@ $image = $model->getImage()->one();
 
     <?php
             if ($image !== null) {
-                echo "<img alt='" . $model->object_name . "' src='/" . $image->path ."'/>";
+                echo "<img alt='" . $model->object_name . "' src='/" . $model->getImagePath() ."'/>";
             }
 
     ?>

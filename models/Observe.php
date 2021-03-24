@@ -120,6 +120,16 @@ class Observe extends \yii\db\ActiveRecord
         return $this->hasOne(Image::class, ['observe_id' => 'id']);
     }
 
+
+    public function getImagePath()
+    {
+        if ($this->image != null) {
+            return $this->image->path;
+        }
+
+        return "pictures/noimage.jpg";
+    }
+
     /**
      * {@inheritdoc}
      * @return ObservesQuery the active query used by this AR class.
