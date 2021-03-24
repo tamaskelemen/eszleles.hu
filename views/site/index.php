@@ -2,23 +2,26 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>Észlelések.hu</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p><a class="btn btn-lg btn-success" href="<?= Url::to('/site/signup') ?>">Regisztrálok</a></p>
     </div>
 
     <div class="body-content">
 
+        <h2>Legújabb feltöltések</h2>
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h3>Heading</h3>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -28,7 +31,7 @@ $this->title = 'My Yii Application';
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h3>Heading</h3>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -38,7 +41,7 @@ $this->title = 'My Yii Application';
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h3>Heading</h3>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                     dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip

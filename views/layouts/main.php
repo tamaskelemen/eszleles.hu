@@ -36,7 +36,7 @@ AppAsset::register($this);
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav m-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="<?= Url::to('/site/index')?>">Főoldal <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?= Url::to('/')?>">Főoldal <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

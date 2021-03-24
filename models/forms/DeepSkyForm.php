@@ -8,24 +8,13 @@ use Yii;
 use yii\db\Exception;
 use yii\web\UploadedFile;
 
-class DeepSkyForm extends \yii\base\Model
+class DeepSkyForm extends AbstractObserveForm
 {
-    /** @var UploadedFile */
-    public $image;
-
-    public $id;
-
-    public $object_name;
-    public $constellation;
     public $object_type;
     public $telescope;
     public $camera;
     public $seeing;
     public $transparency;
-    public $location;
-    public $source;
-    public $date;
-    public $description;
     public $type  = Observe::TYPE_DEEP_SKY;
 
     /*
@@ -45,7 +34,6 @@ class DeepSkyForm extends \yii\base\Model
     {
         return [
             'object_name' => 'Objektum neve',
-            'constellation' => 'Csillagkép',
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
@@ -63,17 +51,15 @@ class DeepSkyForm extends \yii\base\Model
      */
     public function rules()
     {
-        return [
-            [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
+        $rules = [
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
-            [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['description'], 'string'],
-            [['object_name', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+            [['object_name', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
         ];
+        
+        return array_merge(parent::rules(), $rules);
     }
 
     /**
@@ -82,6 +68,7 @@ class DeepSkyForm extends \yii\base\Model
     public function register()
     {
         $this->image = UploadedFile::getInstance($this, 'image');
+
         if (!$this->validate()) {
             return false;
         }
@@ -95,7 +82,6 @@ class DeepSkyForm extends \yii\base\Model
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;
-        $observe->source = $this->source;
         $observe->date = $this->date;
         $observe->description = $this->description;
         $observe->type = $this->type;
