@@ -8,24 +8,17 @@ use Yii;
 use yii\db\Exception;
 use yii\web\UploadedFile;
 
-class PlanetForm extends \yii\base\Model
+class PlanetForm extends AbstractObserveForm
 {
     /** @var UploadedFile */
     public $image;
 
     public $id;
 
-    public $catalog_number;
-    public $constellation;
     public $object_type;
     public $telescope;
     public $camera;
-    public $seeing;
-    public $transparency;
-    public $location;
     public $source;
-    public $date;
-    public $description;
     public $type  = Observe::TYPE_PLANET;
 
     /**
@@ -34,8 +27,7 @@ class PlanetForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
-            'catalog_number' => 'Objektum neve',
-            'constellation' => 'Csillagkép',
+            'object_name' => 'Objektum neve',
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
@@ -53,17 +45,11 @@ class PlanetForm extends \yii\base\Model
      */
     public function rules()
     {
-        return [
-            [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
-            [['catalog_number', 'constellation', 'telescope', 'location', 'description'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
-            [['seeing', 'transparency'], 'default', 'value' => null],
-            [['seeing', 'transparency'], 'integer'],
-            [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
-            [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
-            [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['description'], 'string'],
-            [['catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+        $rules = [
+            [['object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
         ];
+
+        return array_merge(parent::rules(), $rules);
     }
 
     /**
@@ -79,8 +65,7 @@ class PlanetForm extends \yii\base\Model
         $observe = new Observe();
 
         $observe->observer_id = Yii::$app->user->id;
-        $observe->catalog_number = $this->catalog_number;
-        $observe->constellation = $this->constellation;
+        $observe->object_name = $this->object_name;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
         $observe->object_type = $this->object_type;

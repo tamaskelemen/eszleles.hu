@@ -12,8 +12,6 @@ class MoonForm extends AbstractObserveForm
 {
     public $telescope;
     public $camera;
-    public $seeing;
-    public $transparency;
     public $source;
     public $type = Observe::TYPE_MOON;
 
@@ -54,11 +52,7 @@ class MoonForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['seeing', 'transparency'], 'default', 'value' => null],
-            [['seeing', 'transparency'], 'integer'],
-            [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
-            [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
-            [['camera', 'location', 'type'], 'string'],
+            [['object_type', 'telescope', 'camera', 'type'], 'string', 'max' => 255],
         ];
 
         return array_merge(parent::rules(), $rules);

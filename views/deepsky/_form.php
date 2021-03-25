@@ -33,14 +33,14 @@ use yii\widgets\ActiveForm;
         'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
         'pluginOptions' => [
             'format' => 'yyyy-mm-dd',
-            'autoclose'=>true
+            'autoclose' => true
         ]
     ]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Feltöltés', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

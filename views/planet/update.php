@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model app\models\forms\PlanetForm */
+/* @var $model app\models\Observe */
 
-$this->title = 'Bolygó észlelés feltöltése';
+$this->title = 'Észlelés módosítása: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Bolygó észlelések', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Módosítás';
 ?>
-<div class="observe-create">
+<div class="observe-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

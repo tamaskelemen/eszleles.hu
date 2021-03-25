@@ -119,24 +119,24 @@ class PlanetController extends Controller
     {
         $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->id)->one();
 
-        $deepSkyForm = new PlanetForm();
+        $planetForm = new PlanetForm();
 
-        $deepSkyForm->setAttributes($observe->attributes);
+        $planetForm->setAttributes($observe->attributes);
 
-        if (empty($deepSkyForm)) {
+        if (empty($planetForm)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        if ($deepSkyForm->load(Yii::$app->request->post())) {
+        if ($planetForm->load(Yii::$app->request->post())) {
 
-            if ($deepSkyForm->register()) {
-                return $this->redirect(['view', 'id' => $deepSkyForm->id]);
+            if ($planetForm->register()) {
+                return $this->redirect(['view', 'id' => $planetForm->id]);
             }
 
         }
 
         return $this->render('update', [
-            'model' => $deepSkyForm,
+            'model' => $planetForm,
         ]);
     }
 

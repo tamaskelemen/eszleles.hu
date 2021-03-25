@@ -13,8 +13,6 @@ class DeepSkyForm extends AbstractObserveForm
     public $object_type;
     public $telescope;
     public $camera;
-    public $seeing;
-    public $transparency;
     public $type  = Observe::TYPE_DEEP_SKY;
 
     /*
@@ -52,11 +50,7 @@ class DeepSkyForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['seeing', 'transparency'], 'default', 'value' => null],
-            [['seeing', 'transparency'], 'integer'],
-            [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
-            [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
-            [['object_name', 'object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+            [['object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
         ];
         
         return array_merge(parent::rules(), $rules);
