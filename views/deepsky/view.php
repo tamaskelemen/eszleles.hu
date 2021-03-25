@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Observe */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Mélyég', 'url' => ['index']];
+$this->title = $model->object_name;
+$this->params['breadcrumbs'][] = ['label' => 'Mélyég észlelések', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();

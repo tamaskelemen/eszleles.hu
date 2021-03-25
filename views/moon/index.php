@@ -8,7 +8,7 @@ use yii\widgets\ListView;
 /* @var $searchModel app\models\ObserveSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Észlelések';
+$this->title = 'Hold észlelések';
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
