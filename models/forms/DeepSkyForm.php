@@ -35,6 +35,7 @@ class DeepSkyForm extends AbstractObserveForm
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
+            'mechanics' => 'Mechanika',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
             'location' => 'Helyszín',
@@ -73,6 +74,7 @@ class DeepSkyForm extends AbstractObserveForm
         $observe->object_name = $this->object_name;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
+        $observe->mechanics = $this->mechanics;
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;

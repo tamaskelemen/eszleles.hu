@@ -31,6 +31,7 @@ class PlanetForm extends AbstractObserveForm
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
+            'mechanics' => 'Mechanika',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
             'location' => 'Helyszín',
@@ -68,6 +69,7 @@ class PlanetForm extends AbstractObserveForm
         $observe->object_name = $this->object_name;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
+        $observe->mechanics = $this->mechanics;
         $observe->object_type = $this->object_type;
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;

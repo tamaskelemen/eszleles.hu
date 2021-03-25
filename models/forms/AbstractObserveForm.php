@@ -15,6 +15,7 @@ class AbstractObserveForm extends Model
     public $date;
     public $transparency;
     public $seeing;
+    public $mechanics;
 
 
 
@@ -24,7 +25,7 @@ class AbstractObserveForm extends Model
     public function rules() {
         return [
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
-            [['object_name', 'telescope', 'location', 'description'], 'string'],
+            [['object_name', 'telescope', 'location', 'description', 'mechanics'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
             [['seeing', 'transparency'], 'default', 'value' => null],

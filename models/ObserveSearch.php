@@ -77,6 +77,7 @@ class ObserveSearch extends Observe
             'observer_id' => $this->observer_id,
             'uploaded_at' => $this->uploaded_at,
             'edited_at' => $this->edited_at,
+            'moon_phase' => $this->moon_phase,
         ]);
 
         $query->andFilterWhere(['ilike', 'object_name', $this->object_name])
@@ -86,6 +87,7 @@ class ObserveSearch extends Observe
             ->andFilterWhere(['ilike', 'type', $this->type])
             ->andFilterWhere(['ilike', 'telescope', $this->telescope])
             ->andFilterWhere(['ilike', 'camera', $this->camera])
+            ->andFilterWhere(['ilike', 'mechanics', $this->mechanics])
             ->andFilterWhere(['ilike', 'location', $this->location])
             ->andFilterWhere(['ilike', 'source', $this->source])
             ->andFilterWhere(['ilike', 'description', $this->description])

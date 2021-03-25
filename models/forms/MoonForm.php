@@ -36,6 +36,7 @@ class MoonForm extends AbstractObserveForm
             'object_name' => 'Objektum neve',
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
+            'mechanics' => 'Mechanika',
             'camera' => 'Kamera',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
@@ -75,6 +76,7 @@ class MoonForm extends AbstractObserveForm
         $observe->object_name = $this->object_name;
         $observe->telescope = $this->telescope;
         $observe->location = $this->location;
+        $observe->mechanics = $this->mechanics;
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;

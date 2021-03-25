@@ -41,6 +41,7 @@ $image = $model->getImage()->one();
             'constellation',
             'object_type',
             'telescope',
+            'mechanics',
             'camera',
             'seeing',
             'transparency',

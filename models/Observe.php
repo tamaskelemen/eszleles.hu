@@ -26,6 +26,8 @@ use yii\helpers\Url;
  * @property string|null $uploaded_at
  * @property string|null $edited_at
  * @property string $type
+ * @property string $mechanics
+ * @property double $moon_phase
  *
  * @property User $observer
  */
@@ -55,9 +57,10 @@ class Observe extends \yii\db\ActiveRecord
             [['transparency'], 'in', 'range' => ['min' => 1, 'max' => 5]],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'safe'],
-            [['description', 'type'], 'string'],
+            [['description', 'type', 'mechanics'], 'string'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location'], 'string', 'max' => 255],
             [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
+            [['moon_phase'], 'double']
         ];
     }
 
@@ -74,6 +77,8 @@ class Observe extends \yii\db\ActiveRecord
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'camera' => 'Kamera',
+            'mechanics' => 'Mechanika',
+            'moon_phase' => 'Hold fázis',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
             'location' => 'Helyszín',

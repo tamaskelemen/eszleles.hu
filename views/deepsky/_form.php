@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'mechanics')->textInput() ?>
+
     <!--    --><?php //= $form->field($model, 'camera')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'seeing')->textInput() ?>
