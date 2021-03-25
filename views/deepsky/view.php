@@ -26,9 +26,10 @@ $image = $model->getImage()->one();
     <?php } ?>
 
     <?php
-            if ($image !== null) {
-                echo "<img alt='" . $model->object_name . "' src='/" . $model->getImagePath() ."'/>";
-            }
+    if ($image !== null) { ?>
+        <?= Html::img("/" .$image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid']) ?>
+        <?php
+    }
 
     ?>
 
