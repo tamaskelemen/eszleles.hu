@@ -33,6 +33,9 @@ $columns = [
         'filter' => DatePicker::widget([
             'model' => $searchModel,
             'attribute' => 'date',
+            'options' => [
+                'autocomplete' => 'off'
+            ],
             'pluginOptions' => [
                 'format' => 'yyyy-mm-dd',
             ]

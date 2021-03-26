@@ -14,6 +14,7 @@ class MoonForm extends AbstractObserveForm
     public $camera;
     public $source;
     public $type = Observe::TYPE_MOON;
+    public $moon_phase;
 
     /*
       * TODO:
@@ -37,6 +38,7 @@ class MoonForm extends AbstractObserveForm
             'object_type' => 'Típus',
             'telescope' => 'Távcső',
             'mechanics' => 'Mechanika',
+            'moon_phase' => 'Holdfázis',
             'camera' => 'Kamera',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
