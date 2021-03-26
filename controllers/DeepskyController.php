@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\observations\Deepsky;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
@@ -157,7 +158,7 @@ class DeepskyController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Observe::findOne($id)) !== null) {
+        if (($model = Deepsky::findOne($id)) !== null) {
             return $model;
         }
 

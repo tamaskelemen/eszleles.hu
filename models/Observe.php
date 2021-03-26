@@ -108,6 +108,17 @@ class Observe extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
+    public static function getVisibleAttributes()
+    {
+        return [
+            'telescope',
+            'date',
+            'location',
+            'transparency',
+            'seeing',
+            'mechanics',
+        ];
+    }
 
     public static function getAllTypes()
     {

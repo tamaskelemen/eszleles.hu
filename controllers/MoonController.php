@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Flash;
 use app\models\forms\MoonForm;
+use app\models\observations\Moon;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
@@ -158,12 +159,12 @@ class MoonController extends Controller
      * Finds the Observe model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Observe the loaded model
+     * @return Moon the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Observe::findOne($id)) !== null) {
+        if (($model = Moon::findOne($id)) !== null) {
             return $model;
         }
 

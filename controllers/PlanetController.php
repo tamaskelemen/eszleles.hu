@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Flash;
 use app\models\forms\PlanetForm;
+use app\models\observations\Planet;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
@@ -158,12 +159,12 @@ class PlanetController extends Controller
      * Finds the Observe model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Observe the loaded model
+     * @return Planet the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Observe::findOne($id)) !== null) {
+        if (($model = Planet::findOne($id)) !== null) {
             return $model;
         }
 
