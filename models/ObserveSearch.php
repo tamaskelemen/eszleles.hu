@@ -52,6 +52,11 @@ class ObserveSearch extends Observe
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> [
+                'defaultOrder' => [
+                    'uploaded_at' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $dataProvider->sort->attributes['observer'] = [
