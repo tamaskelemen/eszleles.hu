@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\forms\PasswordChangeForm;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
@@ -113,6 +114,20 @@ class UserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionChangePassword()
+    {
+        $user = Yii::$app->user->getIdentity();
+        $pwChangeForm = new PasswordChangeForm();
+        if ($pwChangeForm->load(Yii::$app->request->post()) && $pwChangeForm->change()) {
+            Flash::addSuccess("A jelszavad sikeresen megváltozott.");
+            return $this->redirect(['profile', 'id' => $user->id]);
+        }
+
+        return $this->render('password-change', [
+            'model' => $pwChangeForm
         ]);
     }
 

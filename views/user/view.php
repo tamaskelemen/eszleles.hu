@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <p>
             <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Jelszó megváltoztatása', ['change-password', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
         </p>
     </div>
 
