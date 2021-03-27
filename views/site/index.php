@@ -31,7 +31,7 @@ $this->title = 'VCSE Észlelések';
             ?>
         </div>
 
-        <div class="row pt-5">
+        <div class="row pt-5" style="display: none">
             <div class="col-lg-4">
                 <h3>Heading</h3>
 
