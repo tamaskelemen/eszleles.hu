@@ -34,7 +34,7 @@ AppAsset::register($this);
         </button>
 
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav m-auto">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
                     <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal <span class="sr-only">(current)</span></a>
                 </li>
