@@ -20,7 +20,7 @@ $this->title = 'VCSE Észlelések';
         <?php } ?>
     </div>
 
-    <div class="body-content container ">
+    <div class="body-content container">
 
         <h2>Legújabb feltöltések</h2>
         <div class="row">
@@ -31,7 +31,7 @@ $this->title = 'VCSE Észlelések';
             ?>
         </div>
 
-        <div class="row">
+        <div class="row pt-5">
             <div class="col-lg-4">
                 <h3>Heading</h3>
 

@@ -10,10 +10,10 @@ use yii\helpers\Url;
 <div class="container list-item">
     <a href="<?= Url::toRoute(['/' . $model->type . '/view', 'id' => $model->id])?>">
         <div class="row">
-            <div class="col-md-4 col-12 ">
+            <div class="col-md-3 col-12 ">
                 <img class="w-100" src="<?= $model->getThumbnailPath() ?>" alt >
             </div>
-            <div class="col-md-8 col-12 ">
+            <div class="col-md-9 col-12 ">
                 <div class="font-weight-bold ">
                     <?= $model->object_name ?>
                 </div>

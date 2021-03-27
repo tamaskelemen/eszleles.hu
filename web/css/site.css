@@ -16,6 +16,9 @@ body {
     padding-left:0;
     padding-right:0;
 }
+.container-fluid .padding-fix {
+    padding-left: 20px;
+}
 
 .table, .table th, .table tr, .table td {
     border-color: #596067;
@@ -158,15 +161,27 @@ form > div.required > label.control-label:after {
     color:red;
 }
 
-.list-item img {
-    height: 200px;
-
-}
-
 .list-item {
     padding-bottom: 20px;
 }
 
+.latest-item .item-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 250px; // some width
+}
+
+.latest-item .item-description {
+    min-height: 120px;
+
+    overflow: hidden;
+    width: 250px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+
+}
 .list-item a {
     color: unset;
     text-decoration: none;
