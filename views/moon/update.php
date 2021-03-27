@@ -12,10 +12,16 @@ $this->params['breadcrumbs'][] = 'Módosítás';
 ?>
 <div class="observe-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="text-center">
+        <h1>
+            <?= Html::encode($this->title) ?>
+        </h1>
+    </div>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <div class="container">
+        <?= $this->render('_form', [
+            'model' => $model,
+        ]) ?>
+    </div>
 
 </div>

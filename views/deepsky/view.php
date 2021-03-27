@@ -13,8 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();
 ?>
-<div class="observe-view">
-
+<div class="observe-view container">
     <h1><?= Html::encode($this->title) ?></h1>
 
 

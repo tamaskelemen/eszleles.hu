@@ -95,11 +95,14 @@ AppAsset::register($this);
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
             'activeItemTemplate' => '<li class="breadcrumb-item active">{link}</li>',
+            'options' => [
+                'class' => 'container breadcrumb padding-fix'
+            ],
             'homeLink' => [
                 'label' => 'Főoldal',
                 'url' => '/',

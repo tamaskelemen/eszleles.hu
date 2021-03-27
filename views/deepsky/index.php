@@ -14,13 +14,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="observe-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="text-center">
+        <h1>
+            <?= Html::encode($this->title) ?>
+        </h1>
+    </div>
 <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemView' => '../_common-items/_listItem'
-    ])
-
-    ?>
+    <div class="container">
+        <?= ListView::widget([
+            'dataProvider' => $dataProvider,
+            'itemView' => '../_common-items/_listItem'
+        ])
+        ?>
+    </div>
 </div>

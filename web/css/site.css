@@ -11,6 +11,12 @@ body {
     font-family: Inter;
     src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
 }
+
+.container-fluid .container {
+    padding-left:0;
+    padding-right:0;
+}
+
 .table, .table th, .table tr, .table td {
     border-color: #596067;
 }
@@ -160,11 +166,13 @@ form > div.required > label.control-label:after {
 .list-item {
     padding-bottom: 20px;
 }
+
 .list-item a {
     color: unset;
     text-decoration: none;
     background-color: transparent;
 }
+
 .breadcrumb {
     background-color: #343a40
 }

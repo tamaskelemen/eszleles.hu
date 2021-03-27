@@ -20,7 +20,7 @@ $this->title = 'VCSE Észlelések';
         <?php } ?>
     </div>
 
-    <div class="body-content">
+    <div class="body-content container ">
 
         <h2>Legújabb feltöltések</h2>
         <div class="row">
