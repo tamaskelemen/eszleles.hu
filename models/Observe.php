@@ -161,7 +161,7 @@ class Observe extends \yii\db\ActiveRecord
             return $this->image->path;
         }
 
-        return "/pictures/noimage.jpg";
+        return "/pictures/noimage.png";
     }
 
     /**
@@ -173,7 +173,7 @@ class Observe extends \yii\db\ActiveRecord
             return $this->thumbnail->path;
         }
 
-        return "/pictures/noimage.jpg";
+        return "/pictures/noimage.png";
     }
 
     /**
