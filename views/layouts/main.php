@@ -35,10 +35,10 @@ AppAsset::register($this);
 
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav m-auto">
-                <li class="nav-item active">
+                <li class="nav-item ">
                     <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Észlelések
                     </a>
@@ -99,7 +99,11 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
-            'activeItemTemplate' => '<li class="breadcrumb-item active">{link}</li>'
+            'activeItemTemplate' => '<li class="breadcrumb-item active">{link}</li>',
+            'homeLink' => [
+                'label' => 'Főoldal',
+                'url' => '/',
+            ],
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
