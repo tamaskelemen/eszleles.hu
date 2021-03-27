@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\forms\SignupForm;
+use app\models\Observe;
 use Yii;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -63,7 +64,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(4)->all();
+
+        return $this->render('index', [
+            'latestObs' => $latestObs,
+            ]
+        );
     }
 
     /**

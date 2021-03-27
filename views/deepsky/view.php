@@ -29,7 +29,7 @@ $image = $model->getImage()->one();
     <?php
     if ($image !== null) { ?>
         <div class="img-container">
-            <?= Html::img("/" .$image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto']) ?>
+            <?= Html::img($image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto']) ?>
         </div>
         <?php
     }

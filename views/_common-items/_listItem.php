@@ -7,11 +7,11 @@ use yii\helpers\Url;
 
 
 ?>
-<div class="conatiner list-item">
+<div class="container list-item">
     <a href="<?= Url::toRoute(['/' . $model->type . '/view', 'id' => $model->id])?>">
         <div class="row">
             <div class="col-md-3 col-12 ">
-                <img class="w-100 mr-auto " src="/<?= $model->getImagePath() ?>" alt >
+                <img class="w-100 mr-auto " src="<?= $model->getImagePath() ?>" alt >
             </div>
             <div class="col-md-9 col-12 ">
                 <div class="font-weight-bold ">

@@ -1,7 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $latestObs Observe[] */
 
+use app\models\Observe;
 use yii\helpers\Url;
 
 $this->title = 'VCSE Észlelések';
@@ -21,6 +23,14 @@ $this->title = 'VCSE Észlelések';
     <div class="body-content">
 
         <h2>Legújabb feltöltések</h2>
+        <div class="row">
+            <?php
+                foreach ($latestObs as $obs) {
+                    echo $this->render('../_common-items/_latestItem', ['model' => $obs]);
+                }
+            ?>
+        </div>
+
         <div class="row">
             <div class="col-lg-4">
                 <h3>Heading</h3>

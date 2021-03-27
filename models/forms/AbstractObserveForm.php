@@ -2,7 +2,9 @@
 
 namespace app\models\forms;
 
+use app\models\Image;
 use yii\base\Model;
+use yii\db\Exception;
 use yii\web\UploadedFile;
 
 class AbstractObserveForm extends Model
@@ -33,5 +35,28 @@ class AbstractObserveForm extends Model
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
         ];
+    }
+
+    /**
+     * @param $id int
+     * @throws Exception
+     */
+    public function uploadImage($id)
+    {
+        if ($this->image != null) {
+            $path = "uploads/" . $id . "." . $this->image->extension;
+
+            if (!$this->image->saveAs($path) ){
+                throw new \Exception("A kép feltöltése nem sikerült.");
+            }
+            $image = new Image();
+
+            $image->observe_id = $id;
+            $image->path = "/" . $path;
+
+            if (!$image->save()) {
+                throw new Exception("A kép mentése nem sikerült.");
+            }
+        }
     }
 }
