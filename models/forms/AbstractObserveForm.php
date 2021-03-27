@@ -19,8 +19,6 @@ class AbstractObserveForm extends Model
     public $seeing;
     public $mechanics;
 
-
-
     /** @var UploadedFile */
     public $image;
 
@@ -38,7 +36,7 @@ class AbstractObserveForm extends Model
     }
 
     /**
-     * @param $id int
+     * @param $id int id of the observation the image belongs to
      * @throws Exception
      */
     public function uploadImage($id)
@@ -50,13 +48,36 @@ class AbstractObserveForm extends Model
                 throw new \Exception("A kép feltöltése nem sikerült.");
             }
             $image = new Image();
-
             $image->observe_id = $id;
             $image->path = "/" . $path;
+            $image->size = Image::SIZE_ORIGINAL;
 
             if (!$image->save()) {
                 throw new Exception("A kép mentése nem sikerült.");
             }
+
+            $this->createThumbnail($id, $path);
         }
+    }
+
+    private function createThumbnail($id, $source)
+    {
+        $destination = "uploads/thumbnails/{$id}.{$this->image->extension}";
+        Image::resize_crop_image(
+            Image::THUMBNAIL_WIDTH, Image::THUMBNAIL_HEIGHT,
+            $source,
+            $destination
+        );
+
+        $thumbnail = new Image();
+        $thumbnail->observe_id = $id;
+        $thumbnail->path = "/" . $destination;
+        $thumbnail->size = Image::SIZE_THUMBNAIL;
+
+        if (!$thumbnail->save()) {
+            throw new \Exception("Thumbnail mentése nem sikerült.");
+        }
+
+        return $this;
     }
 }

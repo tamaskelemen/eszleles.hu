@@ -6,7 +6,7 @@ use yii\helpers\Html;
 ?>
 <div class="col-lg-3 list-item">
     
-    <img src="<?= $model->getImagePath() ?>" alt="">
+    <img src="<?= $model->getThumbnailPath() ?>" alt="">
     <h3><?= $model->object_name ?></h3>
 
     <p><?= Html::encode($model->description) ?></p>

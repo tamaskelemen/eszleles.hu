@@ -141,7 +141,15 @@ class Observe extends \yii\db\ActiveRecord
     */
     public function getImage()
     {
-        return $this->hasOne(Image::class, ['observe_id' => 'id']);
+        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_ORIGINAL]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getThumbnail()
+    {
+        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_THUMBNAIL]);
     }
 
     /**
@@ -151,6 +159,18 @@ class Observe extends \yii\db\ActiveRecord
     {
         if ($this->image != null) {
             return $this->image->path;
+        }
+
+        return "/pictures/noimage.jpg";
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumbnailPath()
+    {
+        if ($this->thumbnail != null ) {
+            return $this->thumbnail->path;
         }
 
         return "/pictures/noimage.jpg";
