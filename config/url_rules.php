@@ -6,6 +6,7 @@ return [
     'felhasznalok' => '/user/index',
     'profil' => '/user/profile',
     'profil/modositas' => '/user/update',
+    'profil/jelszo-valtoztatas' => '/user/change-password',
 
     'osszes' => 'observe/index',
     //melyeg
