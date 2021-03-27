@@ -35,18 +35,18 @@ class SignupForm extends Model
         return [
 
             ['email', 'trim'],
-            ['email', 'required'],
+            ['email', 'required', 'message' => 'A mezőt kötelező kitölteni.'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Az email cím már használatban van.'],
 
-            ['password', 'required'],
+            ['password', 'required', 'message' => 'A mezőt kötelező kitölteni.'],
             ['password', 'string', 'min' => 6],
 
-            ['password_confirm', 'required'],
+            ['password_confirm', 'required', 'message' => 'A mezőt kötelező kitölteni.'],
             ['password_confirm', 'compare', 'compareAttribute' => 'password'],
 
-            ['name', 'required'],
+            ['name', 'required', 'message' => 'A mezőt kötelező kitölteni.'],
             ['name', 'string', 'max' => 255],
         ];
     }

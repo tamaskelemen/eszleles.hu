@@ -11,26 +11,30 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
+    <div class="text-center">
+        <h1>
+            <?= Html::encode($this->title) ?>
+        </h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+        <p>
+            <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+        </p>
+    </div>
 
-    <p>
-        <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $user,
-        'attributes' => [
-            'id',
-            'email:email',
-            'name',
-            'last_login',
-            'status',
+    <div class="container">
+        <?= DetailView::widget([
+            'model' => $user,
+            'attributes' => [
+                'id',
+                'email:email',
+                'name',
+                'last_login',
+                'status',
 //            'terms',
-            'newsletter:boolean',
-            'created_at',
+                'newsletter:boolean',
+                'created_at',
 //            'is_admin'
-        ],
-    ]) ?>
-
+            ],
+        ]) ?>
+    </div>
 </div>

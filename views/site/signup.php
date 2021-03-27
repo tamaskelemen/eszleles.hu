@@ -10,7 +10,7 @@ use yii\bootstrap4\ActiveForm;
 $this->title = 'Regisztráció';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
+<div class="site-signup container">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Kérlek töltsd ki az alábbi mezőket a regisztrációhoz:</p>
