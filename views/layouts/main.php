@@ -27,7 +27,7 @@ AppAsset::register($this);
 
 <div class="wrap">
     <nav class="navbar navbar-dark navbar-expand-lg">
-        <a class="navbar-brand" href="<?= Url::to('/') ?>">VCSE Észlelések <span style="color: red">BETA</span></a>
+        <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">VCSE Észlelések <span style="color: red">BETA</span></a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,18 +36,18 @@ AppAsset::register($this);
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav m-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="<?= Url::to('/')?>">Főoldal <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Észlelések
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="<?= Url::to('/observe/index') ?>">Összes</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/observe/index') ?>">Összes</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?= Url::to('/deepsky/index') ?>">Mélyég</a>
-                        <a class="dropdown-item" href="<?= Url::to('/planet/index') ?>">Bolygók</a>
-                        <a class="dropdown-item" href="<?= Url::to('/moon/index') ?>">Hold</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/index') ?>">Mélyég</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/planet/index') ?>">Bolygók</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/moon/index') ?>">Hold</a>
                     </div>
                 </li>
                 <?php if (!Yii::$app->user->isGuest) { ?>
@@ -56,15 +56,15 @@ AppAsset::register($this);
                         Feltöltés
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="<?= Url::to('/deepsky/create') ?>">Mélyég</a>
-                        <a class="dropdown-item" href="<?= Url::to('/planet/create') ?>">Bolygók</a>
-                        <a class="dropdown-item" href="<?= Url::to('/moon/create') ?>">Hold</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/create') ?>">Mélyég</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/planet/create') ?>">Bolygók</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/moon/create') ?>">Hold</a>
                     </div>
                 </li>
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= Url::to(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
+                    <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
                 </li>
                 <?php } ?>
             </ul>
@@ -72,13 +72,13 @@ AppAsset::register($this);
             <?php if (Yii::$app->user->isGuest) { ?>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item login">
-                    <a href="<?= Url::to('/site/login') ?>" class="btn btn-success">
+                    <a href="<?= Url::toRoute('/site/login') ?>" class="btn btn-success">
                     Belépés
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="<?= Url::to('/site/signup') ?>" class="btn btn-success">
+                    <a href="<?= Url::toRoute('/site/signup') ?>" class="btn btn-success">
                         Regisztráció
                     </a>
                 </li>

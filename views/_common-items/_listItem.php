@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 ?>
 <div class="conatiner list-item">
-    <a href="<?= Url::to(['deepsky/view', 'id' => $model->id])?>">
+    <a href="<?= Url::toRoute(['/' . $model->type . '/view', 'id' => $model->id])?>">
         <div class="row">
             <div class="col-md-3 col-12 ">
                 <img class="w-100 mr-auto " src="/<?= $model->getImagePath() ?>" alt >

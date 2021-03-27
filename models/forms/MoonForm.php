@@ -93,23 +93,21 @@ class MoonForm extends AbstractObserveForm
                 throw new Exception("Az észlelés feltöltése nem sikerült.");
             }
 
-            $year = date("Y");
-            $month = date('m');
+            if ($this->image != null) {
+                $path = "uploads/" . $observe->id . "." . $this->image->extension;
 
-            $path = "uploads/" . $observe->id . "." . $this->image->extension;
+                if (!$this->image->saveAs($path) ){
+                    throw new \Exception("A kép feltöltése nem sikerült.");
+                }
+                $image = new Image();
 
-            if (!$this->image->saveAs($path) ){
-                throw new \Exception("A kép feltöltése nem sikerült.");
+                $image->observe_id = $observe->id;
+                $image->path = $path;
+
+                if (!$image->save()) {
+                    throw new Exception("A kép mentése nem sikerült.");
+                }
             }
-            $image = new Image();
-
-            $image->observe_id = $observe->id;
-            $image->path = $path;
-
-            if (!$image->save()) {
-                throw new Exception("A kép mentése nem sikerült.");
-            }
-
             $this->id = $observe->id;
 
             $transaction->commit();

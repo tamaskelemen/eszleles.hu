@@ -49,8 +49,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => require_once("url_rules.php"),
         ],
     ],
     'params' => $params,

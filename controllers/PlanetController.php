@@ -8,12 +8,10 @@ use app\models\observations\Planet;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
-use app\models\forms\DeepSkyForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
  * ObserveController implements the CRUD actions for Observe model.
@@ -120,24 +118,18 @@ class PlanetController extends Controller
     {
         $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->id)->one();
 
-        $planetForm = new PlanetForm();
-
-        $planetForm->setAttributes($observe->attributes);
-
-        if (empty($planetForm)) {
+        if (empty($observe)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        if ($observe->load(Yii::$app->request->post())) {
 
-        if ($planetForm->load(Yii::$app->request->post())) {
-
-            if ($planetForm->register()) {
-                return $this->redirect(['view', 'id' => $planetForm->id]);
+            if ($observe->save()) {
+                return $this->redirect(['view', 'id' => $observe->id]);
             }
-
         }
 
         return $this->render('update', [
-            'model' => $planetForm,
+            'model' => $observe,
         ]);
     }
 

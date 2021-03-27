@@ -4,16 +4,18 @@
 
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
+$this->title = 'VCSE Észlelések';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Észlelések.hu</h1>
+        <h1>Észlelés.hu</h1>
 
         <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
-
-        <p><a class="btn btn-lg btn-success" href="<?= Url::to('/site/signup') ?>">Regisztrálok</a></p>
+        <?php if (Yii::$app->user->isGuest) { ?>
+            <p><a class="btn btn-lg btn-success" href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a></p>
+            <p>vagy ha már regisztráltál, <a class="" href="<?= Url::toRoute('/site/login') ?>">lépj be</a>.</p>
+        <?php } ?>
     </div>
 
     <div class="body-content">

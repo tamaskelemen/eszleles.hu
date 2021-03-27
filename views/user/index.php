@@ -7,16 +7,12 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Felhasználók';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="users-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -30,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             'name',
             'last_login',
-            'password_hash',
+//            'password_hash',
             //'password_reset_token',
             //'auth_key',
             //'status',
@@ -38,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'newsletter:boolean',
             //'created_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
