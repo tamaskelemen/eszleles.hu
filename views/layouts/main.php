@@ -108,7 +108,9 @@ AppAsset::register($this);
                 'url' => '/',
             ],
         ]) ?>
-        <?= Alert::widget() ?>
+        <div class="container">
+            <?= Alert::widget() ?>
+        </div>
         <?= $content ?>
     </div>
 </div>

@@ -55,7 +55,7 @@ class MoonForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['object_type', 'telescope', 'camera', 'type'], 'string', 'max' => 255],
+            [['moon_phase', 'telescope', 'camera', 'type'], 'string', 'max' => 255],
         ];
 
         return array_merge(parent::rules(), $rules);
