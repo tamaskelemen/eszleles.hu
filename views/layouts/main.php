@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+$route = Yii::$app->controller->route;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -35,10 +36,10 @@ AppAsset::register($this);
 
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal <span class="sr-only">(current)</span></a>
+                <li class="nav-item <?= in_array($route, ['site/index', '/']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal</a>
                 </li>
-                <li class="nav-item dropdown active">
+                <li class="nav-item dropdown <?= in_array($route, ['observe/index', 'deepsky/index', 'planet/index', 'moon/index']) ? 'active' : '' ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Észlelések
                     </a>
@@ -51,7 +52,7 @@ AppAsset::register($this);
                     </div>
                 </li>
                 <?php if (!Yii::$app->user->isGuest) { ?>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create']) ? 'active' : ''  ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Feltöltés
                     </a>
@@ -63,7 +64,7 @@ AppAsset::register($this);
                 </li>
 
 
-                <li class="nav-item">
+                <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
                 </li>
                 <?php } ?>
