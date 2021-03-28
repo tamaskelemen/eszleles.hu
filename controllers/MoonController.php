@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\forms\CommentForm;
 use app\models\forms\MoonForm;
 use app\models\observations\Moon;
 use Yii;
@@ -81,8 +82,12 @@ class MoonController extends Controller
      */
     public function actionView($id)
     {
+        $commentForm = new CommentForm();
+        $commentForm->observation_id = $id;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'commentForm' => $commentForm,
         ]);
     }
 

@@ -8,6 +8,7 @@ use Yii;
 use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -55,6 +56,21 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    /**
+     * @param $id
+     * @throws NotFoundHttpException
+     */
+    public function actionObservation($id)
+    {
+        $observation = Observe::find()->ofId($id)->one();
+        if ($observation == null) {
+            throw new NotFoundHttpException("The requested page does not exists");
+        }
+
+        $controller = $observation->type;
+        return $this->redirect(["/{$controller}/view", "id" => $id]);
     }
 
     /**

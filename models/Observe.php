@@ -98,6 +98,18 @@ class Observe extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'observer_id']);
     }
 
+    /**
+     * @return Comment[]|array
+     */
+    public function getComments()
+    {
+        return Comment::find()->where(['observation_id' => $this->id])->orderBy(['created_at' => SORT_DESC])->all();
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
     public function beforeSave($insert)
     {
         if ($this->isNewRecord) {

@@ -2,7 +2,6 @@
 namespace app\models\forms;
 
 use app\components\Flash;
-use app\models\Image;
 use app\models\Observe;
 use Yii;
 use yii\db\Exception;

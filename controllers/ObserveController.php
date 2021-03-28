@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\forms\CommentForm;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
@@ -26,10 +27,10 @@ class ObserveController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete'],
+                'only' => ['create', 'update', 'delete', 'comment'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'update'],
+                        'actions' => ['create', 'update', 'comment'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -137,12 +138,27 @@ class ObserveController extends Controller
             if ($deepSkyForm->register()) {
                 return $this->redirect(['view', 'id' => $deepSkyForm->id]);
             }
-
         }
 
         return $this->render('update', [
             'model' => $deepSkyForm,
         ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionComment()
+    {
+        $commentForm = new CommentForm();
+
+        if ($commentForm->load(Yii::$app->request->post()) && $commentForm->add()) {
+
+            Flash::addSuccess("A hozzászólás sikeresen mentve.");
+            return $this->redirect(['/' . $commentForm->observation_id]);
+        }
+
+        return $this->goBack();
     }
 
     /**

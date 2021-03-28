@@ -30,7 +30,7 @@ class PasswordChangeForm extends Model
     public function attributeLabels()
     {
         return [
-            'password' => 'Jelszó',
+            'password' => 'Új jelszó',
             'password_confirm' => 'Jelszó megerősítése',
         ];
     }

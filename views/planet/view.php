@@ -1,22 +1,20 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 use app\models\observations\Planet;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\observations\Planet */
+/* @var $commentForm app\models\forms\CommentForm */
 
 $this->title = $model->object_name;
 $this->params['breadcrumbs'][] = ['label' => 'Bolygó észlelések', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();
+$comments = $model->getComments();
 ?>
 <div class="observe-view container">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
 
     <?php
     if ($model->observer_id === Yii::$app->user->id) {
@@ -54,28 +52,9 @@ $image = $model->getImage()->one();
         </div>
     </div>
 
-    <?php
-//    DetailView::widget([
-//        'model' => $model,
-//        'attributes' => [
-//            'id',
-//            'object_name',
-//            'catalog_number',
-//            'constellation',
-//            'object_type',
-//            'telescope',
-//            'mechanics',
-//            'camera',
-//            'seeing',
-//            'transparency',
-//            'location',
-//            'date',
-//            'source',
-//            'observer_id',
-//            'description:ntext',
-//            'uploaded_at',
-//            'edited_at',
-//        ],
-//    ]) ?>
+    <?= $this->render('../_common-items/_comments',[
+        'comments' => $comments,
+        'commentForm' => $commentForm,
+    ])?>
 
 </div>

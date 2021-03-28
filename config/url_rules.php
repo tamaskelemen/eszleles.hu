@@ -2,6 +2,7 @@
 return [
     'regisztracio' => '/site/signup',
     'bejelentkezes' => '/site/login',
+    '<id:\d+>' => '/site/observation',
 
     'felhasznalok' => '/user/index',
     'profil' => '/user/profile',
