@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Image;
 use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -13,33 +14,49 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-lg-6 col-12">
+            <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image')->fileInput() ?>
+            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mechanics')->textInput() ?>
+            <?= $form->field($model, 'date')->widget(DatePicker::class, [
+                'options' => ['autocomplete' => 'off'],
+                'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+                'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
+                'pluginOptions' => [
+                    'format' => 'yyyy-mm-dd',
+                    'autoclose' => true
+                ]
+            ]) ?>
 
-    <!--    --><?php //= $form->field($model, 'camera')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'mechanics')->textInput() ?>
 
-    <?= $form->field($model, 'seeing')->textInput() ?>
+            <?= $form->field($model, 'seeing')->textInput() ?>
 
-    <?= $form->field($model, 'transparency')->textInput() ?>
+            <?= $form->field($model, 'transparency')->textInput() ?>
 
-    <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        </div>
 
-    <?= $form->field($model, 'date')->widget(DatePicker::class, [
-        'options' => ['autocomplete' => 'off'],
-        'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
-        'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
-        'pluginOptions' => [
-            'format' => 'yyyy-mm-dd',
-            'autoclose' => true
-        ]
-    ]) ?>
+        <div class="col-lg-6 col-12">
+            <?= $form->field($model, 'image')->fileInput([
+                "class" => "form-control-file",
+            ]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+            <ul class="upload-description">
+                <li>
+                    A feltöltött kép mérete maximum <?= Image::getUploadSizeLimit() ?>Mb lehet
+                </li>
+
+                <li>
+                    Támogatott kiterjesztések: <?= Image::SUPPORTED_EXTENSIONS ?>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Feltöltés', ['class' => 'btn btn-success']) ?>

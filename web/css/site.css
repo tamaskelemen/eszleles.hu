@@ -156,7 +156,7 @@ a.desc:after {
     padding-right: 3px;
 }
 
-form > div.required > label.control-label:after {
+form div.required > label.control-label:after {
     content:" * ";
     color:red;
 }
@@ -216,4 +216,8 @@ div .help-block {
 .img-view {
     padding: 40px;
     display: block;
+}
+
+.upload-description {
+    font-size: smaller;
 }

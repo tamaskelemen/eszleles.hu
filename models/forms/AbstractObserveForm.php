@@ -27,7 +27,7 @@ class AbstractObserveForm extends Model
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
             [['object_name', 'telescope', 'location', 'description', 'mechanics'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['image'], 'file', 'extensions' => 'jpg, jpeg, gif, png'],
+            [['image'], 'file', 'extensions' => Image::SUPPORTED_EXTENSIONS],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],

@@ -16,6 +16,8 @@ use Yii;
  */
 class Image extends \yii\db\ActiveRecord
 {
+    const SUPPORTED_EXTENSIONS = 'jpg, jpeg, gif, png';
+
     const THUMBNAIL_WIDTH = 300;
     const THUMBNAIL_HEIGHT = 200;
 
@@ -56,6 +58,18 @@ class Image extends \yii\db\ActiveRecord
             'created_at' => 'Feltöltve',
             'size' => 'Méret',
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getUploadSizeLimit()
+    {
+        $max_upload = (int)(ini_get('upload_max_filesize'));
+        $max_post = (int)(ini_get('post_max_size'));
+        $memory_limit = (int)(ini_get('memory_limit'));
+
+        return min($max_upload, $max_post, $memory_limit);
     }
 
     public static function resize_crop_image($max_width, $max_height, $source_file, $dst_dir, $quality = 100){
