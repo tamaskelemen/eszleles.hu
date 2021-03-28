@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use \app\models\observations\Moon;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Observe */
@@ -12,28 +13,37 @@ $this->params['breadcrumbs'][] = ['label' => 'Hold észlelések', 'url' => ['ind
 $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();
+$user = $model->getObserver()->one();
 $comments = $model->getComments();
 ?>
 <div class="observe-view container">
 
-    <?php
-    if ($model->observer_id === Yii::$app->user->id) {
-        ?>
-        <p>
-            <?= Html::a('Módosítás', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        </p>
-    <?php } ?>
-
-    <?php
+    <div class="row">
+        <div class="col-lg-9 col-12">
+            <?php
             if ($image !== null) { ?>
                 <div class="img-container">
                     <?= Html::img($image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto']) ?>
                 </div>
                 <?php
             }
-    ?>
+            ?>
+        </div>
 
-    <div>
+        <div class="col-lg-3 col-12">
+            <?php
+            if ($model->observer_id === Yii::$app->user->id) {
+                ?>
+                <p>
+                    <?= Html::a('Észlelés módosítása', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                </p>
+            <?php } ?>
+            <h4 class="mt-2">Észlelő:</h4>
+            <?= Html::a($user->name, Url::toRoute(["/profil", "id" => $user->id])) ?>
+        </div>
+    </div>
+
+    <div class="details">
         <h2><?= $model->object_name?></h2>
 
         <p class="mb-4 mt-4"><?= Html::encode($model->description) ?></p>
