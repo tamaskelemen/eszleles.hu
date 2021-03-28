@@ -26,7 +26,7 @@ class ObserveController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['create', 'update', 'delete', 'comment'],
                 'rules' => [
                     [
@@ -69,50 +69,6 @@ class ObserveController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
-    /**
-     *
-     */
-    public function actionDeepsky()
-    {
-        $searchModel = new ObserveSearch();
-    }
-
-    /**
-     * Displays a single Observe model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-//    /**
-//     * Creates a new Observe model.
-//     * If creation is successful, the browser will be redirected to the 'view' page.
-//     * @return mixed
-//     */
-//    public function actionCreate()
-//    {
-//        $model = new DeepSkyForm();
-//
-//        if ($model->load(Yii::$app->request->post())) {
-//            if ($model->register()) {
-//                Flash::addSuccess("Sikeres művelet.");
-//                return $this->redirect(['view', 'id' => $model->id]);
-//            }
-//
-//            Flash::addDanger("Belső hiba történt.");
-//        }
-//
-//        return $this->render('create', [
-//            'model' => $model,
-//        ]);
-//    }
 
     /**
      * Updates an existing Observe model.

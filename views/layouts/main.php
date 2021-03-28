@@ -19,7 +19,7 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode('VCSE Észlelések') ?></title>
+    <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -108,15 +108,32 @@ AppAsset::register($this);
                 'url' => '/',
             ],
         ]) ?>
-        <div class="container">
-            <?= Alert::widget() ?>
-        </div>
+
+        <?php
+        $flashes = Yii::$app->session->getAllFlashes();
+        if (!empty($flashes)) {
+            foreach ($flashes as $key => $value) { ?>
+                <div class="container">
+                    <div class="alert-<?= $key ?> alert alert-dismissible" role="alert">
+                        <?php
+                            foreach ($value as $row) {
+                                echo $row;
+                            }
+                        ?>
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+        ?>
+
         <?= $content ?>
     </div>
 </div>
 
 <footer class="footer text-center">
-        <div class="">
+        <div>
             &copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> - Üzemelteti a <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu', ['target' => '_blank']) ?>
         </div>
 </footer>
