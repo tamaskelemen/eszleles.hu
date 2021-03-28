@@ -13,7 +13,6 @@ $this->title = 'Összes észlelés';
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
-    ['class' => 'yii\grid\SerialColumn'],
     [
         'attribute' => 'object_name',
         'format' => 'raw',
@@ -44,8 +43,10 @@ $columns = [
     ],
     [
             'attribute' => 'observer',
-            'value' => 'observer.name'
+            'value' => 'observer.name',
+            'label' => 'Észlelő'
     ],
+    'telescope'
 ];
 
 if (!Yii::$app->user->isGuest) {
@@ -63,7 +64,7 @@ if (!Yii::$app->user->isGuest) {
 <div class="observe-index">
     <div class="text-center">
         <h1><?= Html::encode($this->title) ?></h1>
-        <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+<!--        --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     </div>
 
     <div class="container">

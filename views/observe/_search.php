@@ -15,42 +15,41 @@ use yii\widgets\ActiveForm;
 
     <div class="container collapse" id="search" >
         <?php $form = ActiveForm::begin([
-            'action' => ['index'],
+            'action' => ['/observe/index'],
             'method' => 'get',
         ]); ?>
         <div class="row">
             <div class="col-lg-6">
-                <?= $form->field($model, 'id') ?>
+                <?php  echo $form->field($model, 'object_name') ?>
             </div>
 
             <div class="col-lg-6">
-                <?= $form->field($model, 'catalog_number') ?>
+                <?php  echo $form->field($model, 'type')->dropDownList(array_merge(['prompt' => ''],\app\models\Observe::getAllTypes())) ?>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-lg-6">
-                <?= $form->field($model, 'constellation') ?>
-            </div>
-
-            <div class="col-lg-6">
-                <?= $form->field($model, 'object_type')->dropDownList(\app\components\Data::listObjectType()) ?>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-lg-6">
                 <?php  echo $form->field($model, 'telescope') ?>
             </div>
 
             <div class="col-lg-6">
-                <?php  echo $form->field($model, 'seeing') ?>
+                <?php  echo $form->field($model, 'mechanics') ?>
             </div>
         </div>
 
         <div class="row">
             <div class="col-lg-6">
+                <?php  echo $form->field($model, 'seeing') ?>
+            </div>
+
+            <div class="col-lg-6">
                 <?php  echo $form->field($model, 'transparency') ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <?php  echo $form->field($model, 'description') ?>
             </div>
 
             <div class="col-lg-6">
@@ -64,19 +63,10 @@ use yii\widgets\ActiveForm;
             </div>
 
             <div class="col-lg-6">
-                <?php  echo $form->field($model, 'source') ?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-6">
                 <?php  echo $form->field($model, 'observer_id') ?>
             </div>
-
-            <div class="col-lg-6">
-                <?php  echo $form->field($model, 'description') ?>
-            </div>
         </div>
+
 
 
 <!--        --><?php // echo $form->field($model, 'uploaded_at') ?>
@@ -85,7 +75,7 @@ use yii\widgets\ActiveForm;
 
         <div class="form-group">
             <?= Html::submitButton('Keresés', ['class' => 'btn btn-success']) ?>
-            <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+            <?= Html::resetButton('Törlés', ['class' => 'btn btn-info']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

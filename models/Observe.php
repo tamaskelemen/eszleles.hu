@@ -71,7 +71,7 @@ class Observe extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'object_name' => 'Név',
+            'object_name' => 'Objektum neve',
             'catalog_number' => 'Katalógus szám',
             'constellation' => 'Csillagkép',
             'object_type' => 'Típus',

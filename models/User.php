@@ -47,7 +47,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'email' => 'Email cím',
             'created_at' => 'Regisztráció ideje',
             'last_login' => 'Utolsó belépés',
-            'name' => 'Név',
+            'name' => 'Észlelő',
             'status' => 'Státusz',
             'terms' => 'EULA',
             'newsletter' => 'Hírlevelek',
