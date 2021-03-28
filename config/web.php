@@ -55,6 +55,11 @@ $config = [
     'params' => $params,
     'name' => 'VCSE Észlelések',
     'homeUrl' => YII_ENV_DEV ? '/' : 'https://eszleles.hu',
+    'container' => [
+        'definitions' => [
+            \yii\widgets\LinkPager::class => \yii\bootstrap4\LinkPager::class,
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

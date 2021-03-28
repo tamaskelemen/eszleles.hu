@@ -73,6 +73,10 @@ if (!Yii::$app->user->isGuest) {
         'filterModel' => $searchModel,
         'columns' => $columns,
         'tableOptions' => ['class' => 'table table-striped'],
+        'pager' => [
+            'firstPageLabel' => 'Első',
+            'lastPageLabel'  => 'Utolsó'
+        ],
     ]); ?>
     </div>
 </div>
