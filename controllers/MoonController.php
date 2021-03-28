@@ -125,25 +125,20 @@ class MoonController extends Controller
     {
         $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->id)->one();
 
-        $moonForm = new MoonForm();
-
-        $moonForm->setAttributes($observe->attributes);
-
-        if (empty($moonForm)) {
+        if (empty($observe)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        if ($observe->load(Yii::$app->request->post())) {
 
-        if ($moonForm->load(Yii::$app->request->post())) {
-
-            if ($moonForm->register()) {
-                return $this->redirect(['view', 'id' => $moonForm->id]);
+            if ($observe->save()) {
+                return $this->redirect(['view', 'id' => $observe->id]);
             }
-
         }
 
         return $this->render('update', [
-            'model' => $moonForm,
+            'model' => $observe,
         ]);
+
     }
 
     /**

@@ -44,19 +44,25 @@ use yii\widgets\ActiveForm;
         </div>
 
         <div class="col-lg-6 col-12">
-            <?= $form->field($model, 'image')->fileInput([
-                "class" => "form-control-file",
-            ]) ?>
+            <?php if ($model->image !== null) { ?>
+                <div class="img-container">
+                    <?= Html::img($model->image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto']) ?>
+                </div>
+                <?php
+            } else { ?>
+                <?= $form->field($model, 'image')->fileInput([
+                    "class" => "form-control-file",
+                ]) ?>
+                <ul class="upload-description">
+                    <li>
+                        A feltöltött kép mérete maximum <?= Image::getUploadSizeLimit() ?>Mb lehet
+                    </li>
 
-            <ul class="upload-description">
-                <li>
-                    A feltöltött kép mérete maximum <?= Image::getUploadSizeLimit() ?>Mb lehet
-                </li>
-
-                <li>
-                    Támogatott kiterjesztések: <?= Image::SUPPORTED_EXTENSIONS ?>
-                </li>
-            </ul>
+                    <li>
+                        Támogatott kiterjesztések: <?= Image::SUPPORTED_EXTENSIONS ?>
+                    </li>
+                </ul>
+            <?php } ?>
         </div>
     </div>
 
