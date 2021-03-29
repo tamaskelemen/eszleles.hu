@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Email;
 use app\models\forms\SignupForm;
 use app\models\Observe;
 use Yii;
@@ -132,6 +133,12 @@ class SiteController extends Controller
         return $this->render('signup', [
             'signupForm' => $signupForm
         ]);
+    }
+
+    public function actionEmail()
+    {
+        Email::send("asd", "Új jelszó beállítása", "password-reset");
+
     }
 
     /**
