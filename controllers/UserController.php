@@ -25,10 +25,10 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'update', 'profile', 'delete'],
+                'only' => ['index', 'update', 'profile', 'delete', 'change-password'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'update', 'profile'],
+                        'actions' => ['index', 'update', 'profile', 'change-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

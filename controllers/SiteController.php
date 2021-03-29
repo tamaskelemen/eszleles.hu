@@ -3,8 +3,12 @@
 namespace app\controllers;
 
 use app\components\Email;
+use app\components\Flash;
+use app\models\forms\LostPasswordForm;
+use app\models\forms\PasswordChangeForm;
 use app\models\forms\SignupForm;
 use app\models\Observe;
+use app\models\User;
 use Yii;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -135,9 +139,42 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionEmail()
+    public function actionLostPassword()
     {
-        Email::send("asd", "Új jelszó beállítása", "password-reset");
+        $lostPasswordForm = new LostPasswordForm();
+        if (
+            $lostPasswordForm->load(Yii::$app->request->post())
+            && $lostPasswordForm->generateToken()
+        ) {
+            $user = User::findByEmail($lostPasswordForm->email);
+            $result = Email::send(
+                $user->email,
+                "Elfelejtett jelszó",
+                "password-reset",
+                ['token' => $user->password_reset_token]
+            );
+
+            if ($result) {
+                Flash::addSuccess("Emailben elküldtük a linket, ahol beállíthatja új jelszavát.");
+                return $this->goHome();
+            }
+            Flash::addWarning("Az email elküldése közben hiba történt");
+        }
+
+        return $this->render('lost-password', ['model' => $lostPasswordForm]);
+    }
+
+    public function actionNewPassword($token)
+    {
+        $user = User::findByPasswordResetToken($token);
+
+        if ($user == null) {
+            throw new NotFoundHttpException("A keresett oldal nem található.");
+        }
+        if (Yii::$app->user->login($user)) {
+            $this->redirect("/user/change-password");
+
+        }
 
     }
 

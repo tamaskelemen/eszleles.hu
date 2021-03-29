@@ -2,7 +2,8 @@
 
 return [
     'adminEmail' => 'tamaskelemen.kt@gmail.com',
-    'senderEmail' => 'vcse@vcse.hu',
-    'senderName' => 'Vega Csillagászati Egyesület',
+    'senderEmail' => 'no-reply@eszleles.hu',
+    'senderName' => 'Észlelés.hu csapata',
     'bsVersion' => '4.x',
+    'user.passwordResetTokenExpire' => 3600,
 ];

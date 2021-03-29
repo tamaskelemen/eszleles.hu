@@ -2,19 +2,18 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap4\ActiveForm */
-/* @var $model app\models\LoginForm */
+/* @var $model app\models\forms\LostPasswordForm */
 
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
-use yii\helpers\Url;
 
-$this->title = 'Belépés';
+$this->title = 'Elfelejtett jelszó';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login container">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Kérlek töltsd ki az alábbi mezőket a bejelentkezéshez:</p>
+    <p>Kérlek add meg az email címed, ahová elküldhetjük az új jelszó beállításához a linket:</p>
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin([
@@ -25,21 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-            <?= $form->field($model, 'password')->passwordInput() ?>
-
-            <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
             <div class="form-group">
                 <div class="col-lg-offset-1 col-lg-11">
-                    <?= Html::submitButton('Bejelentkezés', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Küldés', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
             </div>
 
             <?php ActiveForm::end(); ?>
-
-            <p>
-                <?= Html::a("Elfelejtetted a jelszavad?", [Url::toRoute(['/site/lost-password'])]) ?>
-            </p>
         </div>
     </div>
 </div>

@@ -3,6 +3,8 @@ return [
     'regisztracio' => '/site/signup',
     'bejelentkezes' => '/site/login',
     '<id:\d+>' => '/site/observation',
+    'elfelejtett-jelszo' => '/site/lost-password',
+    'uj-jelszo/<token:.*>' => '/site/new-password',
 
     'felhasznalok' => '/user/index',
     'profil' => '/user/profile',
