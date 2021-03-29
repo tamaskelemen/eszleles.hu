@@ -84,7 +84,7 @@ class DeepskyController extends Controller
         $commentForm = new CommentForm();
         $commentForm->observation_id = $id;
 
-        return $this->render('view', [
+        return $this->render('//observe/view', [
             'model' => $this->findModel($id),
             'commentForm' => $commentForm,
         ]);

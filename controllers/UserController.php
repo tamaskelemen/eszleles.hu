@@ -68,10 +68,14 @@ class UserController extends Controller
         ]);
     }
 
-
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionProfile($id)
     {
-        $user = User::find()->where(['id' => $id])->one();
+        $user = $this->findModel($id);
 
         return $this->render('view', ['user' => $user]);
     }

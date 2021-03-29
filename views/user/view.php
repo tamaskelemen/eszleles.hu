@@ -17,8 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </h1>
 
         <p>
+            <?php if ($user->id == Yii::$app->user->getIdentity()->id) { ?>
             <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Jelszó megváltoztatása', ['change-password', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+            <?php } ?>
         </p>
     </div>
 
