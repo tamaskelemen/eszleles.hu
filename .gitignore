@@ -36,4 +36,4 @@ tests/_support/_generated
 /web/uploads
 
 config/db_local.php
-config/smptp.php
+config/smtp.php
