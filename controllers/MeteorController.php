@@ -107,7 +107,7 @@ class MeteorController extends Controller
             Flash::addDanger("Belső hiba történt.");
         }
 
-        return $this->render('create', [
+        return $this->render('//observe/create', [
             'model' => $model,
         ]);
     }
