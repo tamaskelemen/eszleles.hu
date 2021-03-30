@@ -11,7 +11,7 @@ $typeName = \app\models\Observe::getTypeName($model->type);
 $this->title = $typeName . ' észlelés feltöltése';
 $this->params['breadcrumbs'][] = ['label' => $typeName . ' észlelések', 'url' => ["/{$typeName}/index"]];
 $this->params['breadcrumbs'][] = $this->title;
-var_dump("hej");
+
 ?>
 <div class="observe-create">
     <div class="text-center">
