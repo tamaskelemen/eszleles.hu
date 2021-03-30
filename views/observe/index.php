@@ -57,14 +57,13 @@ if (!Yii::$app->user->isGuest) {
         'class' => 'yii\grid\ActionColumn',
         'template' => $template,
     ];
-
 }
 
 ?>
 <div class="observe-index">
     <div class="text-center">
         <h1><?= Html::encode($this->title) ?></h1>
-<!--        --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
     </div>
 
     <div class="container">
