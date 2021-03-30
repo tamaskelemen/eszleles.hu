@@ -77,6 +77,7 @@ if (!Yii::$app->user->isGuest) {
             'firstPageLabel' => 'Első',
             'lastPageLabel'  => 'Utolsó'
         ],
+        'summary' => '{begin, number}-{end, number}</b> az összesen <b>{totalCount, number}</b> észlelésből'
     ]); ?>
     </div>
 </div>
