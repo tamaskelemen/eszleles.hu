@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
 
             <p>
-                <?= Html::a("Elfelejtetted a jelszavad?", [Url::toRoute(['/site/lost-password'])]) ?>
+                <?php// Html::a("Elfelejtetted a jelszavad?", [Url::toRoute(['/site/lost-password'])]) ?>
             </p>
         </div>
     </div>

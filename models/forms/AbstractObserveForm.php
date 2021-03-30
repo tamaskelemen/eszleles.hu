@@ -17,7 +17,9 @@ class AbstractObserveForm extends Model
     public $date;
     public $transparency;
     public $seeing;
+    public $telescope;
     public $mechanics;
+    public $camera;
 
     /** @var UploadedFile */
     public $image;
@@ -25,13 +27,29 @@ class AbstractObserveForm extends Model
     public function rules() {
         return [
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
-            [['object_name', 'telescope', 'location', 'description', 'mechanics'], 'string'],
+            [['object_name', 'telescope', 'location', 'description', 'mechanics', 'camera'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['image'], 'file', 'extensions' => Image::SUPPORTED_EXTENSIONS],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
             [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
             [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'object_name' => 'Objektum neve',
+            'location' => 'Helyszín',
+            'date' => 'Időpont',
+            'description' => 'Leírás',
+            'image' => 'Kép',
+            'seeing' => 'Nyugodtság',
+            'transparency' => 'Átlátszóság',
+            'camera' => 'Kamera',
+            'mechanics' => 'Mechanika',
+            'telescope' => 'Optika',
         ];
     }
 

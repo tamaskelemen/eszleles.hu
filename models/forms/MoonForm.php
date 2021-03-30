@@ -10,8 +10,6 @@ use yii\web\UploadedFile;
 
 class MoonForm extends AbstractObserveForm
 {
-    public $telescope;
-    public $camera;
     public $source;
     public $type = Observe::TYPE_MOON;
     public $moon_phase;
@@ -19,9 +17,7 @@ class MoonForm extends AbstractObserveForm
     /*
       * TODO:
       *  -datum helyett pontos ido kell
-      *  -csillagkép, tipust ki kell venni
       *  -valahol megadni, hogy leírásban add meg a nagyítást
-      *  -hold fázist meg kell adni
       *
       * -feature request:
       *  több nagyítás? több okulár miatt
@@ -33,20 +29,12 @@ class MoonForm extends AbstractObserveForm
      */
     public function attributeLabels()
     {
-        return [
-            'object_name' => 'Objektum neve',
-            'object_type' => 'Típus',
-            'telescope' => 'Távcső',
-            'mechanics' => 'Mechanika',
+        return array_merge(
+            parent::attributeLabels(),
+            [
             'moon_phase' => 'Holdfázis',
-            'camera' => 'Kamera',
-            'seeing' => 'Nyugodtság',
-            'transparency' => 'Átlátszóság',
-            'location' => 'Helyszín',
-            'date' => 'Időpont',
-            'description' => 'Leírás',
-            'image' => 'Kép',
-        ];
+            ]
+        );
     }
 
     /**
@@ -55,7 +43,7 @@ class MoonForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['moon_phase', 'telescope', 'camera', 'type'], 'string', 'max' => 255],
+            [['moon_phase', 'type'], 'string', 'max' => 255],
         ];
 
         return array_merge(parent::rules(), $rules);

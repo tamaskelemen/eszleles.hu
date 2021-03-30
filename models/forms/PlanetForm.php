@@ -10,15 +10,8 @@ use yii\web\UploadedFile;
 
 class PlanetForm extends AbstractObserveForm
 {
-    /** @var UploadedFile */
-    public $image;
-
-    public $id;
 
     public $object_type;
-    public $telescope;
-    public $camera;
-    public $source;
     public $type  = Observe::TYPE_PLANET;
 
     /**
@@ -26,19 +19,12 @@ class PlanetForm extends AbstractObserveForm
      */
     public function attributeLabels()
     {
-        return [
-            'object_name' => 'Objektum neve',
+        return array_merge(
+            parent::attributeLabels(),
+            [
             'object_type' => 'Típus',
-            'telescope' => 'Távcső',
-            'camera' => 'Kamera',
-            'mechanics' => 'Mechanika',
-            'seeing' => 'Nyugodtság',
-            'transparency' => 'Átlátszóság',
-            'location' => 'Helyszín',
-            'date' => 'Időpont',
-            'description' => 'Leírás',
-            'image' => 'Kép',
-        ];
+            ]
+        );
     }
 
     /**
@@ -47,7 +33,7 @@ class PlanetForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['object_type', 'telescope', 'camera', 'location', 'type'], 'string', 'max' => 255],
+            [['object_type', 'type'], 'string', 'max' => 255],
         ];
 
         return array_merge(parent::rules(), $rules);
