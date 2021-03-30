@@ -72,7 +72,7 @@ $route = Yii::$app->controller->route;
 
 
                 <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
-                    <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil</a>
+                    <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Yii::$app->user->getIdentity()->email ?>)</a>
                 </li>
                 <?php } ?>
             </ul>

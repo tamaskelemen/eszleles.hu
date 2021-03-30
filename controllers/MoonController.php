@@ -135,7 +135,7 @@ class MoonController extends Controller
             }
         }
 
-        return $this->render('update', [
+        return $this->render('//observe/update', [
             'model' => $observe,
         ]);
 

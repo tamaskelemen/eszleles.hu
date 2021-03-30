@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = 'Módosítás';
     </div>
 
     <div class="container">
-        <?= $this->render("../{$typeName}/_form", [
+        <?= $this->render("../{$model->type}/_form", [
             'model' => $model,
         ]) ?>
     </div>
