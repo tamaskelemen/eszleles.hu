@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use app\models\observations\Deepsky;
-use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\observations\Deepsky */
@@ -38,8 +37,7 @@ $comments = $model->getComments();
                     <?= Html::a('Észlelés módosítása', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 </p>
             <?php } ?>
-            <h4 class="mt-2">Észlelő:</h4>
-            <?= Html::a($user->name, Url::toRoute(["/profil", "id" => $user->id])) ?>
+            <?= $this->render('_observer', ['user' => $user]) ?>
         </div>
     </div>
 

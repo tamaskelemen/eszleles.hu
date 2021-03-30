@@ -20,6 +20,10 @@ use yii\base\NotSupportedException;
  * @property bool|null $newsletter
  * @property string|null $created_at
  * @property bool $is_admin
+ * @property string $facebook
+ * @property string $instagram
+ * @property string $website
+ * @property string $github
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -37,6 +41,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_MEMBER, self::STATUS_NOT_MEMBER]],
             [['status'], 'integer'],
             [['email', 'password_hash', 'password_reset_token', 'auth_key'], 'string', 'max' => 255],
+            [['facebook', 'instagram', 'website', 'github'], 'string'],
         ];
     }
 
@@ -53,6 +58,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'newsletter' => 'Hírlevelek',
             'password' => 'Jelszó',
             'is_admin' => 'Adminisztrátor',
+            'website' => 'Weboldal',
+            'facebook' => 'Facebook',
+            'instagram' => 'Instagram',
+            'github' => 'Github',
         ];
     }
 
@@ -200,5 +209,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSocialLinks()
+    {
+        return [
+            'facebook' => $this->facebook,
+            'website' => $this->website,
+            'instagram' => $this->instagram,
+            'github' => $this->github,
+        ];
     }
 }

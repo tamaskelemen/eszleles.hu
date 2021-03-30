@@ -32,11 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'email:email',
                 'name',
                 'last_login',
-                'status',
+//                'status',
 //            'terms',
                 'newsletter:boolean',
                 'created_at',
-//            'is_admin'
+                'website',
+                'facebook',
+                'instagram',
+                'github',
             ],
         ]) ?>
     </div>
