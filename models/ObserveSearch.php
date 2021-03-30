@@ -23,7 +23,7 @@ class ObserveSearch extends Observe
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'date'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'source', 'description'], 'safe'],
-            [['observer', 'type'], 'safe'],
+            [['observer', 'type', 'meteor_membership', 'brightness', 'color'], 'safe'],
         ];
     }
 
@@ -83,6 +83,9 @@ class ObserveSearch extends Observe
             'uploaded_at' => $this->uploaded_at,
             'edited_at' => $this->edited_at,
             'moon_phase' => $this->moon_phase,
+            'meteor_membership' => $this->meteor_membership,
+            'brightness' => $this->brightness,
+            'color' => $this->color,
         ]);
 
         $query->andFilterWhere(['ilike', 'object_name', $this->object_name])

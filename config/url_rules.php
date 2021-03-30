@@ -27,4 +27,10 @@ return [
     'hold/<id:\d+>' => 'moon/view',
     'hold/feltoltes' => 'moon/create',
     'hold/modositas' => 'moon/update',
+
+    //meteor
+    'meteor' => 'meteor/index',
+    'meteor/<id:\d+>' => 'meteor/view',
+    'meteor/feltoltes' => 'meteor/create',
+    'meteor/modositas' => 'meteor/update',
 ];

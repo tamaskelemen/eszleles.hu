@@ -2,28 +2,31 @@
 namespace app\models\forms;
 
 use app\components\Flash;
-use app\models\Image;
 use app\models\Observe;
 use Yii;
 use yii\db\Exception;
 use yii\web\UploadedFile;
 
-class MoonForm extends AbstractObserveForm
+class MeteorForm extends AbstractObserveForm
 {
-    public $source;
-    public $type = Observe::TYPE_MOON;
-    public $moon_phase;
+    public $type = Observe::TYPE_METEOR;
 
-    /*
-      * TODO:
-      *  -datum helyett pontos ido kell
-      *  -valahol megadni, hogy leírásban add meg a nagyítást
-      *
-      * -feature request:
-      *  több nagyítás? több okulár miatt
-      *   libráció?
-      *
-      */
+    public $meteor_membership;
+    public $brightness;
+    public $color;
+
+    public function rules()
+    {
+        return array_merge(
+            parent::rules(),
+            [
+                ['meteor_membership', 'required',],
+                [['meteor_membership', 'color'], 'string',],
+                [['brightness'], 'double'],
+            ]
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,21 +35,11 @@ class MoonForm extends AbstractObserveForm
         return array_merge(
             parent::attributeLabels(),
             [
-            'moon_phase' => 'Holdfázis',
+                'meteor_membership' => 'Rajtagság',
+                'color' => 'Szín',
+                'brightness' => 'Fényesség',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        $rules = [
-            [['moon_phase', 'type'], 'string', 'max' => 255],
-        ];
-
-        return array_merge(parent::rules(), $rules);
     }
 
     /**
@@ -73,7 +66,9 @@ class MoonForm extends AbstractObserveForm
         $observe->date = $this->date;
         $observe->description = $this->description;
         $observe->type = $this->type;
-        $observe->moon_phase = $this->moon_phase;
+        $observe->meteor_membership = $this->meteor_membership;
+        $observe->color = $this->color;
+        $observe->brightness = $this->brightness;
 
         $transaction = Yii::$app->db->beginTransaction();
 

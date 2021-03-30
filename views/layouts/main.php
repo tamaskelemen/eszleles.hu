@@ -39,7 +39,7 @@ $route = Yii::$app->controller->route;
                 <li class="nav-item <?= in_array($route, ['site/index', '/']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal</a>
                 </li>
-                <li class="nav-item dropdown <?= in_array($route, ['observe/index', 'deepsky/index', 'planet/index', 'moon/index']) ? 'active' : '' ?>">
+                <li class="nav-item dropdown <?= in_array($route, ['observe/index', 'deepsky/index', 'planet/index', 'moon/index', 'meteor/index']) ? 'active' : '' ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Észlelések
                     </a>
@@ -49,10 +49,11 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/index') ?>">Mélyég</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/planet/index') ?>">Bolygók</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/index') ?>">Hold</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/meteor/index') ?>">Meteor</a>
                     </div>
                 </li>
                 <?php if (!Yii::$app->user->isGuest) { ?>
-                <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create']) ? 'active' : ''  ?>">
+                <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Feltöltés
                     </a>
@@ -60,6 +61,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/create') ?>">Mélyég</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/planet/create') ?>">Bolygók</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/create') ?>">Hold</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/meteor/create') ?>">Meteor</a>
                     </div>
                 </li>
 
