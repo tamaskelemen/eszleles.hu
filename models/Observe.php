@@ -127,6 +127,7 @@ class Observe extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
+
     public static function getVisibleAttributes()
     {
         return [

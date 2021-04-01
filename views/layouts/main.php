@@ -141,9 +141,13 @@ $route = Yii::$app->controller->route;
 </div>
 
 <footer class="footer text-center">
-        <div>
-            &copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> - Üzemelteti a <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu', ['target' => '_blank']) ?>
-        </div>
+    <p class="">
+        <?= Html::a('Hibabejelentő', Url::toRoute("/bug-report/create"), ['target' => '_blank']) ?>
+    </p>
+    <div class="pb-2">
+        &copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> - Üzemelteti a <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu', ['target' => '_blank']) ?>
+    </div>
+
 </footer>
 <?php $this->endBody() ?>
 </body>

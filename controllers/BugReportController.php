@@ -3,21 +3,18 @@
 namespace app\controllers;
 
 use app\components\Flash;
-use app\models\forms\CommentForm;
-use app\models\observations\Deepsky;
 use Yii;
-use app\models\Observe;
-use app\models\ObserveSearch;
-use app\models\forms\DeepSkyForm;
+use app\models\BugReport;
+use app\models\BugReportSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ObserveController implements the CRUD actions for Observe model.
+ * BugReportController implements the CRUD actions for BugReport model.
  */
-class DeepskyController extends Controller
+class BugReportController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -26,16 +23,18 @@ class DeepskyController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete'],
+                'class' => AccessControl::class,
+                'only' => ['create', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'update'],
+                        'actions' => ['create', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['delete'],
+                        'actions' => ['index', 'view', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
                         'denyCallback' =>  function ($rule, $action) {
                             if (!Yii::$app->user->identity->isAdmin()) {
                                 Flash::addWarning('Ehhez a művelethez nincs elég jogosultságod.');
@@ -47,7 +46,7 @@ class DeepskyController extends Controller
 
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -56,13 +55,15 @@ class DeepskyController extends Controller
     }
 
     /**
-     * Lists all Observe models.
+     * Lists all BugReport models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ObserveSearch();
-        $searchModel->type = Observe::TYPE_DEEP_SKY;
+        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
+            return $this->goHome();
+        }
+        $searchModel = new BugReportSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -71,49 +72,49 @@ class DeepskyController extends Controller
         ]);
     }
 
-
     /**
-     * Displays a single Observe model.
+     * Displays a single BugReport model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $commentForm = new CommentForm();
-        $commentForm->observation_id = $id;
-
-        return $this->render('//observe/view', [
+        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
+            return $this->goHome();
+        }
+        return $this->render('view', [
             'model' => $this->findModel($id),
-            'commentForm' => $commentForm,
         ]);
     }
 
     /**
-     * Creates a new Observe model.
+     * Creates a new BugReport model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new DeepSkyForm();
+
+        $model = new BugReport();
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->register()) {
-                Flash::addSuccess("Sikeres művelet.");
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+            $model->user_id = Yii::$app->user->getIdentity()->id;
+            $model->status = BugReport::STATUS_OPEN;
 
-            Flash::addDanger("Belső hiba történt.");
+             if ($model->save()) {
+                 Flash::addSuccess("Sikeres mentés.");
+                 return $this->goHome();
+             }
         }
 
-        return $this->render('//observe/create', [
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Observe model.
+     * Updates an existing BugReport model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -121,26 +122,24 @@ class DeepskyController extends Controller
      */
     public function actionUpdate($id)
     {
-        $observe = Observe::find()->ofId($id)->ofUser(Yii::$app->user->getId())->one();
-
-        if (empty($observe)) {
-            throw new NotFoundHttpException('The requested page does not exist.');
+        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
+            return $this->goHome();
+        }
+        $model = $this->findModel($id);
+        if ($model != null && Yii::$app->user->getIdentity()->id != $model->user_id) {
+            throw new NotFoundHttpException();
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        if ($observe->load(Yii::$app->request->post())) {
-
-            if ($observe->save()) {
-                return $this->redirect(['view', 'id' => $observe->id]);
-            }
-        }
-
-        return $this->render('//observe/update', [
-            'model' => $observe,
+        return $this->render('update', [
+            'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing Observe model.
+     * Deletes an existing BugReport model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -148,21 +147,24 @@ class DeepskyController extends Controller
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
+            return $this->goHome();
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Observe model based on its primary key value.
+     * Finds the BugReport model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Observe the loaded model
+     * @return BugReport the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Deepsky::findOne($id)) !== null) {
+        if (($model = BugReport::findOne($id)) !== null) {
             return $model;
         }
 
