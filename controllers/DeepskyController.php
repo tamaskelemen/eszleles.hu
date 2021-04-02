@@ -3,12 +3,14 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\CommentSearch;
 use app\models\forms\CommentForm;
 use app\models\observations\Deepsky;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
 use app\models\forms\DeepSkyForm;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -82,10 +84,12 @@ class DeepskyController extends Controller
     {
         $commentForm = new CommentForm();
         $commentForm->observation_id = $id;
+        $commentData = (new CommentSearch(["observation_id" => $id]))->search();
 
         return $this->render('//observe/view', [
             'model' => $this->findModel($id),
             'commentForm' => $commentForm,
+            'commentData' => $commentData,
         ]);
     }
 

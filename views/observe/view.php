@@ -6,6 +6,7 @@ use app\models\observations\Deepsky;
 /* @var $this yii\web\View */
 /* @var $model app\models\observations\Deepsky */
 /* @var $commentForm app\models\forms\CommentForm */
+/* @var $commentData \yii\data\ActiveDataProvider */
 
 $this->title = $model->object_name;
 $this->params['breadcrumbs'][] = ['label' => ucfirst(\app\models\Observe::getTypeName($model->type)) . ' észlelések', 'url' => ['index']];
@@ -13,7 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();
 $user = $model->getObserver()->one();
-$comments = $model->comments;
 
 ?>
 <div class="observe-view container">
@@ -61,7 +61,7 @@ $comments = $model->comments;
     </div>
 
     <?= $this->render('../_common-items/_comments',[
-        'comments' => $comments,
+        'commentData' => $commentData,
         'commentForm' => $commentForm,
     ])?>
 

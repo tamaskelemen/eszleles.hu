@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\CommentSearch;
 use app\models\forms\CommentForm;
 use app\models\forms\MeteorForm;
 use app\models\observations\Meteor;
@@ -82,10 +83,12 @@ class MeteorController extends Controller
     {
         $commentForm = new CommentForm();
         $commentForm->observation_id = $id;
+        $commentData = (new CommentSearch(["observation_id" => $id]))->search();
 
         return $this->render('//observe/view', [
             'model' => $this->findModel($id),
             'commentForm' => $commentForm,
+            'commentData' => $commentData,
         ]);
     }
 

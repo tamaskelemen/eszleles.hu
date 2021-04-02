@@ -1,13 +1,13 @@
 <?php
-/** @var $comment \app\models\Comment */
+/** @var $model \app\models\Comment */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-$user = $comment->user;
+$user = $model->user;
 ?>
 
 <div>
-    <p><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> - <?= $comment->created_at ?></p>
+    <p><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> - <?= $model->created_at ?></p>
 
-    <p> <?= Html::encode($comment->comment) ?></p>
+    <p> <?= Html::encode($model->comment) ?></p>
 </div>

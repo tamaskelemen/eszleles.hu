@@ -9,7 +9,7 @@ use yii\helpers\Html;
 $typeName = \app\models\Observe::getTypeName($model->type);
 
 $this->title = $typeName . ' észlelés feltöltése';
-$this->params['breadcrumbs'][] = ['label' => $typeName . ' észlelések', 'url' => ["/{$typeName}/index"]];
+$this->params['breadcrumbs'][] = ['label' => $typeName . ' észlelések', 'url' => ["/{$model->type}/index"]];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
