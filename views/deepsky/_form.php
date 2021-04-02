@@ -60,6 +60,8 @@ use yii\widgets\ActiveForm;
                     </li>
                 </ul>
             <?php } ?>
+
+            <?= $form->field($model, 'camera')->textInput() ?>
         </div>
     </div>
     <div class="form-group">

@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6 col-12">
             <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
+            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'date')->widget(DatePicker::class, [
@@ -31,8 +33,6 @@ use yii\widgets\ActiveForm;
             ]) ?>
 
             <?= $form->field($model, 'moon_phase')->textInput() ?>
-
-            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'mechanics')->textInput() ?>
 
@@ -63,6 +63,8 @@ use yii\widgets\ActiveForm;
                     </li>
                 </ul>
             <?php } ?>
+
+            <?= $form->field($model, 'camera')->textInput() ?>
         </div>
     </div>
 

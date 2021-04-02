@@ -4,7 +4,7 @@
 
 ?>
 <div>
-    <h2>Hozzászólások</h2>
+    <h2>Hozzászólások (<?= count($comments) ?>)</h2>
     <?php
     if (!Yii::$app->user->isGuest) {
         echo $this->render('../_common-items/_commentForm',

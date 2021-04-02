@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6 col-12">
             <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
+            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'date')->widget(DatePicker::class, [
@@ -30,19 +32,18 @@ use yii\widgets\ActiveForm;
                 ]
             ]) ?>
 
+            <?= $form->field($model, 'mechanics')->textInput() ?>
+
+
+            <?= $form->field($model, 'seeing')->textInput() ?>
+
+            <?= $form->field($model, 'transparency')->textInput() ?>
+
             <?= $form->field($model, 'meteor_membership')->textInput() ?>
 
             <?= $form->field($model, 'color')->textInput() ?>
 
             <?= $form->field($model, 'brightness')->textInput() ?>
-
-            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'mechanics')->textInput() ?>
-
-            <?= $form->field($model, 'seeing')->textInput() ?>
-
-            <?= $form->field($model, 'transparency')->textInput() ?>
 
             <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
         </div>
@@ -67,12 +68,14 @@ use yii\widgets\ActiveForm;
                     </li>
                 </ul>
             <?php } ?>
+
+            <?= $form->field($model, 'camera')->textInput() ?>
         </div>
     </div>
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Feltöltés', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

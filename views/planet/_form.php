@@ -24,11 +24,11 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'date')->widget(DatePicker::class, [
                 'options' => ['autocomplete' => 'off'],
-                'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
-                'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
+//                'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+//                'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
-                    'autoclose' => true
+                    'autoclose'=>true
                 ]
             ]) ?>
 
@@ -61,6 +61,8 @@ use yii\widgets\ActiveForm;
                     </li>
                 </ul>
             <?php } ?>
+
+            <?= $form->field($model, 'camera')->textInput() ?>
         </div>
     </div>
 
