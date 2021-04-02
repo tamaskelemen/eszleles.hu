@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <div class="container collapse" id="search" >
         <?php $form = ActiveForm::begin([
-            'action' => ['/observe/index'],
+            'action' => ['/observe/search'],
             'method' => 'get',
         ]); ?>
         <div class="row">

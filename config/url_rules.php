@@ -12,6 +12,7 @@ return [
     'profil/jelszo-valtoztatas' => '/user/change-password',
 
     'osszes' => 'observe/index',
+    'kereses' => 'observe/search',
     //melyeg
     'melyeg' => 'deepsky/index',
     'melyeg/<id:\d+>' => 'deepsky/view',

@@ -70,6 +70,17 @@ class ObserveController extends Controller
         ]);
     }
 
+    public function actionSearch()
+    {
+        $searchModel = new ObserveSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Updates an existing Observe model.
      * If update is successful, the browser will be redirected to the 'view' page.
