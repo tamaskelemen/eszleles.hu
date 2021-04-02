@@ -19,14 +19,20 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/bootstrap.css',
-        'css/site.css',
-    ];
+    public $css;
     public $js = [
         'js/bootstrap.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
     ];
+
+    public function __construct($config = [])
+    {
+        $this->css = [
+            'css/bootstrap.css',
+            "css/site.css?v=" .filemtime("../web/css/site.css"),
+        ];
+        parent::__construct($config);
+    }
 }
