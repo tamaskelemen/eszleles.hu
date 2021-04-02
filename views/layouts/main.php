@@ -107,7 +107,7 @@ $route = Yii::$app->controller->route;
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="wrap">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
