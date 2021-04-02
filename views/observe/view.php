@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $image = $model->getImage()->one();
 $user = $model->getObserver()->one();
-$comments = $model->getComments();
+$comments = $model->comments;
 
 ?>
 <div class="observe-view container">
@@ -51,7 +51,7 @@ $comments = $model->getComments();
                 if ($model->$attribute) {
                     ?>
                     <div class="col-12 col-lg-6 mb-3">
-                        <b class="mb-2"><?= $model->getAttributeLabel($attribute) ?> </b>
+                        <b class="mb-2 text-white"><?= $model->getAttributeLabel($attribute) ?> </b>
                         <br>
                         <?= $model->$attribute ?>
                     </div>

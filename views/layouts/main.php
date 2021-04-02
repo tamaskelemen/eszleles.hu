@@ -58,10 +58,10 @@ $route = Yii::$app->controller->route;
                     </div>
                 </li>
 
-                <li class="nav-item <?= in_array($route, ['/observe/search']) ? 'active' : '' ?>">
+                <li class="nav-item <?= in_array($route, ['observe/search']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/observe/search')?>">Keresés</a>
                 </li>
-                <?php if (!Yii::$app->user->isGuest) { ?>
+
                 <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Feltöltés
@@ -74,7 +74,7 @@ $route = Yii::$app->controller->route;
                     </div>
                 </li>
 
-
+                <?php if (!Yii::$app->user->isGuest) { ?>
                 <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Yii::$app->user->getIdentity()->email ?>)</a>
                 </li>

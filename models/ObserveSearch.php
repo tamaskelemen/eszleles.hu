@@ -45,7 +45,7 @@ class ObserveSearch extends Observe
      */
     public function search($params)
     {
-        $query = Observe::find()->with('image', 'thumbnail');
+        $query = Observe::find()->with('image', 'thumbnail', 'comments', 'observer');
 
         // add conditions that should always apply here
         $query->joinWith(['observer']);

@@ -12,6 +12,10 @@ body {
     src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: white;
+}
+
 .container-fluid .container {
     padding-left:0;
     padding-right:0;
@@ -223,4 +227,42 @@ div .help-block {
 
 .social-icon {
     height: 1rem;
+}
+
+.latest-bottom-right {
+    position: absolute;
+    bottom: 16px;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: smaller;
+}
+
+.latest-bottom-left {
+    position: absolute;
+    bottom: 15px;
+    left: 3px;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: smaller;
+}
+
+.item-img-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.list-bottom-right {
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: smaller;
+}
+
+.list-bottom-left {
+    position: absolute;
+    bottom: 0px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: smaller;
 }
