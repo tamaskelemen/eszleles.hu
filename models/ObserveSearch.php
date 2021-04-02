@@ -20,10 +20,10 @@ class ObserveSearch extends Observe
     {
         return [
             [['id', 'seeing', 'transparency', 'observer_id'], 'integer'],
+            [['observer', 'object_name', 'telescope', 'camera', 'description', 'location', 'mechanics', 'type'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'date'],
-            [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'source', 'description'], 'safe'],
-            [['observer', 'type', 'meteor_membership', 'brightness', 'color'], 'safe'],
+            [[ 'meteor_membership', 'brightness', 'color'], 'safe'],
         ];
     }
 
@@ -100,7 +100,6 @@ class ObserveSearch extends Observe
             ->andFilterWhere(['ilike', 'source', $this->source])
             ->andFilterWhere(['ilike', 'description', $this->description])
             ->andFilterWhere(['like', 'users.name', $this->observer]);
-
 
         return $dataProvider;
     }

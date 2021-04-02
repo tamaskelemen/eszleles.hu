@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
             </div>
 
             <div class="col-lg-6">
-                <?php  echo $form->field($model, 'type')->dropDownList(array_merge(['prompt' => ''],\app\models\Observe::getAllTypes())) ?>
+                <?php  echo $form->field($model, 'type')->dropDownList(array_merge(['' => ''],\app\models\Observe::getAllTypes())) ?>
             </div>
         </div>
         <div class="row">
