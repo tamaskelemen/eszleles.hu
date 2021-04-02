@@ -19,11 +19,13 @@ $route = Yii::$app->controller->route;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:title" content="<?= Html::encode($this->title)?>" />
+    <meta property="og:author" content="Vega Csillagászati Egyesület" />
+    <meta property="og:type" content="website" />
 
     <meta name="robots" content="index, follow">
     <?php $this->registerMetaTag([
             'name' => 'description',
-            'content' => 'Csillagászati megfigyelések, amatőrcsillagász észlelések online gyűjtőhelye.. ']) ?>
+            'content' => 'Csillagászati megfigyelések, amatőrcsillagász észlelések online gyűjtőhelye. ']) ?>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
