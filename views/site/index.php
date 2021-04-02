@@ -10,7 +10,7 @@ $this->title = 'VCSE Észlelések';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
+    <div class="jumbotron text-white">
         <h1>Észlelés.hu</h1>
 
         <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
