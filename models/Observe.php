@@ -42,6 +42,7 @@ class Observe extends \yii\db\ActiveRecord
     const TYPE_MOON = "moon";
     const TYPE_PLANET = "planet";
     const TYPE_METEOR = "meteor";
+    const TYPE_LANDSCAPE = "landscape";
     /**
      * {@inheritdoc}
      */
@@ -157,6 +158,7 @@ class Observe extends \yii\db\ActiveRecord
             self::TYPE_DEEP_SKY => 'Mélyég',
             self::TYPE_PLANET => 'Bolygó',
             self::TYPE_METEOR => 'Meteor',
+            self::TYPE_LANDSCAPE => 'Asztrotájkép',
         ];
     }
 

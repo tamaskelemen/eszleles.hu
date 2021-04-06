@@ -34,4 +34,10 @@ return [
     'meteor/<id:\d+>' => 'meteor/view',
     'meteor/feltoltes' => 'meteor/create',
     'meteor/modositas' => 'meteor/update',
+
+    //asztrotajkep
+    'asztrotajkep' => 'landscape/index',
+    'asztrotajkep/<id:\d+>' => 'landscape/view',
+    'asztrotajkep/feltoltes' => 'landscape/create',
+    'asztrotajkep/modositas' => 'landscape/update',
 ];
