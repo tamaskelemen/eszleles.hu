@@ -67,6 +67,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/planet/index') ?>">Bolygók</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/index') ?>">Hold</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/index') ?>">Asztrotájkép</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/comet/index') ?>">Üstökös</a>
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/index') ?><!--">Meteor</a>-->
                     </div>
                 </li>
@@ -84,6 +85,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/planet/create') ?>">Bolygók</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/create') ?>">Hold</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/create') ?>">Asztrotájkép</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/comet/create') ?>">Üstökös</a>
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/create') ?><!--">Meteor</a>-->
                     </div>
                 </li>

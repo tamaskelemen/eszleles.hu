@@ -4,9 +4,9 @@ namespace app\controllers;
 
 use app\components\Flash;
 use app\models\CommentSearch;
+use app\models\forms\CometForm;
 use app\models\forms\CommentForm;
-use app\models\forms\LandscapeForm;
-use app\models\observations\Landscape;
+use app\models\observations\Comet;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
@@ -18,7 +18,7 @@ use yii\filters\VerbFilter;
 /**
  * LandscapeController implements the CRUD actions for Observe model.
  */
-class LandscapeController extends Controller
+class CometController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -63,7 +63,7 @@ class LandscapeController extends Controller
     public function actionIndex()
     {
         $searchModel = new ObserveSearch();
-        $searchModel->type = Observe::TYPE_LANDSCAPE;
+        $searchModel->type = Observe::TYPE_COMET;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -99,7 +99,7 @@ class LandscapeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new LandscapeForm();
+        $model = new CometForm();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->register()) {
@@ -165,7 +165,7 @@ class LandscapeController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Landscape::findOne($id)) !== null) {
+        if (($model = Comet::findOne($id)) !== null) {
             return $model;
         }
 
