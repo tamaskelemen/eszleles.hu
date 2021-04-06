@@ -20,6 +20,8 @@ class AbstractObserveForm extends Model
     public $telescope;
     public $mechanics;
     public $camera;
+    public $expo;
+    public $filter;
 
     /** @var UploadedFile */
     public $image;
@@ -27,7 +29,7 @@ class AbstractObserveForm extends Model
     public function rules() {
         return [
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
-            [['object_name', 'telescope', 'location', 'description', 'mechanics', 'camera'], 'string'],
+            [['object_name', 'telescope', 'location', 'description', 'mechanics', 'camera', 'filter', 'expo'], 'string'],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['image'], 'file', 'extensions' => Image::SUPPORTED_EXTENSIONS],
             [['seeing', 'transparency'], 'default', 'value' => null],
@@ -50,6 +52,8 @@ class AbstractObserveForm extends Model
             'camera' => 'Kamera',
             'mechanics' => 'Mechanika',
             'telescope' => 'Optika',
+            'filter' => 'Szűrők',
+            'expo' => 'Expozíciós adatok',
         ];
     }
 

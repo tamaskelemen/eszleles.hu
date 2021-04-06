@@ -65,6 +65,10 @@ use yii\widgets\ActiveForm;
             <?php } ?>
 
             <?= $form->field($model, 'camera')->textInput() ?>
+
+            <?= $form->field($model, 'expo')->textInput() ?>
+
+            <?= $form->field($model, 'filter')->textInput() ?>
         </div>
     </div>
 

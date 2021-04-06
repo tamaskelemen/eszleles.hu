@@ -74,6 +74,8 @@ class MoonForm extends AbstractObserveForm
         $observe->description = $this->description;
         $observe->type = $this->type;
         $observe->moon_phase = $this->moon_phase;
+        $observe->filter = $this->filter;
+        $observe->expo = $this->expo;
 
         $transaction = Yii::$app->db->beginTransaction();
 

@@ -31,6 +31,8 @@ use yii\helpers\Url;
  * @property string $meteor_membership
  * @property double $brightness
  * @property string $color
+ * @property string $expo
+ * @property string $filter
  *
  * @property User $observer
  */
@@ -61,7 +63,7 @@ class Observe extends \yii\db\ActiveRecord
             [['transparency'], 'in', 'range' => ['min' => 1, 'max' => 5]],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'safe'],
-            [['description', 'type', 'mechanics', 'color'], 'string'],
+            [['description', 'type', 'mechanics', 'color', 'filter', 'expo'], 'string'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'meteor_membership'], 'string', 'max' => 255],
             [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
             [['moon_phase', 'brightness'], 'double']
@@ -94,6 +96,8 @@ class Observe extends \yii\db\ActiveRecord
             'meteor_membership' => 'Rajtagság',
             'brightness' => 'Fényesség',
             'color' => 'Szín',
+            'expo' => 'Expozíciós adatok',
+            'filter' => 'Szűrők',
         ];
     }
 
@@ -141,6 +145,8 @@ class Observe extends \yii\db\ActiveRecord
             'transparency',
             'seeing',
             'mechanics',
+            'filter',
+            'expo',
         ];
     }
 

@@ -16,7 +16,6 @@ class DeepSkyForm extends AbstractObserveForm
     /*
      * TODO:
      *  -datum helyett pontos ido kell
-     *  -csillagkép, tipust ki kell venni
      *  -valahol megadni, hogy leírásban add meg a nagyítást
      *
      * -feature request:
@@ -71,6 +70,8 @@ class DeepSkyForm extends AbstractObserveForm
         $observe->date = $this->date;
         $observe->description = $this->description;
         $observe->type = $this->type;
+        $observe->filter = $this->filter;
+        $observe->expo = $this->expo;
 
         $transaction = Yii::$app->db->beginTransaction();
 

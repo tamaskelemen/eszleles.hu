@@ -60,10 +60,11 @@ class PlanetForm extends AbstractObserveForm
         $observe->camera = $this->camera;
         $observe->seeing = $this->seeing;
         $observe->transparency = $this->transparency;
-        $observe->source = $this->source;
         $observe->date = $this->date;
         $observe->description = $this->description;
         $observe->type = $this->type;
+        $observe->filter = $this->filter;
+        $observe->expo = $this->expo;
 
         $transaction = Yii::$app->db->beginTransaction();
 

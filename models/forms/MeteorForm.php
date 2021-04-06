@@ -69,6 +69,8 @@ class MeteorForm extends AbstractObserveForm
         $observe->meteor_membership = $this->meteor_membership;
         $observe->color = $this->color;
         $observe->brightness = $this->brightness;
+        $observe->filter = $this->filter;
+        $observe->expo = $this->expo;
 
         $transaction = Yii::$app->db->beginTransaction();
 
