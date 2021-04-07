@@ -24,6 +24,7 @@ use yii\base\NotSupportedException;
  * @property string $instagram
  * @property string $website
  * @property string $github
+ * @property string $introduction
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -41,6 +42,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_MEMBER, self::STATUS_NOT_MEMBER]],
             [['status'], 'integer'],
             [['email', 'password_hash', 'password_reset_token', 'auth_key'], 'string', 'max' => 255],
+            ['introduction', 'string'],
             [['facebook', 'instagram', 'website', 'github'], 'string'],
         ];
     }
@@ -62,18 +64,32 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'facebook' => 'Facebook',
             'instagram' => 'Instagram',
             'github' => 'Github',
+            'introduction' => 'Bemutatkozás',
         ];
     }
 
+    /**
+     * @return string
+     */
     public static function tableName()
     {
         return 'users';
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getComments()
     {
         return $this->hasMany(Comment::class, ['user_id' => 'id']);
     }
+
+
+    public function getObservations()
+    {
+        return $this->hasMany(Observe::class, ['observer_id' => 'id']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -222,8 +238,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             'facebook' => $this->facebook,
-            'website' => $this->website,
-            'instagram' => $this->instagram,
+//            'instagram' => $this->instagram,
             'github' => $this->github,
         ];
     }

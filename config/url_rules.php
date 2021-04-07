@@ -7,7 +7,7 @@ return [
     'uj-jelszo/<token:.*>' => '/site/new-password',
 
     'felhasznalok' => '/user/index',
-    'profil' => '/user/profile',
+    'profil/<id:\d+>' => '/user/profile',
     'profil/modositas' => '/user/update',
     'profil/jelszo-valtoztatas' => '/user/change-password',
 

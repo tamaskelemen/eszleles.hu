@@ -16,13 +16,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'introduction')->textarea() ?>
 
-    <?= $form->field($model, 'facebook')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'website')->textInput(['maxlength' => true, 'type' => "url", 'pattern' => "https?://.+"]) ?>
 
-    <?= $form->field($model, 'instagram')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'facebook')->textInput(['maxlength' => true, 'type' => "url", 'pattern' => "https?://.+"]) ?>
 
-    <?= $form->field($model, 'github')->textInput(['maxlength' => true]) ?>
+    <?php //temporarily disabling instagram, need to find good icon which matches in size with the other ?>
+    <?php// $form->field($model, 'instagram')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'github')->textInput(['maxlength' => true, 'type' => "url", 'pattern' => "https?://.+"]) ?>
 
     <?= $form->field($model, 'newsletter')->checkbox() ?>
 

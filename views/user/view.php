@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -9,12 +10,30 @@ use yii\widgets\DetailView;
 $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$observations = $user->observations;
 ?>
-<div class="user-view">
+<div class="user-view container">
     <div class="text-center">
         <h1>
             <?= Html::encode($this->title) ?>
         </h1>
+
+        <p>
+            <?= $user->website ? Html::a($user->website, Url::to($user->website, true)) : "" ?>
+        </p>
+
+        <p>
+            <?php foreach ($user->getSocialLinks() as $site => $link) {
+                if ($link) { ?>
+                    <?= Html::a(
+                        Html::img("/pictures/icons/$site.svg", ['alt'=>"$site logo"]),
+                        $link
+                    ) ?>
+                <?php }
+            }
+            ?>
+        </p>
 
         <p>
             <?php if ($user->id == Yii::$app->user->getIdentity()->id) { ?>
@@ -24,23 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     </div>
 
-    <div class="container">
-        <?= DetailView::widget([
-            'model' => $user,
-            'attributes' => [
-                'id',
-                'email:email',
-                'name',
-                'last_login',
-//                'status',
-//            'terms',
-                'newsletter:boolean',
-                'created_at',
-                'website',
-                'facebook',
-                'instagram',
-                'github',
-            ],
-        ]) ?>
+    <div class="row">
+        <?php if ($user->introduction) { ?>
+        <div class="col-12">
+
+            <h5 class="text-white"><?= $user->getAttributeLabel('introduction') ?> </h5>
+            <?= Html::encode($user->introduction) ?>
+        </div>
+        <?php } ?>
+
+
+            <?php foreach ($observations as $observation) {
+                echo $this->render('../_common-items/_latestItem', ['model' => $observation]);
+            } ?>
     </div>
 </div>
