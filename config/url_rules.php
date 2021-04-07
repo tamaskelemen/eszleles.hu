@@ -40,4 +40,9 @@ return [
     'asztrotajkep/<id:\d+>' => 'landscape/view',
     'asztrotajkep/feltoltes' => 'landscape/create',
     'asztrotajkep/modositas' => 'landscape/update',
+    //comet
+    'ustokos' => 'comet/index',
+    'ustokos/<id:\d+>' => 'comet/view',
+    'ustokos/feltoltes' => 'comet/create',
+    'ustokos/modositas' => 'comet/update',
 ];
