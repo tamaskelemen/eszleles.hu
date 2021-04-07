@@ -41,7 +41,7 @@ $user = $model->getObserver()->one();
         </div>
     </div>
 
-    <div class="details">
+    <div class="details mt-3">
         <h2><?= $model->object_name?></h2>
 
         <p class="mb-4 mt-4"><?= Html::encode($model->description) ?></p>

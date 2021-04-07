@@ -38,7 +38,7 @@ $observations = $user->observations;
         <p>
             <?php if (!Yii::$app->user->isGuest && $user->id == Yii::$app->user->getIdentity()->id) { ?>
             <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Jelszó megváltoztatása', ['change-password', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Jelszó megváltoztatása', ['change-password'], ['class' => 'btn btn-primary']) ?>
             <?php } ?>
         </p>
     </div>
