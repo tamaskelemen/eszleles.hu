@@ -12,7 +12,7 @@ $websites = $user->getSocialLinks();
 ?>
 <div>
     <h4 class="mt-2">Észlelő:</h4>
-    <?= Html::a($user->name, Url::toRoute(["/profil", "id" => $user->id])) ?>
+    <?= Html::a($user->name, Url::toRoute(["/user/profile", "id" => $user->id])) ?>
 <!--    <p>-->
 <!--        --><?php //foreach ($websites as $type => $website) {
 //            if (!empty($website)) { ?>
