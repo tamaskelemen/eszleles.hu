@@ -30,6 +30,7 @@ $route = Yii::$app->controller->route;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
+    <?php if (YII_ENV == 'dev') { ?>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-60MRD9RYES"></script>
     <script>
@@ -39,6 +40,7 @@ $route = Yii::$app->controller->route;
 
         gtag('config', 'G-60MRD9RYES');
     </script>
+    <?php } ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
