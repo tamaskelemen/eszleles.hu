@@ -79,7 +79,7 @@ $route = Yii::$app->controller->route;
                 </li>
 
                 <li class="nav-item <?= in_array($route, ['site/about']) ? 'active' : '' ?>">
-                    <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Rólunk</a>
+                    <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Célok</a>
                 </li>
 
                 <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">

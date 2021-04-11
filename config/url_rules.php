@@ -5,6 +5,7 @@ return [
     '<id:\d+>' => '/site/observation',
     'elfelejtett-jelszo' => '/site/lost-password',
     'uj-jelszo/<token:.*>' => '/site/new-password',
+    'celok' => '/site/about',
 
     'felhasznalok' => '/user/index',
     'profil/<id:\d+>' => '/user/profile',
