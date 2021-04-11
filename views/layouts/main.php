@@ -76,10 +76,15 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/observe/search')?>">Keresés</a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['site/about']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Rólunk</a>
+                </li>
+
                 <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Feltöltés
                     </a>
+
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/create') ?>">Mélyég</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/planet/create') ?>">Bolygók</a>

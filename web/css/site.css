@@ -12,6 +12,9 @@ body {
     src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
 }
 
+* {
+    border-radius: 0 !important;
+}
 h1, h2, h3, h4, h5, h6 {
     color: white;
 }
@@ -272,4 +275,49 @@ div .help-block {
     left: 15px;
     background: rgba(0, 0, 0, 0.25);
     font-size: smaller;
+}
+
+#tagit{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 240px;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.tagview {
+    border: 1px solid #F10303;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    /*display:none;*/
+    opacity: 0;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.tag-item {
+    cursor:pointer;
+    padding: 5px 10px 5px 10px;
+    display: inline-block;
+    margin-top: 3px; /*incase tags go in next line, will space */
+    color:#fff;
+    margin-right: 4px;
+    background:#789;
+    padding-right: 20px;
+}
+
+.tag-item:hover {
+    opacity: 0.7;
+}
+
+.tag-item:after {
+    position:absolute;
+    content:"×";
+    padding:2px 2px;
+    margin-left:2px;
+    font-size:11px;
+}
+.tag-text {
+    color: white;
 }
