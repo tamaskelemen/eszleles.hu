@@ -30,7 +30,7 @@ $route = Yii::$app->controller->route;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
-    <?php if (YII_ENV == 'dev') { ?>
+    <?php if (YII_ENV_DEV) { ?>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-60MRD9RYES"></script>
     <script>
