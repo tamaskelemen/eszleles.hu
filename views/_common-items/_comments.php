@@ -16,7 +16,6 @@ use yii\widgets\ListView;
             );
     }
 
-
     echo ListView::widget([
         'dataProvider' => $commentData,
         'itemView' => '../_common-items/_comment',
