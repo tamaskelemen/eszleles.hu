@@ -13,11 +13,15 @@ use \app\models\BugReport;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'title')->textInput() ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'type')->dropDownList(BugReport::getTypes()) ?>
+    <ul>
+        <li><b>feature</b>: Ötlet, kívánság, mit szeretnél látni az oldalon, hogyan lehetne bővíteni, javítani.</li>
+        <li><b>bug</b>: Hibás működés, elgépelt címszavak, halott linkek, a reprodukciós lépésekkel vagy leírással, hogy mi is meg tudjuk találni azt.</li>
+    </ul>
 
     <?php if (Yii::$app->user->identity->is_admin) {
         echo $form->field($model, 'status')->dropDownList(BugReport::getStatuses());

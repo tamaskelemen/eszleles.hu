@@ -59,7 +59,7 @@ class BugReport extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'Jelentő',
-            'title' => 'Cím',
+            'title' => 'Összefoglalás röviden',
             'description' => 'Leírás',
             'type' => 'Típus',
             'status' => 'Status',
