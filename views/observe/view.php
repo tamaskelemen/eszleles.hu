@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $user = $model->getObserver()->one();
 
 ?>
-<div class="observe-view container">
+<div class="observe-view container" style="padding-top: 0px">
     <h2 class="mb-3"><?= $model->object_name?></h2>
 
     <div class="row">
@@ -45,7 +45,7 @@ $user = $model->getObserver()->one();
                 if ($model->$attribute) {
                     ?>
                     <div class="col-12 col-lg-6 mb-3">
-                        <b class="mb-2 text-white"><?= $model->getAttributeLabel($attribute) ?> </b>
+                        <b class="mb-5 text-white"><?= $model->getAttributeLabel($attribute) ?> </b>
                         <br>
                         <?= $model->$attribute ?>
                     </div>

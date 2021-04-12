@@ -1,5 +1,6 @@
 html,
 body {
+    line-height: 1;
     height: 100%;
     background-color: #222;
     color: #b1b1b1;
@@ -10,6 +11,16 @@ body {
 @font-face {
     font-family: Inter;
     src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
+}
+
+hr {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border: 0;
+    border-top: 1px solid;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: white;
 }
 
 * {

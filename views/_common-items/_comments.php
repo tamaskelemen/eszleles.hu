@@ -7,6 +7,7 @@ use yii\widgets\ListView;
 
 ?>
 <div>
+    <hr>
     <h2>Hozzászólások (<?= $commentData->totalCount ?>)</h2>
     <?php
     if (!Yii::$app->user->isGuest) {
@@ -18,7 +19,8 @@ use yii\widgets\ListView;
 
     echo ListView::widget([
         'dataProvider' => $commentData,
-        'itemView' => '../_common-items/_comment'
+        'itemView' => '../_common-items/_comment',
+        'emptyText' => '<i>Még nincs hozzászólás</i>'
     ])
 
 //    foreach ($comments as $comment) {
