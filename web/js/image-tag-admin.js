@@ -9,10 +9,16 @@ $(document).ready(function() {
 
         var imgcontainer = $(this).parent(); // get the div to append the tagging list
 
+        const originalImg = new Image();
+        originalImg.src = $(this)[0].getAttribute('src');
+
+        let ratio =  originalImg.width / $(this).width();
+
         //imgid = $(this).attr( "id" ); if you need to fetch tags by specific images
 
-        mouseX = (e.pageX - $(imgcontainer).offset().left) - 50; // x and y axis
-        mouseY = (e.pageY - $(imgcontainer).offset().top) - 50;
+        mouseX = ((e.pageX - $(imgcontainer).offset().left) - 50) * ratio; // x and y axis interpolated
+        mouseY = ((e.pageY - $(imgcontainer).offset().top) - 50) * ratio;
+
         $('#tagit').remove(); // remove any tagit div first
         $(imgcontainer).append(
             '<div id="tagit">' +
@@ -26,7 +32,12 @@ $(document).ready(function() {
             '</div>' +
             '</div>'
         );
-        $('#tagit').css({top: mouseY, left: mouseX});
+        $('#tagit').css({
+            left: (e.pageX - $(imgcontainer).offset().left),
+            top: (e.pageY - $(imgcontainer).offset().top),
+
+
+        });
 
         $('#tagname').focus();
     });
@@ -154,20 +165,27 @@ $(document).ready(function() {
 
     function generateList(data) {
         $.each(data, function (key, tag) {
-                // $('#taglist ol').append("<li id='" + tag.id + "'>" + tag.name + "<a class='btn btn-info remove'>x</a></li>");
-                $('#taglist').append(
-                    "<span class='tag-item remove' id='" + tag.id + "'>" + tag.name + "</span>"
-                );
-                $('#tagbox').append(
+
+            let displayedImage = $('#' + tag.image_id)[0];
+            const originalImg = new Image();
+            originalImg.src = displayedImage.getAttribute('src');
+
+            let ratio = displayedImage.width / originalImg.width;
+
+            $('#taglist').append(
+                "<span class='tag-item remove' id='" + tag.id + "'>" + tag.name + "</span>"
+            );
+
+            $('#tagbox').append(
                     '<div class="tagview" style="left:'
-                    + tag.coord_x
+                    + (tag.coord_x) * ratio
                     + 'px;top:'
-                    + tag.coord_y + 'px;" id="view_' + tag.id + '">' +
+                    + (tag.coord_y) * ratio + 'px;" id="view_' + tag.id + '">' +
                     '<div class="square"></div>' +
                     '<div class="person" style="left:'
-                    + tag.coord_x
+                    + (tag.coord_x) * ratio
                     + 'px;top:'
-                    + tag.coord_y
+                    + (tag.coord_y) * ratio
                     + 'px;">' + tag.name + '</div>'
                 );
 

@@ -9,7 +9,7 @@ use app\models\observations\Deepsky;
 /* @var $commentForm app\models\forms\CommentForm */
 /* @var $commentData \yii\data\ActiveDataProvider */
 
-$this->registerJsFile('/js/image-tag-admin.js', ['depends' => 'app\assets\AppAsset']);
+$this->registerJsFile('/js/image-tag.js', ['depends' => 'app\assets\AppAsset']);
 
 $this->title = $model->object_name;
 $this->params['breadcrumbs'][] = ['label' => ucfirst(\app\models\Observe::getTypeName($model->type)) . ' észlelések', 'url' => ['index']];
@@ -25,7 +25,7 @@ $user = $model->getObserver()->one();
             <?php
             if ($image !== null) { ?>
                 <div id="img-container" class="img-container">
-                    <?= Html::img($image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto', 'id' => $image->id]) ?>
+                    <?= Html::img(Yii::$app->getHomeUrl() . $image->path, ['alt' => $model->object_name, 'class'=> 'img-fluid img-view m-auto', 'id' => $image->id]) ?>
                 </div>
 
                 <div id="tagbox">
