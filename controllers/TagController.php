@@ -80,9 +80,10 @@ class TagController extends Controller
     public function actionDelete()
     {
         $model = $this->findModel(Yii::$app->request->post()['id']);
-        if ($model->image->user_id !== Yii::$app->user->identity->getId()) {
+        if ($model->image->observe->observer_id !== Yii::$app->user->identity->getId()) {
             return false;
         }
+
         $model->delete();
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
