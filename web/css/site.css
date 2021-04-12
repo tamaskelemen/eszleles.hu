@@ -7,6 +7,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
 @font-face {
     font-family: Inter;
     src: url("/fonts/Inter-VariableFont_slnt,wght.ttf");
@@ -22,9 +23,14 @@ hr {
     color: white;
 }
 
+.fa {
+    cursor: pointer;
+}
+
 * {
     border-radius: 0 !important;
 }
+
 h1, h2, h3, h4, h5, h6 {
     color: white;
 }
@@ -33,6 +39,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-left:0;
     padding-right:0;
 }
+
 .container-fluid .padding-fix {
     padding-left: 20px;
 }

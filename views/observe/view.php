@@ -43,9 +43,18 @@ $user = $model->getObserver()->one();
         <div class="row">
             <?php foreach (Deepsky::getVisibleAttributes() as $attribute) {
                 if ($model->$attribute) {
+                    $helpText = $model->getAttribteHelpText($attribute);
                     ?>
                     <div class="col-12 col-lg-6 mb-3">
-                        <b class="mb-5 text-white"><?= $model->getAttributeLabel($attribute) ?> </b>
+                        <b class="mb-5 text-white">
+                            <?= $model->getAttributeLabel($attribute) ?>
+                            <?php if ($helpText) { ?>
+                                <i class="fa fa-info-circle" aria-hidden="true"
+                               data-toggle="popover"
+                                data-content="<?= $helpText ?>"
+                            ></i>
+                            <?php } ?>
+                        </b>
                         <br>
                         <?= $model->$attribute ?>
                     </div>

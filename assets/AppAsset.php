@@ -29,6 +29,7 @@ class AppAsset extends AssetBundle
     {
         $this->css = [
             'css/bootstrap.css',
+            'css/font-awesome4/css/font-awesome.min.css',
             "css/site.css?v=" .filemtime("../web/css/site.css"),
         ];
 

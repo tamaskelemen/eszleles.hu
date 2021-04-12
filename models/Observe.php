@@ -164,6 +164,24 @@ class Observe extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAllHelptext()
+    {
+        return [
+            'telescope' => 'Objektív vagy távcső',
+            'date' => 'Az észlelés dátuma',
+            'location' => 'Helyszín, ahol a megfigyelés történt',
+            'transparency' => 'A légkör átlátszósága egy 0-10 skálán',
+            'seeing' => 'A légkör nyugodtsága egy 0-10 skálán',
+            'mechanics' => 'A mechanika amit használtál a távcsöved alatt',
+            'filter' => 'Mély-ég vagy egyéb szűrők',
+            'expo' => 'ISO érték, rekeszérték, záridő, hány darab kép',
+        ];
+    }
+
+    public static function getAttribteHelpText($attribute) {
+        return self::getAllHelptext()[$attribute] ?? "";
+    }
+
     /**
      * @param string $name
      */
