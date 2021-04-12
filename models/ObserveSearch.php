@@ -12,6 +12,8 @@ use yii\data\ActiveDataProvider;
 class ObserveSearch extends Observe
 {
     public $observer;
+    public $fromDate;
+    public $toDate;
 
     /**
      * {@inheritdoc}
@@ -21,10 +23,21 @@ class ObserveSearch extends Observe
         return [
             [['id', 'seeing', 'transparency', 'observer_id'], 'integer'],
             [['observer', 'object_name', 'telescope', 'camera', 'description', 'location', 'mechanics', 'type'], 'string'],
-            [['date'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['date', 'fromDate', 'toDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'date'],
             [[ 'meteor_membership', 'brightness', 'color'], 'safe'],
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return array_merge(
+            parent::attributeLabels(),
+            [
+                'fromDate' => 'Mikortól',
+                'toDate' => 'Meddig',
+            ]
+        );
     }
 
     /**
@@ -99,7 +112,9 @@ class ObserveSearch extends Observe
             ->andFilterWhere(['ilike', 'location', $this->location])
             ->andFilterWhere(['ilike', 'source', $this->source])
             ->andFilterWhere(['ilike', 'description', $this->description])
-            ->andFilterWhere(['like', 'users.name', $this->observer]);
+            ->andFilterWhere(['like', 'users.name', $this->observer])
+            ->andFilterWhere(['>=', 'date', $this->fromDate])
+            ->andFilterWhere(['<=', 'date', $this->toDate]);
 
         return $dataProvider;
     }

@@ -146,9 +146,10 @@ class Observe extends \yii\db\ActiveRecord
             'location',
             'transparency',
             'seeing',
+            'camera',
             'mechanics',
-            'filter',
             'expo',
+            'filter',
         ];
     }
 
@@ -175,6 +176,7 @@ class Observe extends \yii\db\ActiveRecord
             'mechanics' => 'A mechanika amit használtál a távcsöved alatt',
             'filter' => 'Mély-ég vagy egyéb szűrők',
             'expo' => 'ISO érték, rekeszérték, záridő, hány darab kép',
+            'camera' => 'Kamera vagy szenzor, amivel a kép készült',
         ];
     }
 

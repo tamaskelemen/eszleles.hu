@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -59,14 +60,31 @@ use yii\widgets\ActiveForm;
 
         <div class="row">
             <div class="col-lg-6">
-                <?php  echo $form->field($model, 'date') ?>
+                <?= $form->field($model, 'fromDate')->widget(DatePicker::class, [
+                    'options' => ['autocomplete' => 'off'],
+                    'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'autoclose' => true
+                    ]
+                ]) ?>
             </div>
 
+            <div class="col-lg-6">
+                <?= $form->field($model, 'toDate')->widget(DatePicker::class, [
+                    'options' => ['autocomplete' => 'off'],
+                    'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'autoclose' => true
+                    ]
+                ]) ?>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-lg-6">
                 <?php  echo $form->field($model, 'observer_id') ?>
             </div>
         </div>
-
 
 
 <!--        --><?php // echo $form->field($model, 'uploaded_at') ?>
