@@ -300,9 +300,8 @@ div .help-block {
     cursor:pointer;
     padding: 5px 10px 5px 10px;
     display: inline-block;
-    margin-top: 3px; /*incase tags go in next line, will space */
     color:#fff;
-    margin-right: 4px;
+    margin: 4px 4px 4px 0px;
     background:#789;
 }
 

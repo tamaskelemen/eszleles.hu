@@ -17,6 +17,8 @@ $user = $model->getObserver()->one();
 
 ?>
 <div class="observe-view container">
+    <h2 class="mb-3"><?= $model->object_name?></h2>
+
     <div class="row">
         <div class="col-lg-9 col-12">
             <?= $this->render('gallery.php', ['model' => $model]) ?>
@@ -35,9 +37,8 @@ $user = $model->getObserver()->one();
     </div>
 
     <div class="details mt-3">
-        <h2><?= $model->object_name?></h2>
-
-        <p class="mb-4 mt-4"><?= Html::encode($model->description) ?></p>
+        <b class="mb-2 text-white"><?= $model->getAttributeLabel('description') ?> </b>
+        <p class="mb-4"><?= Html::encode($model->description) ?></p>
 
         <div class="row">
             <?php foreach (Deepsky::getVisibleAttributes() as $attribute) {

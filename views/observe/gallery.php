@@ -29,5 +29,8 @@ if ($image !== null) { ?>
 
     </div>
     <?php
-}
+} else { ?>
+
+    <p class="font-italic">Az észleléshez nem tartozik kép.</p>
+<?php }
 ?>
