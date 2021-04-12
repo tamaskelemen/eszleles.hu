@@ -1,7 +1,7 @@
 <?php
 
 use app\models\Image;
-use kartik\date\DatePicker;
+use app\widgets\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -24,8 +24,6 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'date')->widget(DatePicker::class, [
                 'options' => ['autocomplete' => 'off'],
-                'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
-                'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
                     'autoclose'=>true

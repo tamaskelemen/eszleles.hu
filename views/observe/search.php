@@ -3,7 +3,7 @@
 use app\models\Observe;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use kartik\date\DatePicker;
+use app\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ObserveSearch */
