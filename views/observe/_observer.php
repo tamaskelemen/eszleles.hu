@@ -16,8 +16,13 @@ use yii\helpers\Url;
         <?php foreach ($user->getSocialLinks() as $site => $link) {
             if ($link) { ?>
                 <?= Html::a(
-                    Html::img("/pictures/icons/$site.svg", ['alt'=>"$site logo"]),
-                    $link
+                        Html::img(
+                            "/pictures/icons/$site.svg",
+                            [
+                                'alt' => "$site logo",
+                                'title' => ucfirst($site),
+                            ]),
+                        $link
                 ) ?>
             <?php }
         }

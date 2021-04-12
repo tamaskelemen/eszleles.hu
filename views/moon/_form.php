@@ -34,8 +34,6 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'moon_phase')->textInput() ?>
 
-            <?= $form->field($model, 'mechanics')->textInput() ?>
-
             <?= $form->field($model, 'seeing')->textInput() ?>
 
             <?= $form->field($model, 'transparency')->textInput() ?>
@@ -65,6 +63,8 @@ use yii\widgets\ActiveForm;
             <?php } ?>
 
             <?= $form->field($model, 'camera')->textInput() ?>
+
+            <?= $form->field($model, 'mechanics')->textInput() ?>
 
             <?= $form->field($model, 'expo')->textInput() ?>
 
