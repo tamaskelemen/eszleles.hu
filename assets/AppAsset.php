@@ -34,7 +34,6 @@ class AppAsset extends AssetBundle
         ];
 
         $this->js = [
-            'js/bootstrap.js',
             'js/bootstrap.bundle.js',
             'js/common.js?v=' . filemtime('../web/js/common.js'),
         ];
