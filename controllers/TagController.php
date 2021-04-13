@@ -26,6 +26,7 @@ class TagController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'update' => ['POST'],
                 ],
             ],
         ];
@@ -50,20 +51,38 @@ class TagController extends Controller
         return $list;
     }
 
+    public function actionUpdate()
+    {
+        $data = Yii::$app->request->post();
+        $model = $this->findModel($data['annotation_id']);
+        if ($model->image->observe->observer_id !== Yii::$app->user->identity->getId()) {
+            return false;
+        }
+
+        $model->annotation = json_encode($data['annotation']);
+
+        if ($model->save()) {
+            return true;
+        }
+
+        return false;
+
+    }
     /**
      * Creates a new ImageTag model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreateJson()
     {
-        if (!Yii::$app->request->isPost || Yii::$app->user->isGuest) {
-            return;
-        }
         $model = new ImageTag();
         $data = Yii::$app->request->post();
+;
+        $model->image_id = $data['image_id'];
+        $model->annotation = json_encode($data['data']);
+        $model->annotation_id = $data['annotation_id'];
 
-        if ($model->load($data, "") && $model->save()) {
+        if ($model->save()) {
             return true;
         }
 
@@ -79,7 +98,7 @@ class TagController extends Controller
      */
     public function actionDelete()
     {
-        $model = $this->findModel(Yii::$app->request->post()['id']);
+        $model = $this->findModel(Yii::$app->request->post()['annotation_id']);
         if ($model->image->observe->observer_id !== Yii::$app->user->identity->getId()) {
             return false;
         }
@@ -99,7 +118,7 @@ class TagController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = ImageTag::findOne($id)) !== null) {
+        if (($model = ImageTag::find()->where(['annotation_id' => $id])->one()) !== null) {
             return $model;
         }
 

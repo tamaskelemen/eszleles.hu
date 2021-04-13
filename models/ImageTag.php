@@ -13,6 +13,8 @@ use Yii;
  * @property string|null $coord_x
  * @property string|null $coord_y
  * @property string|null $created_at
+ * @property string|null $annotation
+ * @property string|null $annotation_id
  *
  * @property Image $image
  */
@@ -32,8 +34,11 @@ class ImageTag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['image_id', 'name'], 'string'],
+            [['name'], 'string'],
+            [['image_id'], 'safe'],
             [['created_at'], 'safe'],
+            [['annotation'], 'safe'],
+            [['annotation_id'], 'safe'],
             [['coord_x', 'coord_y'], 'string', 'max' => 255],
             [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
         ];
@@ -51,6 +56,7 @@ class ImageTag extends \yii\db\ActiveRecord
             'coord_x' => 'Coord X',
             'coord_y' => 'Coord Y',
             'created_at' => 'Created At',
+            'annotation' => 'Komment',
         ];
     }
 
