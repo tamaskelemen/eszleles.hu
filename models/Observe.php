@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Helper;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -239,6 +240,22 @@ class Observe extends \yii\db\ActiveRecord
         return Url::to(["/" . $this->type . "/view", "id" => $this->id]);
     }
 
+    public function generateUrl()
+    {
+        $url = "";
+        $url .= Yii::$app->getHomeUrl();
+        $url .= "/";
+        $type = self::getTypeName($this->type);
+        $url .= lcfirst(Helper::replaceUnaccent($type));
+        $url .= "/";
+        $url .= $this->id;
+        $url .= "-";
+        $title = Helper::replaceUnaccent($this->object_name);
+        $title = urlencode($title);
+        $url .=  str_replace(' ', '_', $title);
+
+        return $url;
+    }
     /**
      * {@inheritdoc}
      * @return ObservesQuery the active query used by this AR class.
