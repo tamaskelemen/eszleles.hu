@@ -1,3 +1,6 @@
 .a9s-annotation .a9s-inner {
     stroke: red
 }
+.a9s-annotation .a9s-inner:hover, .a9s-selection .a9s-inner:hover {
+    stroke: red;
+}

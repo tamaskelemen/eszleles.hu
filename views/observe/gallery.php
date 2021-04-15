@@ -36,15 +36,22 @@ if ($image !== null) { ?>
                 ]) ?>
     </div>
 
-<!--    <div class="custom-control custom-switch">-->
-<!--        <input type="checkbox" class="custom-control-input" id="customSwitch1">-->
-<!--        <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>-->
-<!--    </div>-->
     <div id="tagbox">
     </div>
+    <div class="w-100">
+        <div id="taglist" class="float-left ml-auto">
+            Jelölések:
+        </div>
 
-    <div id="taglist">
-
+        <div class="float-right">
+            Mi ez?
+            <span class="fa fa-info-circle" data-toggle="popover"
+                  data-content="
+                  A feltöltött képeiden meg tudod jelölni a látható objektumat azok nevével. Egy objektumnak akár több nevet is megadhatsz.
+                  A látogatók ezután az észlelésed adatlapján láthatják azokat, ezzel megkönnyítve nekik a beazonosítást.
+                  A képeiden a jelölések szerkesztéséhez be kell jelentkezned.
+            "></span>
+        </div>
     </div>
     <?php
 } else { ?>
