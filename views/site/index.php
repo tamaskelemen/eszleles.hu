@@ -4,6 +4,7 @@
 /* @var $latestObs Observe[] */
 
 use app\models\Observe;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'VCSE Észlelések';
@@ -22,46 +23,26 @@ $this->title = 'VCSE Észlelések';
 
     <div class="body-content container">
 
-        <h2>Legújabb feltöltések</h2>
+        <h2>Hírek</h2>
+        <p><i>2021-04-25</i></p>
         <div class="row">
-            <?php
-                foreach ($latestObs as $obs) {
-                    echo $this->render('../_common-items/_latestItem', ['model' => $obs]);
-                }
-            ?>
+            <div class="col">
+                <h5>Elindult az észlelésfeltöltő!</h5>
+                <p>
+                    A Vega Csillagászati egyesület elindította a saját észlelésfeltöltőjét,
+                    nem csak a tagjainak. Bárki ingyenesen regisztrálhat, és feltöltheti
+                    akár képes, akár szöveges észleléseit, asztrofotóit.
+                </p>
+            </div>
         </div>
 
-        <div class="row pt-5" style="display: none">
-            <div class="col-lg-4">
-                <h3>Heading</h3>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h3>Heading</h3>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h3>Heading</h3>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+        <h2 class="pt-4">Legújabb feltöltések</h2>
+        <div class="row">
+            <?php
+            foreach ($latestObs as $obs) {
+                echo $this->render('../_common-items/_latestItem', ['model' => $obs]);
+            }
+            ?>
         </div>
 
     </div>

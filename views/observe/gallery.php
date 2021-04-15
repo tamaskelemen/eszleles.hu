@@ -43,14 +43,13 @@ if ($image !== null) { ?>
             Jelölések:
         </div>
 
-        <div class="float-right">
-            Mi ez?
-            <span class="fa fa-info-circle" data-toggle="popover"
-                  data-content="
+        <div class="float-right" data-toggle="popover" data-content="
                   A feltöltött képeiden meg tudod jelölni a látható objektumat azok nevével. Egy objektumnak akár több nevet is megadhatsz.
                   A látogatók ezután az észlelésed adatlapján láthatják azokat, ezzel megkönnyítve nekik a beazonosítást.
                   A képeiden a jelölések szerkesztéséhez be kell jelentkezned.
-            "></span>
+            ">
+            Mi ez?
+            <span class="fa fa-info-circle" ></span>
         </div>
     </div>
     <?php
