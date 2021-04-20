@@ -60,7 +60,7 @@ $route = Yii::$app->controller->route;
                 </li>
                 <li class="nav-item dropdown <?= in_array($route, ['observe/index', 'deepsky/index', 'planet/index', 'moon/index', 'landscape/index', 'meteor/index']) ? 'active' : '' ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Észlelések
+                        Böngészés
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="<?= Url::toRoute('/observe/index') ?>">Összes</a>
