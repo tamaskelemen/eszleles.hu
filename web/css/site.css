@@ -6,6 +6,7 @@ body {
     font-family: Inter,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
 }
 
 @font-face {
@@ -208,7 +209,7 @@ form div.required > label.control-label:after {
 }
 
 .latest-item .item-description {
-    min-height: 75px;
+    min-height: 85px;
 
     overflow: hidden;
     display: -webkit-box;
