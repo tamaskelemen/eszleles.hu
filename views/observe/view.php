@@ -38,7 +38,7 @@ $user = $model->getObserver()->one();
 
     <div class="details mt-3">
         <b class="mb-2 text-white"><?= $model->getAttributeLabel('description') ?> </b>
-        <p class="mb-4"><?= Html::encode($model->description) ?></p>
+        <p class="mb-4"><?= nl2br(Html::encode($model->description)) ?></p>
 
         <div class="row">
             <?php foreach (Deepsky::getVisibleAttributes() as $attribute) {

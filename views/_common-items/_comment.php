@@ -11,5 +11,5 @@ $user = $model->user;
 <div class="p-3 <?= $index % 2 == 0 ? "light-grey-background" : "" ?>">
     <p><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> - <?= $model->created_at ?></p>
 
-    <p> <?= Html::encode($model->comment) ?></p>
+    <p> <?= nl2br(Html::encode($model->comment)) ?></p>
 </div>
