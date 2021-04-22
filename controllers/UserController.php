@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Flash;
 use app\models\forms\PasswordChangeForm;
+use app\models\Observe;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
@@ -76,8 +77,12 @@ class UserController extends Controller
     public function actionProfile($id)
     {
         $user = $this->findModel($id);
-
-        return $this->render('view', ['user' => $user]);
+        $observations = Observe::find()->where(['observer_id' => $user->id])->orderBy(['uploaded_at' => SORT_DESC])->all();
+        
+        return $this->render('view', [
+            'user' => $user,
+            'observations' => $observations,
+        ]);
     }
 
 //    /**

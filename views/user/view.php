@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
+/* @var $observations app\models\Observe[] */
 
 $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -51,7 +52,9 @@ $observations = $user->observations;
             <?= Html::encode($user->introduction) ?>
         </div>
         <?php } ?>
-
+    </div>
+    <hr>
+    <div class="row">
 
             <?php foreach ($observations as $observation) {
                 echo $this->render('../_common-items/_latestItem', ['model' => $observation]);
