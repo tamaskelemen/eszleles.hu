@@ -12,7 +12,6 @@ $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$observations = $user->observations;
 ?>
 <div class="user-view container">
     <div class="text-center">

@@ -85,7 +85,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(4)->with('observer', 'comments')->all();
+        $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(4)->with('observer', 'comments', 'thumbnail')->all();
 
         return $this->render('index', [
             'latestObs' => $latestObs,

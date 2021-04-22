@@ -77,7 +77,7 @@ class UserController extends Controller
     public function actionProfile($id)
     {
         $user = $this->findModel($id);
-        $observations = Observe::find()->where(['observer_id' => $user->id])->orderBy(['uploaded_at' => SORT_DESC])->all();
+        $observations = Observe::find()->where(['observer_id' => $user->id])->orderBy(['uploaded_at' => SORT_DESC])->with('observer', 'comments', 'thumbnail')->all();
         
         return $this->render('view', [
             'user' => $user,
