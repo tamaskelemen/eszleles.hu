@@ -263,7 +263,7 @@ div .help-block {
 
 .latest-bottom-right {
     position: absolute;
-    bottom: 16px;
+    bottom: 14px;
     right: 0px;
     background: rgba(0, 0, 0, 0.25);
     font-size: smaller;
@@ -271,7 +271,7 @@ div .help-block {
 
 .latest-bottom-left {
     position: absolute;
-    bottom: 15px;
+    bottom: 14px;
     left: 0px;
     background: rgba(0, 0, 0, 0.25);
     font-size: smaller;

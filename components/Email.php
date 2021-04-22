@@ -15,9 +15,8 @@ class Email
             $to = 'tamaskelemen.kt@gmail.com';
         }
 
-
         $result = \Yii::$app->mailer->compose('password-reset', ['params' => $params])
-            ->setFrom('no-reply@eszleles.hu')
+            ->setFrom('info@eszleles.hu')
             ->setTo($to)
             ->setSubject($subject .  " - Észlelés.hu")
             ->send();
