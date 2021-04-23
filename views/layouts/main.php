@@ -96,12 +96,6 @@ $route = Yii::$app->controller->route;
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/create') ?><!--">Meteor</a>-->
                     </div>
                 </li>
-
-                <?php if (!Yii::$app->user->isGuest) { ?>
-                <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
-                    <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Yii::$app->user->getIdentity()->email ?>)</a>
-                </li>
-                <?php } ?>
             </ul>
 
             <?php if (Yii::$app->user->isGuest) { ?>
@@ -120,6 +114,11 @@ $route = Yii::$app->controller->route;
             </ul>
 
             <?php } else { ?>
+                <ul class="navbar-nav float-right">
+                    <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
+                        <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Yii::$app->user->getIdentity()->email ?>)</a>
+                    </li>
+                </ul>
                <?= Html::beginForm(['/site/logout'], 'post') ?>
                 <button class="btn btn-success" type="submit">
                     Kilépés
