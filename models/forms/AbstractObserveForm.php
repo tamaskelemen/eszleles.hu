@@ -34,8 +34,8 @@ class AbstractObserveForm extends Model
             [['image'], 'file', 'extensions' => Image::SUPPORTED_EXTENSIONS],
             [['seeing', 'transparency'], 'default', 'value' => null],
             [['seeing', 'transparency'], 'integer'],
-            [['seeing' ], 'in', 'range' => ['min' => 1, 'max' => 10]],
-            [['transparency' ], 'in', 'range' => ['min' => 1, 'max' => 5]],
+            [['seeing' ], 'in', 'range' => range(1, 10)],
+            [['transparency' ], 'in', 'range' => range(1, 5)],
         ];
     }
 
