@@ -253,6 +253,10 @@ div .help-block {
     display: block;
 }
 
+#lightgallery {
+    cursor: pointer;
+}
+
 .upload-description {
     font-size: smaller;
 }
