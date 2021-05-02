@@ -30,7 +30,7 @@ if ($image !== null) { ?>
     <div id="lightgallery" >
         <div data-src="<?= Yii::$app->getHomeUrl() . $image->path ?>">
             <p class="mb-1">
-                <span class="fa fa-window-maximize"></span>
+                <span class="fa fa-search-plus"></span>
                 Teljes képernyő
             </p>
         </div>
