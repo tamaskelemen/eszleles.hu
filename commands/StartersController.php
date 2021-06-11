@@ -14,7 +14,7 @@ class StartersController extends Controller
         $users = User::find()->all();
 
         foreach ($users as $user) {
-            if (empty($user->email)) {
+            if ($user->email == "-") {
                 continue;
             }
 
