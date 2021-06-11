@@ -52,7 +52,10 @@ $route = Yii::$app->controller->route;
 
 <div class="wrap">
     <nav class="navbar navbar-dark navbar-expand-lg">
-        <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">VCSE Észlelések <span style="color: red">BETA</span></a>
+        <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">
+            <img class="brand-logo" src="/SIMPLE_logo_white.png" alt="VCSE logo" >
+            VCSE Észlelések
+        </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
