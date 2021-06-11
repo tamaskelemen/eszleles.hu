@@ -26,6 +26,10 @@ $config = [
             ],
         ],
         'db' => $db,
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'transport' => require_once 'smtp.php',
+        ],
     ],
     'params' => $params,
     /*
