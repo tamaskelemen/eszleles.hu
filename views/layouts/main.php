@@ -22,10 +22,10 @@ $route = Yii::$app->controller->route;
     <meta property="og:author" content="Vega Csillagászati Egyesület" />
     <meta property="og:type" content="website" />
 
-    <link rel="shortcut icon" href="/favicon_48x48.png?v1" sizes="48x48" type="image/png" />
-    <link rel="icon" href="/favicon_32x32.png?v1" sizes="32x32" type="image/png" />
-    <link rel="icon" href="/favicon_16x16.png?v1" sizes="16x16" type="image/png" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon_48x48.png?v=2" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon_32x32.png?v=2" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon_16x16.png?v=2" sizes="16x16" type="image/png" />
+    <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon">
 
     <meta name="robots" content="index, follow">
     <?php $this->registerMetaTag([
@@ -53,7 +53,7 @@ $route = Yii::$app->controller->route;
 <div class="wrap">
     <nav class="navbar navbar-dark navbar-expand-lg">
         <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">
-            <img class="brand-logo" src="/SIMPLE_logo_white.png" alt="VCSE logo" >
+            <img class="brand-logo" src="/brand-logo.png" alt="VCSE logo" >
             VCSE Észlelések
         </a>
 
