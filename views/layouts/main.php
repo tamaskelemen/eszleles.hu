@@ -22,6 +22,11 @@ $route = Yii::$app->controller->route;
     <meta property="og:author" content="Vega Csillagászati Egyesület" />
     <meta property="og:type" content="website" />
 
+    <link rel="shortcut icon" href="/favicon_48x48.png?v1" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon_32x32.png?v1" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon_16x16.png?v1" sizes="16x16" type="image/png" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
     <meta name="robots" content="index, follow">
     <?php $this->registerMetaTag([
             'name' => 'description',
