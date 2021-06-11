@@ -13,6 +13,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $password_confirm;
+    public $terms;
 
     /**
      * {@inheritdoc}
@@ -24,6 +25,7 @@ class SignupForm extends Model
             'email' => 'Email cím',
             'password' => 'Jelszó',
             'password_confirm' => 'Jelszó megerősítése',
+            'terms' => 'A regisztrációval elismerem, hogy elolvastam és megértettem a <a href="/eula.pdf">VCSE Adatkezelési Tájékoztatóját</a>. ',
         ];
     }
 
@@ -48,6 +50,9 @@ class SignupForm extends Model
 
             ['name', 'required', 'message' => 'A mezőt kötelező kitölteni.'],
             ['name', 'string', 'max' => 255],
+
+            ['terms', 'required', 'message' => 'A mezőt kötelező kitölteni.', 'requiredValue' => 1],
+            ['terms', 'safe'],
         ];
     }
 

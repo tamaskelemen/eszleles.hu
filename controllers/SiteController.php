@@ -132,6 +132,8 @@ class SiteController extends Controller
             } catch (\Exception $e) {
                 Yii::$app->session->set('error', 'Belső hiba történt.');
             }
+
+            return $this->goHome();
         }
 
         return $this->render('signup', [

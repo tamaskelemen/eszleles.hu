@@ -27,6 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($signupForm, 'password_confirm')->passwordInput() ?>
 
+            <?= $form->field($signupForm, 'terms')->checkbox()
+                ->label('A regisztrációval elismerem, hogy elolvastam és megértettem a <a href="/eula.pdf" target="_blank">VCSE Adatkezelési Tájékoztatóját</a>.')
+            ?>
+
             <div class="form-group">
                 <?= Html::submitButton('Regisztráció elküldése', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
             </div>
