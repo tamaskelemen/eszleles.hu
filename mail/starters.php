@@ -12,8 +12,9 @@
     </p>
 
     <p>
-        Ezt a levelet azért kapod, mert a Te valamelyik észlelésed is fent van. Az elmúlt 30 évben a táborokban az észlelések
-        folyamatosan gyűjtve voltak, melyek azután a VEGA-ban jelentek meg. Innen szedtük ezeket össze, hogy könnyebben
+        Ezt a levelet azért kapod, mert a Te valamelyik észlelésed is fent van. Az elmúlt 30 évben a táborokban készült,
+        vagy az egyesület honlapjára beküldött képek, észlelések
+        folyamatosan gyűjtve voltak, melyek azután a VEGA-ban vagy a honlapon jelentek meg. Innen szedtük ezeket össze, hogy könnyebben
         kereshető formában lehessen tárolni, megosztani őket.
     </p>
 
