@@ -126,9 +126,7 @@ class BugReportController extends Controller
             return $this->goHome();
         }
         $model = $this->findModel($id);
-        if ($model != null && Yii::$app->user->getIdentity()->id != $model->user_id) {
-            throw new NotFoundHttpException();
-        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
