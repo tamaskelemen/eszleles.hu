@@ -303,6 +303,15 @@ div .help-block {
     font-size: smaller;
 }
 
+.list-top-right {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    font-size: smaller;
+    background-color: red;
+    color: white
+}
+
 #tagit{
     position: absolute;
     top: 0;

@@ -257,6 +257,19 @@ class Observe extends \yii\db\ActiveRecord
 
         return $url;
     }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        if (strtotime($this->uploaded_at) >= strtotime('-24 hours')) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * {@inheritdoc}
      * @return ObservesQuery the active query used by this AR class.

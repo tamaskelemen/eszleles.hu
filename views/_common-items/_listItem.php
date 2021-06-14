@@ -12,6 +12,13 @@ use yii\helpers\Url;
         <div class="row">
             <div class="col-md-3 col-12 item-img-container">
                 <img class="w-100" src="<?= $model->getThumbnailPath() ?>" alt >
+                <?php
+                if ($model->isNew()) {
+                ?>
+                    <div class="list-top-right">Új feltöltés</div>
+                <?php
+                }
+                ?>
                 <div class="list-bottom-left"><?= $model->observer->name ?> </div>
                 <div class="list-bottom-right"><?= count($model->comments) ?> hozzászólás</div>
             </div>
