@@ -22,6 +22,101 @@ $this->title = 'VCSE Észlelések';
     </div>
 
     <div class="body-content container">
+        <h2>Egy korszerű észlelésfeltöltő</h2>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <p>
+                    Az amatőrcsillagászat fizetés és tiszteletdíj nélkül végzett csillagászat.
+                    Egy-egy mélyég-objektum vagy üstökös megtekintése, látványának, alakjának,
+                    részleteinek megtekintése például morfológiai vizsgálatnak számít. Ki sportként,
+                    ki kikapcsolódásként, ki élvezetből nézegeti az égitesteket különbző távcsövekkel,
+                    vagy éppen le is fotózza őket.
+                </p>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#restText" aria-expanded="false" aria-controls="restText">
+                    Mutass többet...
+                </button>
+                <div class="collapse mt-4" id="restText">
+                    <p>
+                        A csillagászat régi és folyamatosan fennálló problémája a keletkező
+                        adatok olyan tárolása, ami sokaknak – lehetőleg mindenkinek – hozzáférhető,
+                        könnyen kereshető, felhasználható. Az amatőrcsillagászatban egyes észlelések
+                        később tudományos célokra hasznosítva lesznek, pl. változócsillagászati
+                        megfigyelések, meteormegfigyelések stb. Ezeket másképp kell tárolni,
+                        mint a leíró jellegű észleléseket. Leíró jellegűek pl. a mélyég-objektumok,
+                        üstökösök, bolygók, holdkráterek kinézetének, szín- és fényességviszonyainak,
+                        látható jellegzetességeinek szöveges, rajzos vagy fotografikus megörökítése.
+                        Sokszor vagyunk kíváncsiak arra, a másik mit lát a távcsövével, mennyi részletet,
+                        milyen halvány objektumot, hogyan tud megörökíteni egy-egy jellegzetességet.
+                        Érdekes számunkra, melyik távcsővel egy adott égitest hogyan néz ki,
+                        és ugyanolyan műszerrel ki milyen eltérésekkel észlel.
+                    </p>
+
+                    <p>
+                        Ugyancsak érdekes megőrzni az észleléseket az utókornak, mutatni amatőrcsillagászati
+                        aktivitásunkat, és inspirálni egymást a jelenben további megfigyeléseket végezni,
+                        az időt hasznosan eltölteni.
+                    </p>
+
+                    <p>
+                        Magyarországon és külföldön is több adatbázis létezik, némelyik általános,
+                        más csak bizonyos fajta észlelésekre koncentrál. (Ilyen pl. hazánkban az
+                        MCSE észlelésfeltöltője vagy a MAFE észlelőrétje.) Ezek összekapcsolása
+                        elméletben, technikailag lehetséges. Minket az inspirált a saját adatbázisunk
+                        létrehozására, hogy a legkorszerűbb és a kor igényeinek megfelelő kinézettel
+                        (design-nal) és kereshetőséggel, könnyű feltöltéssel bíró adatbázisunk legyen.
+                    </p>
+
+                    <p>
+                        Minden kedves tagtársunknak és barátunknak figyelmébe ajánljuk észlelési
+                        adatbázisunkat, ahová feltölthetik saját észleléseiket, legyen az szöveges,
+                        rajzos vagy fotografikus megfigyelés. Az <a href="/">eszleles.hu</a> használatának
+                        feltétele csak egy ingyenes regisztráció. Az adatbázisba mindenki
+                        feltöltheti észlelését, és megnézheti a másét, összehasonlításokat tehet.
+                    </p>
+
+                    <p>
+                        A <?= Html::a('VEGA', 'http://vcse.hu/vega-lista/') ?> észlelőrovatait is a jövőben erre az oldalra alapozva kívánjuk összeállítani.
+                    </p>
+
+                    <p>
+                        A regisztráció után lehetőség van – de nem kötelező! - rövid
+                        bemutatkozást és elérhetőséget (pl. E-mail címet, facebook oldalt stb)
+                        megadni. Fel lehet iratkozni hírlevélre is.
+                    </p>
+
+                    <p>
+                        Az <a href="/">eszleles.hu</a> nem üresen indul. Máris több mint 700 észlelést
+                        tartalmaz – elsősorban mélyégészlelést -, amik a VEGA korábbi számaiban jelentek
+                        meg, vagy amiket a VCSE-hez eljutattak a megelező években.
+                        A legtöbb észlelés Varga Györgytől származik eddig.. Hasznos negatív
+                        észleléseket is fel lehet tölteni, pl. ha jó égen egy nyílthalmaz nem látszik
+                        egy adott műszerrel. Az adatbázis előnye, hogy míg a VEGA számait
+                        ugyan élvezettel lehet lapozgatni kézbe véve a régi lapszámokat
+                        vagy a neten olvasgatva, ott mégis számról számra elszórva találhatók
+                        meg az észlelések itt-ott. Az adatbázisban viszont egyszerre látjuk őket,
+                        így kevesebb munkával több észlelés van egyszerre a szemünk előtt.
+                    </p>
+
+                    <p>
+                        Az adatbázis természetesen hasznos lehet célpontok válogatására
+                        is, ha valaki szeretné tudni, mit lenne érdemes a saját
+                        távcsövével megfigyelni. Például lehetséges a saját távcsövünkkel
+                        egyező, vagy ahhoz hasonló átmérőjű, fényerejű távcsővel m
+                        egfigyelt objektumokat eőkeresni, és aztán azokat magunk is megfigyelhetjük.
+                    </p>
+
+                    <p>
+                        Reméljük, barátaink, tagtársiank, amatőrcsillaász ismerőseink
+                        hasznosnak és használhatónak találják az adatbázist, és a jövőben
+                        használni is fogják, mind észlelések feltöltése, mind korábbi
+                        észlelések tanulmányozása szempontjából.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
         <h2 class="pt-4">Legújabb feltöltések</h2>
 
         <div class="row">
@@ -36,7 +131,7 @@ $this->title = 'VCSE Észlelések';
         <div class="row mb-5">
             <div class="col-12">
                 <h5>VEGA észlelések feltöltve</h5>
-                <p><i>2021-04-20</i></p>
+                <p><i>2021-05-20</i></p>
 
                 <p>
                     A <?= Html::a('VEGA', 'http://vcse.hu/vega-lista/') ?> a Vega Csillagászati egyesület folyóirata, amelyben évtizedek óta publikálva vannak az
@@ -55,7 +150,7 @@ $this->title = 'VCSE Észlelések';
             <hr>
             <div class="col-12">
                 <h5>Elindult az észlelésfeltöltő!</h5>
-                <p><i>2021-04-19</i></p>
+                <p><i>2021-05-19</i></p>
 
                 <p>
                     A <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu') ?> elindította a saját észlelésfeltöltőjét,
