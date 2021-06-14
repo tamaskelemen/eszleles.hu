@@ -175,9 +175,10 @@ $route = Yii::$app->controller->route;
 </div>
 
 <footer class="footer text-center">
-    <p class="">
-        <?= Html::a('Hibabejelentő', Url::toRoute("/bug-report/create"), ['target' => '_blank']) ?>
-    </p>
+    <ul class="list-unstyled">
+        <li class="d-inline pr-4"><?= Html::a('Hibabejelentő', Url::toRoute("/bug-report/create"), ['target' => '_blank']) ?></li>
+        <li class="d-inline"><?= Html::a('Adatvédelmi nyilatkozat', Url::to("/eula.pdf"), ['target' => '_blank']) ?></li>
+    </ul>
     <div class="pb-2">
         &copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> - Üzemelteti a <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu', ['target' => '_blank']) ?>
     </div>
