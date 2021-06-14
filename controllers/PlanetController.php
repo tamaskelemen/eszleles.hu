@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ObserveController implements the CRUD actions for Observe model.
@@ -130,7 +131,12 @@ class PlanetController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         if ($observe->load(Yii::$app->request->post())) {
+            if ($observe->image == null) {
+                $planetForm = new PlanetForm();
+                $planetForm->image = UploadedFile::getInstance($observe, 'image');
 
+                $planetForm->uploadImage($observe->id);
+            }
             if ($observe->save()) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }

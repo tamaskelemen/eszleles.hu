@@ -132,7 +132,12 @@ class MoonController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         if ($observe->load(Yii::$app->request->post())) {
+            if ($observe->image == null) {
+                $moonForm = new MoonForm();
+                $moonForm->image = UploadedFile::getInstance($observe, 'image');
 
+                $moonForm->uploadImage($observe->id);
+            }
             if ($observe->save()) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }

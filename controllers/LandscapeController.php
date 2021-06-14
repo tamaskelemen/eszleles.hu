@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * LandscapeController implements the CRUD actions for Observe model.
@@ -131,7 +132,12 @@ class LandscapeController extends Controller
         }
 
         if ($observe->load(Yii::$app->request->post())) {
+            if ($observe->image == null) {
+                $landscapeForm = new LandscapeForm();
+                $landscapeForm->image = UploadedFile::getInstance($observe, 'image');
 
+                $landscapeForm->uploadImage($observe->id);
+            }
             if ($observe->save()) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }
