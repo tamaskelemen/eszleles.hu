@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
-                    return \app\models\BugReport::getTypes()[$model->status];
+                    return \app\models\BugReport::getStatuses()[$model->status];
                 }
             ],
             'created_at',
