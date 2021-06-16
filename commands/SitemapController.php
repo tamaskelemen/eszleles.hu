@@ -7,7 +7,7 @@ use \XMLWriter;
 use yii\console\Controller;
 class SitemapController extends Controller
 {
-    public $file = 'web/sitemap.xml';
+    public $file = __DIR__ . '/../web/sitemap.xml';
     public function actionIndex()
     {
 
