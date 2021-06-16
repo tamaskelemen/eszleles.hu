@@ -44,6 +44,7 @@ class MoonForm extends AbstractObserveForm
     {
         $rules = [
             [['moon_phase', 'type'], 'string', 'max' => 255],
+            [['moon_phase', 'type'], 'safe'],
         ];
 
         return array_merge(parent::rules(), $rules);

@@ -69,7 +69,8 @@ class Observe extends \yii\db\ActiveRecord
             [['description', 'type', 'mechanics', 'color', 'filter', 'expo'], 'string'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'meteor_membership'], 'string', 'max' => 255],
             [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
-            [['moon_phase', 'brightness'], 'double']
+            [['brightness'], 'double'],
+            [['moon_phase'], 'string', 'max' => 255]
         ];
     }
 
