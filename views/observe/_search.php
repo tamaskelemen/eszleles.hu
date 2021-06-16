@@ -82,6 +82,28 @@ use yii\widgets\ActiveForm;
 
         <div class="row">
             <div class="col-lg-6">
+                <?= $form->field($model, 'fromUploadDate')->widget(DatePicker::class, [
+                    'options' => ['autocomplete' => 'off'],
+                    'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'autoclose' => true
+                    ]
+                ]) ?>
+            </div>
+
+            <div class="col-lg-6">
+                <?= $form->field($model, 'toUploadDate')->widget(DatePicker::class, [
+                    'options' => ['autocomplete' => 'off'],
+                    'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'autoclose' => true
+                    ]
+                ]) ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
                 <?php  echo $form->field($model, 'observer_id') ?>
             </div>
         </div>

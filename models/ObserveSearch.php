@@ -14,6 +14,8 @@ class ObserveSearch extends Observe
     public $observer;
     public $fromDate;
     public $toDate;
+    public $fromUploadDate;
+    public $toUploadDate;
 
     /**
      * {@inheritdoc}
@@ -23,7 +25,7 @@ class ObserveSearch extends Observe
         return [
             [['id', 'seeing', 'transparency', 'observer_id'], 'integer'],
             [['observer', 'object_name', 'telescope', 'camera', 'description', 'location', 'mechanics', 'type'], 'string'],
-            [['date', 'fromDate', 'toDate'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['date', 'fromDate', 'toDate', 'fromUploadDate', 'toUploadDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['uploaded_at', 'edited_at'], 'date'],
             [[ 'meteor_membership', 'brightness', 'color'], 'safe'],
         ];
@@ -36,6 +38,8 @@ class ObserveSearch extends Observe
             [
                 'fromDate' => 'Mikortól',
                 'toDate' => 'Meddig',
+                'fromUploadDate' => 'Feltöltve mikortól',
+                'toUploadDate' => 'Feltöltve meddig',
             ]
         );
     }
@@ -114,7 +118,9 @@ class ObserveSearch extends Observe
             ->andFilterWhere(['ilike', 'description', $this->description])
             ->andFilterWhere(['like', 'users.name', $this->observer])
             ->andFilterWhere(['>=', 'date', $this->fromDate])
-            ->andFilterWhere(['<=', 'date', $this->toDate]);
+            ->andFilterWhere(['<=', 'date', $this->toDate])
+            ->andFilterWhere(['>=', 'uploaded_at', $this->fromUploadDate])
+            ->andFilterWhere(['<=', 'uploaded_at', $this->toUploadDate]);
 
         return $dataProvider;
     }
