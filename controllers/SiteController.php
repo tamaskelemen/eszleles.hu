@@ -193,6 +193,14 @@ class SiteController extends Controller
     }
 
     /**
+     * @return string
+     */
+    public function actionFaq()
+    {
+        return $this->render("faq");
+    }
+
+    /**
      * Displays contact page.
      *
      * @return Response|string

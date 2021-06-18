@@ -90,6 +90,10 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Célok</a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['site/faq']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/site/faq')?>">GY.I.K.</a>
+                </li>
+
                 <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Feltöltés
@@ -104,6 +108,8 @@ $route = Yii::$app->controller->route;
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/create') ?><!--">Meteor</a>-->
                     </div>
                 </li>
+
+
             </ul>
 
             <?php if (Yii::$app->user->isGuest) { ?>
@@ -176,6 +182,7 @@ $route = Yii::$app->controller->route;
 
 <footer class="footer text-center">
     <ul class="list-unstyled">
+        <li class="d-inline pr-4"><?= Html::a('Gyakran ismételt kérdések', Url::toRoute("/site/faq")) ?></li>
         <li class="d-inline pr-4"><?= Html::a('Hibabejelentő', Url::toRoute("/bug-report/create"), ['target' => '_blank']) ?></li>
         <li class="d-inline"><?= Html::a('Adatvédelmi nyilatkozat', Url::to("/eula.pdf"), ['target' => '_blank']) ?></li>
     </ul>

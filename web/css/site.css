@@ -367,3 +367,7 @@ div .help-block {
     height: 49px;
     margin-top: -12px;
 }
+
+.card {
+    background-color: inherit;
+}

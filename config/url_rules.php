@@ -6,6 +6,8 @@ return [
     'elfelejtett-jelszo' => '/site/lost-password',
     'uj-jelszo/<token:.*>' => '/site/new-password',
     'celok' => '/site/about',
+    'hibabejelento' => '/bug-report/create',
+    'gyakori-kerdesek' => '/site/faq',
 
     'felhasznalok' => '/user/index',
     'profil/<id:\d+>' => '/user/profile',
