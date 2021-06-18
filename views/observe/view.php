@@ -13,6 +13,11 @@ $this->title = $model->object_name;
 $this->params['breadcrumbs'][] = ['label' => ucfirst(\app\models\Observe::getTypeName($model->type)) . ' észlelések', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+$this->registerMetaTag([
+        'name' => 'og:image',
+        'content' => $model->getImagePath() ?? "/brand-logo.png"
+]);
+
 $user = $model->getObserver()->one();
 
 ?>
