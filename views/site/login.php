@@ -8,6 +8,10 @@ use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Url;
 
+$this->registerMetaTag([
+    'name' => 'robots',
+    'content' => 'noindex,nofollow']);
+
 $this->title = 'Belépés';
 $this->params['breadcrumbs'][] = $this->title;
 ?>

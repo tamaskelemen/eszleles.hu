@@ -27,7 +27,6 @@ $route = Yii::$app->controller->route;
     <link rel="icon" href="/favicon_16x16.png?v=2" sizes="16x16" type="image/png" />
     <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon">
 
-    <meta name="robots" content="index, follow">
     <?php $this->registerMetaTag([
             'name' => 'description',
             'content' => 'Csillagászati megfigyelések, amatőrcsillagász észlelések online gyűjtőhelye. ']) ?>
