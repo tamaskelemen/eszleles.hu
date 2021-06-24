@@ -46,6 +46,12 @@ class BugReportSearch extends BugReport
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> [
+                'defaultOrder' => [
+                    'status' => SORT_DESC,
+                    'updated_at' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
