@@ -31,13 +31,11 @@ return [
     'hold/<id:\d+>' => 'moon/view',
     'hold/feltoltes' => 'moon/create',
     'hold/modositas' => 'moon/update',
-
     //meteor
     'meteor' => 'meteor/index',
     'meteor/<id:\d+>' => 'meteor/view',
     'meteor/feltoltes' => 'meteor/create',
     'meteor/modositas' => 'meteor/update',
-
     //asztrotajkep
     'asztrotajkep' => 'landscape/index',
     'asztrotajkep/<id:\d+>' => 'landscape/view',
@@ -48,4 +46,9 @@ return [
     'ustokos/<id:\d+>' => 'comet/view',
     'ustokos/feltoltes' => 'comet/create',
     'ustokos/modositas' => 'comet/update',
+    //nap
+    'nap' => 'sun/index',
+    'nap/<id:\d+>' => 'sun/view',
+    'nap/feltoltes' => 'sun/create',
+    'nap/modositas' => 'sun/update',
 ];

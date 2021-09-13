@@ -65,7 +65,19 @@ $route = Yii::$app->controller->route;
                 <li class="nav-item <?= in_array($route, ['site/index', '/']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal</a>
                 </li>
-                <li class="nav-item dropdown <?= in_array($route, ['observe/index', 'deepsky/index', 'planet/index', 'moon/index', 'landscape/index', 'meteor/index']) ? 'active' : '' ?>">
+                <li class="nav-item dropdown
+                    <?= in_array(
+                            $route,
+                            [
+                                'observe/index',
+                                'deepsky/index',
+                                'planet/index',
+                                'moon/index',
+                                'landscape/index',
+                                'meteor/index',
+                                'comet/index',
+                                'sun/index',
+                            ]) ? 'active' : '' ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Böngészés
                     </a>
@@ -77,6 +89,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/index') ?>">Hold</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/index') ?>">Asztrotájkép</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/comet/index') ?>">Üstökös</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/sun/index') ?>">Nap</a>
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/index') ?><!--">Meteor</a>-->
                     </div>
                 </li>
@@ -104,6 +117,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/moon/create') ?>">Hold</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/create') ?>">Asztrotájkép</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/comet/create') ?>">Üstökös</a>
+                        <a class="dropdown-item" href="<?= Url::toRoute('/sun/create') ?>">Nap</a>
 <!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/create') ?><!--">Meteor</a>-->
                     </div>
                 </li>

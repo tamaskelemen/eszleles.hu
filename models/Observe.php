@@ -45,6 +45,8 @@ class Observe extends \yii\db\ActiveRecord
     const TYPE_METEOR = "meteor";
     const TYPE_LANDSCAPE = "landscape";
     const TYPE_COMET = "comet";
+    const TYPE_SUN = "sun";
+
     /**
      * {@inheritdoc}
      */
@@ -165,6 +167,7 @@ class Observe extends \yii\db\ActiveRecord
             self::TYPE_METEOR => 'Meteor',
             self::TYPE_LANDSCAPE => 'Asztrotájkép',
             self::TYPE_COMET => 'Üstökös',
+            self::TYPE_SUN => 'Nap',
         ];
     }
 
