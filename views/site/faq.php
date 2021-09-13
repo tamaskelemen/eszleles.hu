@@ -35,6 +35,21 @@
         </div>
 
         <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Kötelező képet feltölteni?
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    Nem. Képek nélkül is lehet észleléseket gyűjteni egy objektumról. Ha ilyet szeretnél feltölteni, egyszerűen a feltöltésnél hagyd üresen a képhez tartozó mezőket.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-header" id="headingThree">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -93,6 +108,23 @@
             <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                 <div class="card-body">
                     Az észlelésfeltöltőt a <a href="http://vcse.hu">Vega Csillagászati Egyesület</a> készítette, és tartja karban.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingSeven">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        Rengeteg saját észlelésem van, kézzel egy örökkévalóság lenne feltölteni.
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+                <div class="card-body">
+                    Semmi gond, segítünk! Kérlek, vedd fel a kapcsolatot az egyesülettel a <a href="mailto:vcse@vcse.hu">vcse@vcse.hu</a> email címen.
+                    Ha több észlelésed van, mint amit kézzel szeretnél egyesével feltölteni, akkor szívesen segítünk azt beimportálni a rendszerünkbe.
+                    A felajánlásokat ezúton is köszönjük!
                 </div>
             </div>
         </div>
