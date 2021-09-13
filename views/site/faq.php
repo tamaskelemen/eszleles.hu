@@ -35,21 +35,6 @@
         </div>
 
         <div class="card">
-            <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Kötelező képet feltölteni?
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                <div class="card-body">
-                    Nem. Képek nélkül is lehet észleléseket gyűjteni egy objektumról. Ha ilyet szeretnél feltölteni, egyszerűen a feltöltésnél hagyd üresen a képhez tartozó mezőket.
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
             <div class="card-header" id="headingThree">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
