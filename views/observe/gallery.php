@@ -50,6 +50,14 @@ if ($image !== null) { ?>
     </div>
 
     <div class="row">
+        <?php if ($model->observer_id === Yii::$app->user->getId()) { ?>
+            <div class="container">
+                <div class="alert-info alert" role="alert">
+                    Szerkesztő mód: a képen megjelölheted a látható objektumokat, látnivalókat.
+                </div>
+            </div>
+        <?php } ?>
+
         <div id="taglist" class="col-10 ml-auto">
             Jelölések:
         </div>
