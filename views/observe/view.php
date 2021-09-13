@@ -65,6 +65,16 @@ $user = $model->getObserver()->one();
                     </div>
                 <?php }
             } ?>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <i>
+                    <?= $model->getAttributeLabel('uploaded_at') ?>:
+                    <?= $model->uploaded_at ?>
+                </i>
+            </div>
         </div>
     </div>
 
