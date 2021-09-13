@@ -20,9 +20,8 @@ class MeteorForm extends AbstractObserveForm
         return array_merge(
             parent::rules(),
             [
-                ['meteor_membership', 'required',],
                 [['meteor_membership', 'color'], 'string',],
-                [['brightness'], 'double'],
+                [['brightness'], 'double', 'message' => "Kérjük, számot adjon meg fényességnek!"],
             ]
         );
     }

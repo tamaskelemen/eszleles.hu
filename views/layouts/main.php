@@ -77,6 +77,7 @@ $route = Yii::$app->controller->route;
                                 'meteor/index',
                                 'comet/index',
                                 'sun/index',
+                                'meteor/index',
                             ]) ? 'active' : '' ?>">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Böngészés
@@ -90,7 +91,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/index') ?>">Asztrotájkép</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/comet/index') ?>">Üstökös</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/sun/index') ?>">Nap</a>
-<!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/index') ?><!--">Meteor</a>-->
+                        <a class="dropdown-item" href="<?= Url::toRoute('/meteor/index') ?>">Meteor</a>
                     </div>
                 </li>
 
@@ -118,7 +119,7 @@ $route = Yii::$app->controller->route;
                         <a class="dropdown-item" href="<?= Url::toRoute('/landscape/create') ?>">Asztrotájkép</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/comet/create') ?>">Üstökös</a>
                         <a class="dropdown-item" href="<?= Url::toRoute('/sun/create') ?>">Nap</a>
-<!--                        <a class="dropdown-item" href="--><?//= Url::toRoute('/meteor/create') ?><!--">Meteor</a>-->
+                        <a class="dropdown-item" href="<?= Url::toRoute('/meteor/create') ?>">Meteor</a>
                     </div>
                 </li>
 
