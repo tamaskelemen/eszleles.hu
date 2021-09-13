@@ -8,6 +8,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'VCSE Észlelések';
+
+$this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszleloret.jpg" ])
 ?>
 <div class="site-index">
 
