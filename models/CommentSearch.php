@@ -5,21 +5,34 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Comment;
+use yii\mutex\RetryAcquireTrait;
 
 /**
  * CommentSearch represents the model behind the search form of `app\models\Comment`.
  */
 class CommentSearch extends Comment
 {
+    public $limit;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'user_id', 'observation_id'], 'integer'],
+            [['id', 'user_id', 'observation_id', 'limit'], 'integer'],
             [['created_at', 'comment'], 'safe'],
         ];
+    }
+
+    /**
+     * @param $limit
+     * @return $this
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+        return $this;
     }
 
     /**
@@ -40,7 +53,7 @@ class CommentSearch extends Comment
      */
     public function search($params = [])
     {
-        $query = Comment::find()->with('user');
+        $query = Comment::find()->with(['user', 'observation']);
 
         // add conditions that should always apply here
 
@@ -69,6 +82,7 @@ class CommentSearch extends Comment
             'created_at' => $this->created_at,
         ]);
 
+        $query->limit = $this->limit;
         $query->andFilterWhere(['ilike', 'comment', $this->comment]);
 
         return $dataProvider;

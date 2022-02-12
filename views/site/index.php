@@ -2,10 +2,13 @@
 
 /* @var $this yii\web\View */
 /* @var $latestObs Observe[] */
+/* @var $commentData Comment[] */
 
+use app\models\Comment;
 use app\models\Observe;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ListView;
 
 $this->title = 'VCSE Észlelések';
 
@@ -128,7 +131,22 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
             }
             ?>
         </div>
+
         <hr>
+            <h2 class="pt-4">Friss hozzászólások</h2>
+
+            <div>
+                <?php
+                    echo ListView::widget([
+                        'dataProvider' => $commentData,
+                        'itemView' => '_comment',
+                        'emptyText' => '<i>Még nincs hozzászólás</i>',
+                        'summary' => '',
+                    ])
+                ?>
+            </div>
+        <hr>
+
         <h2 class="pb-4">Hírek</h2>
         <div class="row mb-5">
             <div class="col-12">

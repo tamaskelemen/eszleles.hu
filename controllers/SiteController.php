@@ -4,8 +4,8 @@ namespace app\controllers;
 
 use app\components\Email;
 use app\components\Flash;
+use app\models\CommentSearch;
 use app\models\forms\LostPasswordForm;
-use app\models\forms\PasswordChangeForm;
 use app\models\forms\SignupForm;
 use app\models\Observe;
 use app\models\User;
@@ -86,9 +86,12 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(4)->with('observer', 'comments', 'thumbnail')->all();
+        $commentData = (new CommentSearch())->setLimit(4)->search();
+        $commentData->pagination = false;
 
         return $this->render('index', [
             'latestObs' => $latestObs,
+            'commentData' => $commentData,
             ]
         );
     }
