@@ -34,6 +34,8 @@ use yii\helpers\Url;
  * @property string $color
  * @property string $expo
  * @property string $filter
+ * @property string $duration
+ * @property string $coverage
  *
  * @property User $observer
  */
@@ -46,6 +48,7 @@ class Observe extends \yii\db\ActiveRecord
     const TYPE_LANDSCAPE = "landscape";
     const TYPE_COMET = "comet";
     const TYPE_SUN = "sun";
+    const TYPE_ECLIPSE = "eclipse";
 
     /**
      * {@inheritdoc}
@@ -72,7 +75,7 @@ class Observe extends \yii\db\ActiveRecord
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'meteor_membership'], 'string', 'max' => 255],
             [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
             [['brightness'], 'double'],
-            [['moon_phase'], 'string', 'max' => 255]
+            [['moon_phase', 'coverage', 'duration'], 'string', 'max' => 255],
         ];
     }
 
@@ -92,6 +95,8 @@ class Observe extends \yii\db\ActiveRecord
             'camera' => 'Kamera',
             'mechanics' => 'Mechanika',
             'moon_phase' => 'Hold fázis',
+            'duration' => 'Időtartam',
+            'coverage' => 'Fedettség',
             'seeing' => 'Nyugodtság',
             'transparency' => 'Átlátszóság',
             'location' => 'Helyszín',
@@ -168,6 +173,7 @@ class Observe extends \yii\db\ActiveRecord
             self::TYPE_LANDSCAPE => 'Asztrotájkép',
             self::TYPE_COMET => 'Üstökös',
             self::TYPE_SUN => 'Nap',
+            self::TYPE_ECLIPSE => 'Fogyatkozás',
         ];
     }
 

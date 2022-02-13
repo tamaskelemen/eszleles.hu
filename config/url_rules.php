@@ -51,4 +51,9 @@ return [
     'nap/<id:\d+>' => 'sun/view',
     'nap/feltoltes' => 'sun/create',
     'nap/modositas' => 'sun/update',
+    //fogyatkozas
+    'fogyatkozas' => 'eclipse/index',
+    'fogyatkozas/<id:\d+>' => 'eclipse/view',
+    'fogyatkozas/feltoltes' => 'eclipse/create',
+    'fogyatkozas/modositas' => 'eclipse/update',
 ];
