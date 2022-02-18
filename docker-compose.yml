@@ -1,17 +1,17 @@
 version: '2'
 services:
   php:
-    image: eszleles:latest
+    image: eszleles:6
     ports:
       - '8968:80'
     networks:
       - my-new-network
-  eszleles-db:
+  eszlelesdb:
     image: postgres
     environment:
       POSTGRES_PASSWORD: asdasd
       POSTGRES_USER: keltom
-      POSTGRES_DB: eszleles
+      POSTGRES_DB: eszlelesdb
     networks:
       - my-new-network
 networks:
