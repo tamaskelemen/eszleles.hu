@@ -1,7 +1,7 @@
 version: '2'
 services:
   php:
-    image: eszleles:11
+    image: eszleles:18
 #    command: yii migrate --interactive=0 #uncomment for migration, then comment out again
     ports:
       - '8968:80'
