@@ -13,6 +13,7 @@ use app\assets\FontAwesomeAsset;
 BootstrapAsset::register($this);
 FontAwesomeAsset::register($this);
 AppAsset::register($this);
+
 $route = Yii::$app->controller->route;
 ?>
 <?php $this->beginPage() ?>
