@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=eszlelesdb;dbname=eszlelesdb',
-    'username' => 'keltom',
-    'password' => 'asdasd',
+    'dsn' => 'pgsql:host=dbhost;dbname=dbname',
+    'username' => 'username',
+    'password' => 'pass',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

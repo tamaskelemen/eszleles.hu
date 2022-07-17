@@ -28,13 +28,10 @@ class AppAsset extends AssetBundle
     public function __construct($config = [])
     {
         $this->css = [
-            'css/bootstrap.css',
-            'css/font-awesome4/css/font-awesome.min.css',
             "css/site.css?v=" .filemtime("../web/css/site.css"),
         ];
 
         $this->js = [
-            'js/bootstrap.bundle.js',
             'js/common.js?v=' . filemtime('../web/js/common.js'),
         ];
 

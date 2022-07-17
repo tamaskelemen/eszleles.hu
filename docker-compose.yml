@@ -4,13 +4,33 @@ services:
     image: yiisoftware/yii2-php:7.4-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+      - ./:/app
     ports:
-      - '8000:80'
-    links:
-      - db
-
-
+      - '80:80'
+    networks:
+      - my-network
+  db:
+    image: postgres:14.4-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=eszleles
+      - POSTGRES_USER=keltom
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - '5321:5321'
+    volumes:
+      - my-db:/var/lib/postgresql/data
+    #volumes:
+    #  - ~/mysql:/var/lib/mysql
+    networks:
+      - my-network
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - "0.0.0.0:11211:11211"
+volumes:
+  my-db:
 networks:
-  my-new-network:
+  my-network:
     driver: bridge

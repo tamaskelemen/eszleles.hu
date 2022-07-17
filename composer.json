@@ -19,10 +19,12 @@
         "yiisoft/yii2-bootstrap4": "@dev",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "kartik-v/yii2-widget-datepicker": "@dev",
-      "ext-gd": "*",
-      "ext-json": "*",
-      "ext-simplexml": "*",
-        "ext-xmlwriter": "*"
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-xmlwriter": "*",
+        "twbs/bootstrap": "v4.0.0",
+        "fortawesome/font-awesome": "v4.7.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -40,6 +42,9 @@
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
         }
     },
     "scripts": {

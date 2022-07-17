@@ -12,7 +12,7 @@ class m210320_125901_add_type_column_to_observes extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('observes', 'type', $this->string());
+        $this->addColumn('observations', 'type', $this->string());
     }
 
     /**
@@ -20,7 +20,7 @@ class m210320_125901_add_type_column_to_observes extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('observes', 'type');
+        $this->dropColumn('observations', 'type');
     }
 
 }

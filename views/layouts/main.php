@@ -7,7 +7,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\assets\BootstrapAsset;
+use app\assets\FontAwesomeAsset;
 
+BootstrapAsset::register($this);
+FontAwesomeAsset::register($this);
 AppAsset::register($this);
 $route = Yii::$app->controller->route;
 ?>
