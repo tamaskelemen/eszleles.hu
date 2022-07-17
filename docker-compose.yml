@@ -1,20 +1,36 @@
 version: '2'
 services:
   php:
-    image: eszleles:18
-#    command: yii migrate --interactive=0 #uncomment for migration, then comment out again
+    image: yiisoftware/yii2-php:7.4-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app
     ports:
-      - '8968:80'
+      - '80:80'
     networks:
-      - my-new-network
-  eszlelesdb:
-    image: postgres
+      - my-network
+  db:
+    image: postgres:14.4-alpine
+    restart: always
     environment:
-      POSTGRES_PASSWORD: asdasd
-      POSTGRES_USER: keltom
-      POSTGRES_DB: eszlelesdb
+      - POSTGRES_DB=eszleles
+      - POSTGRES_USER=keltom
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - '5321:5321'
+    volumes:
+      - my-db:/var/lib/postgresql/data
+    #volumes:
+    #  - ~/mysql:/var/lib/mysql
     networks:
-      - my-new-network
+      - my-network
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - "0.0.0.0:11211:11211"
+volumes:
+  my-db:
 networks:
-  my-new-network:
+  my-network:
     driver: bridge
