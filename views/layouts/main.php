@@ -10,7 +10,6 @@ use app\assets\AppAsset;
 use app\assets\BootstrapAsset;
 use app\assets\FontAwesomeAsset;
 
-BootstrapAsset::register($this);
 FontAwesomeAsset::register($this);
 AppAsset::register($this);
 
