@@ -16,15 +16,42 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
 ?>
 <div class="site-index">
 
-    <div class="jumbotron text-white">
-        <h1>Észlelés.hu</h1>
+        <div id="carouselEx" class="carousel slide" data-ride="carousel" data-interval="604800000" style="margin-bottom: 2rem" >
+            <ol class="carousel-indicators">
+                <li data-target="#carouselEx" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselEx" data-slide-to="1"></li>
+                <li data-target="#carouselEx" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner"  >
+                <div class="carousel-cim">
+                    <h1>Észlelés.hu</h1>
+                    <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
+                    <?php if (Yii::$app->user->isGuest) { ?>
+                        <p><a class="btn btn-lg btn-success" href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a></p>
+                        <p>vagy ha már regisztráltál, <a class="" href="<?= Url::toRoute('/site/login') ?>">lépj be</a>.</p>
+                    <?php } ?>
+                </div>
+                <div class="carousel-item active">
+                    <img class="d-block w-100" style="object-position: center bottom; object-fit: cover;" src="/pictures/eszleloret.jpg" alt="First slide" ">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/pictures/galaxy.jpg" alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="/pictures/mountain.jpg" alt="Third slide">
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselEx" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselEx" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+</div>
 
-        <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
-        <?php if (Yii::$app->user->isGuest) { ?>
-            <p><a class="btn btn-lg btn-success" href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a></p>
-            <p>vagy ha már regisztráltál, <a class="" href="<?= Url::toRoute('/site/login') ?>">lépj be</a>.</p>
-        <?php } ?>
-    </div>
 
     <div class="body-content container">
         <h2>Egy korszerű észlelésfeltöltő</h2>
