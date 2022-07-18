@@ -89,17 +89,17 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     min-height: 600px;
     background-color: transparent;
-    /*
-    background-image: url("/pictures/eszleloret.jpg");
-    */
     background-repeat: no-repeat;
-    /*background-attachment: fixed;*/
     background-position: bottom;
     background-size: cover;
     border-radius: 0;
 }
 
-.carousel-cim {
+.carousel.slide {
+    margin-bottom: 2rem;
+}
+
+.carousel-title {
     padding-top: 4rem;
     padding-right: 2rem;
     padding-bottom: 4rem;
@@ -112,6 +112,22 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 10;
     color: #fff;
     text-align: center;
+}
+
+.carousel-item {
+    height: 600px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.title-wrapper a {
+    text-shadow: none;
 }
 
 .jumbotron .btn {
