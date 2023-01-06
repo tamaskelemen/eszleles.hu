@@ -16,7 +16,7 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
 ?>
 <div class="site-index">
 
-    <div id="carouselEx" class="carousel slide" data-ride="carousel" data-interval="604800000">
+    <div id="carouselEx" class="carousel slide" data-ride="carousel" data-interval="10000">
         <ol class="carousel-indicators">
             <li data-target="#carouselEx" data-slide-to="0" class="active"></li>
             <li data-target="#carouselEx" data-slide-to="1"></li>
@@ -37,10 +37,10 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                 <img class="d-block w-100" style="object-position: center bottom; object-fit: cover;" src="/pictures/eszleloret.jpg" alt="First slide" ">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="/pictures/tabor.jpg" alt="VCSE Camp slide">
+                <img class="d-block w-100" src="/pictures/hold_schmallrafi.jpg" alt="VCSE Camp slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="/pictures/mountain.jpg" alt="Third slide">
+                <img class="d-block w-100" src="/pictures/uridafoss.jpg" alt="Northern Lights">
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselEx" role="button" data-slide="prev">
