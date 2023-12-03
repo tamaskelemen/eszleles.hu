@@ -162,22 +162,32 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
         </div>
 
         <hr>
-            <h2 class="pt-4">Friss hozzászólások</h2>
-
-            <div>
-                <?php
-                    echo ListView::widget([
-                        'dataProvider' => $commentData,
-                        'itemView' => '_comment',
-                        'emptyText' => '<i>Még nincs hozzászólás</i>',
-                        'summary' => '',
-                    ])
-                ?>
-            </div>
-        <hr>
-
         <h2 class="pb-4">Hírek</h2>
         <div class="row mb-5">
+            <div class="col-12">
+                <h5>Nyerj TMS-Astro észlelőszéket karácsonyra!</h5>
+
+                <p>
+                Horváth Tamás, a TMS-Astro alapítója egy kényelmes, állítható magasságú észlelőszéket ajánl fel karácsonyra annak,
+                 aki a legszebb/legjobb vizuális, rajzos észlelést beküldi 2023. december 15-ig a www.eszleles.hu-ra!
+                Minden korábban küldött észlelést is figyelembe veszünk, nem szükséges őket újraküldeni. Döntéshozatal 
+                december 16-17-én lesz.
+                </p>
+                <p>
+                A felajánlott észlelőszéket ezt követően postázzuk el a TMS-Astro-nak köszönhetően a nyertesnek. A nyertes személyéről bírálóbizottság dönt, amelynek tagjai: Horváth Tamás a TMS-Astro részéről, Ágoston Zsolt (alelnök, VCSE), Dr. Csizmadia Szilárd (elnök, VCSE és MCSE Zalaegerszegi Csoport), Jandó Attila (titkár, VCSE), Kelemen Tamás (MCSE SZHCS vezetője és VCSE FB elnöke) akik – természetesen – nem vesznek részt a játékban.
+                Az észlelőszék körülbelül 30 centiméter átmérőjű Dobsonig használható érdemben. Ekkora mérettel még zenitben is lehet használni a széket, de nagyobb távcső esetében már leszűkülne a használhatósági tartomány. Fél méteres távcsővel talán 15-20 fokig lehetne ülve észlelni, ezért nagyobb méretű műszerhez nem alkalmas az észlelőszék.
+                A játékban távcsőátmérőtől függetlenül mindenféle típusú és átmérőjű, bárhonnét készült vizuális rajzos észlelés részt vesz, ha a megadott határidőig a www.eszleles.hu-ra feltöltésre kerül! Az elbírálás szempontjai:
+                <ul>
+                    <li> teljesen kitöltött észlelőlap; </li>
+                    <li> a távcső átmérőjéhez és a használt éghez képesti valósághű rajzos ábrázolás;</li>
+                    <li> a kidolgozott rajz minősége, részletei (adott távcsőátmérő és nagyítás függvényében);</li>
+                    <li> az észlelés témaválasztása. </li>
+                </ul>
+                
+                Észlelésre, feltöltésre fel!
+                </p>
+            </div>
+
             <div class="col-12">
                 <h5>VEGA észlelések feltöltve</h5>
                 <p><i>2021-05-20</i></p>
@@ -218,6 +228,21 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                 </p>
             </div>
         </div>
+
+        <hr>
+
+        <h2 class="pt-4">Friss hozzászólások</h2>
+
+            <div>
+                <?php
+                    echo ListView::widget([
+                        'dataProvider' => $commentData,
+                        'itemView' => '_comment',
+                        'emptyText' => '<i>Még nincs hozzászólás</i>',
+                        'summary' => '',
+                    ])
+                ?>
+            </div>
 
     </div>
 </div>
