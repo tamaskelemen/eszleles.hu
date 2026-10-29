@@ -1,4 +1,4 @@
-FROM yiisoftware/yii2-php:7.4-apache
+FROM yiisoftware/yii2-php:8.3-apache
 
 RUN a2enmod rewrite
 
