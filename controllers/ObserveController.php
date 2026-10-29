@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\models\Comment;
 use app\models\forms\CommentForm;
 use Yii;
 use app\models\Observe;
@@ -36,12 +37,19 @@ class ObserveController extends Controller
                     ],
                     [
                         'actions' => ['delete'],
-                        'denyCallback' =>  function ($rule, $action) {
-                            if (!Yii::$app->user->identity->isAdmin()) {
-                                Flash::addWarning('Ehhez a művelethez nincs elég jogosultságod.');
-                                return $this->goBack();
-                            }
-                        }
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->isAdmin();
+                        },
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => false,
+                        'denyCallback' => function ($rule, $action) {
+                            Flash::addWarning('Ehhez a művelethez nincs elég jogosultságod.');
+                            return $this->goBack();
+                        },
                     ],
                 ],
 
@@ -137,9 +145,22 @@ class ObserveController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            // comments.observation_id has an ON DELETE NO ACTION foreign key
+            Comment::deleteAll(['observation_id' => $model->id]);
+            $model->delete();
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        Flash::addSuccess('Az észlelés törölve.');
+
+        return $this->redirect(Yii::$app->request->referrer ?: ['search']);
     }
 
     /**
