@@ -130,8 +130,9 @@ class MeteorController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         if ($observe->load(Yii::$app->request->post())) {
+            $meteorForm = new MeteorForm();
 
-            if ($observe->save()) {
+            if ($meteorForm->saveObservation($observe)) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }
         }

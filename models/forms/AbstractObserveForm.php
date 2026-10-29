@@ -2,7 +2,11 @@
 
 namespace app\models\forms;
 
+use app\components\Flash;
 use app\models\Image;
+use app\models\ImageVersion;
+use app\models\Observe;
+use Yii;
 use yii\base\Model;
 use yii\db\Exception;
 use yii\web\UploadedFile;
@@ -58,33 +62,95 @@ class AbstractObserveForm extends Model
     }
 
     /**
+     * Uploads the image as a new image version of the observation. The latest version is the main image.
+     *
      * @param $id int id of the observation the image belongs to
      * @throws Exception
      */
     public function uploadImage($id)
     {
         if ($this->image != null) {
-            $path = "uploads/" . $id . "." . $this->image->extension;
-
-            if (!$this->image->saveAs($path) ){
-                throw new \Exception("A kép feltöltése nem sikerült.");
-            }
-            $image = new Image();
-            $image->observe_id = $id;
-            $image->path = "/" . $path;
-            $image->size = Image::SIZE_ORIGINAL;
-
-            if (!$image->save()) {
-                throw new Exception("A kép mentése nem sikerült.");
+            if (!$this->validate(['image'])) {
+                throw new \Exception($this->getFirstError('image'));
             }
 
-            $this->createThumbnail($id, $path);
+            $transaction = Yii::$app->db->beginTransaction();
+            $fileName = null;
+
+            try {
+                $version = new ImageVersion();
+                $version->observe_id = $id;
+
+                if (!$version->save()) {
+                    throw new Exception("A képverzió mentése nem sikerült.");
+                }
+
+                $fileName = $id . "_" . $version->id . "." . $this->image->extension;
+                $path = "uploads/" . $fileName;
+
+                if (!$this->image->saveAs($path) ){
+                    throw new \Exception("A kép feltöltése nem sikerült.");
+                }
+                $image = new Image();
+                $image->observe_id = $id;
+                $image->image_version_id = $version->id;
+                $image->path = "/" . $path;
+                $image->size = Image::SIZE_ORIGINAL;
+
+                if (!$image->save()) {
+                    throw new Exception("A kép mentése nem sikerült.");
+                }
+
+                $this->createThumbnail($id, $version->id, $path, $fileName);
+
+                $transaction->commit();
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+
+                // do not leave files on disk that no image row references
+                if ($fileName !== null) {
+                    @unlink("uploads/" . $fileName);
+                    @unlink("uploads/thumbnails/" . $fileName);
+                }
+
+                throw $e;
+            }
         }
     }
 
-    private function createThumbnail($id, $source)
+    /**
+     * Saves an already loaded observation and, if a new image was posted, adds it as a new image version.
+     *
+     * @param Observe $observe
+     * @return bool
+     */
+    public function saveObservation(Observe $observe)
     {
-        $destination = "uploads/thumbnails/{$id}.{$this->image->extension}";
+        $this->image = UploadedFile::getInstance($observe, 'image');
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            if (!$observe->save()) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            $this->uploadImage($observe->id);
+
+            $transaction->commit();
+
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Flash::addDanger($e->getMessage());
+            return false;
+        }
+    }
+
+    private function createThumbnail($id, $versionId, $source, $fileName)
+    {
+        $destination = "uploads/thumbnails/" . $fileName;
         Image::resize_crop_image(
             Image::THUMBNAIL_WIDTH, Image::THUMBNAIL_HEIGHT,
             $source,
@@ -93,6 +159,7 @@ class AbstractObserveForm extends Model
 
         $thumbnail = new Image();
         $thumbnail->observe_id = $id;
+        $thumbnail->image_version_id = $versionId;
         $thumbnail->path = "/" . $destination;
         $thumbnail->size = Image::SIZE_THUMBNAIL;
 

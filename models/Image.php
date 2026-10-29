@@ -11,8 +11,11 @@ use Yii;
  * @property int $id
  * @property string $path
  * @property int $observe_id
+ * @property int|null $image_version_id
  * @property string $created_at
  * @property string $size
+ *
+ * @property ImageVersion $imageVersion
  */
 class Image extends \yii\db\ActiveRecord
 {
@@ -40,7 +43,7 @@ class Image extends \yii\db\ActiveRecord
         return [
             [['path', 'observe_id'], 'required'],
             [['observe_id'], 'default', 'value' => null],
-            [['observe_id'], 'integer'],
+            [['observe_id', 'image_version_id'], 'integer'],
             [['created_at'], 'safe'],
             [['path', 'size'], 'string', 'max' => 255],
         ];
@@ -107,17 +110,17 @@ class Image extends \yii\db\ActiveRecord
         $dst_img = imagecreatetruecolor($max_width, $max_height);
         $src_img = $image_create($source_file);
 
-        $width_new = $height * $max_width / $max_height;
-        $height_new = $width * $max_height / $max_width;
+        $width_new = (int) round($height * $max_width / $max_height);
+        $height_new = (int) round($width * $max_height / $max_width);
         //if the new width is greater than the actual width of the image, then the height is too large and the rest cut off, or vice versa
         if($width_new > $width){
             //cut point by height
-            $h_point = (($height - $height_new) / 2);
+            $h_point = intdiv($height - $height_new, 2);
             //copy image
             imagecopyresampled($dst_img, $src_img, 0, 0, 0, $h_point, $max_width, $max_height, $width, $height_new);
         }else{
             //cut point by width
-            $w_point = (($width - $width_new) / 2);
+            $w_point = intdiv($width - $width_new, 2);
             imagecopyresampled($dst_img, $src_img, 0, 0, $w_point, 0, $max_width, $max_height, $width_new, $height);
         }
 
@@ -130,6 +133,11 @@ class Image extends \yii\db\ActiveRecord
     public function getObserve()
     {
         return $this->hasOne(Observe::class, ['id' => 'observe_id']);
+    }
+
+    public function getImageVersion()
+    {
+        return $this->hasOne(ImageVersion::class, ['id' => 'image_version_id']);
     }
 
     /**

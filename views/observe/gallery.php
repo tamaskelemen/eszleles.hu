@@ -71,6 +71,34 @@ if ($image !== null) { ?>
             <span class="fa fa-info-circle" ></span>
         </div>
     </div>
+
+    <?php $previousVersions = $model->getPreviousImageVersions();
+    if (!empty($previousVersions)) { ?>
+        <div class="image-versions mt-3">
+            <b class="text-white">Korábbi képverziók</b>
+            <div id="image-versions" class="row mt-2">
+                <?php foreach ($previousVersions as $version) {
+                    if ($version->image === null) {
+                        continue;
+                    }
+                    $thumbnailPath = $version->thumbnail !== null ? $version->thumbnail->path : $version->image->path;
+                    $uploadedAtDate = substr($version->created_at, 0, 16);
+                    $uploadedAt = "Feltöltve: " . $uploadedAtDate;
+                    ?>
+                    <a class="image-version col-6 col-md-3 mb-2"
+                       href="<?= Yii::$app->getHomeUrl() . $version->image->path ?>"
+                       data-sub-html="<?= Html::encode($uploadedAt) ?>">
+                        <?= Html::img(Yii::$app->getHomeUrl() . $thumbnailPath, [
+                            'alt' => $model->object_name,
+                            'class' => 'img-fluid',
+                            'title' => $uploadedAt,
+                        ]) ?>
+                        <small class="image-version-date d-block text-center mt-1"><?= Html::encode($uploadedAtDate) ?></small>
+                    </a>
+                <?php } ?>
+            </div>
+        </div>
+    <?php } ?>
     <?php
 } else { ?>
     <p class="font-italic">Az észleléshez nem tartozik kép.</p>

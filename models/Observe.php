@@ -204,19 +204,39 @@ class Observe extends \yii\db\ActiveRecord
         return self::getAllTypes()[$name];
     }
     /**
+     * The original image of the latest image version (the main image).
      * @return \yii\db\ActiveQuery
     */
     public function getImage()
     {
-        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_ORIGINAL]);
+        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_ORIGINAL])->orderBy(['id' => SORT_DESC]);
     }
 
     /**
+     * The thumbnail of the latest image version.
      * @return \yii\db\ActiveQuery
      */
     public function getThumbnail()
     {
-        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_THUMBNAIL]);
+        return $this->hasOne(Image::class, ['observe_id' => 'id'])->where(['size'=> Image::SIZE_THUMBNAIL])->orderBy(['id' => SORT_DESC]);
+    }
+
+    /**
+     * All image versions, latest first.
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImageVersions()
+    {
+        return $this->hasMany(ImageVersion::class, ['observe_id' => 'id'])->orderBy(['id' => SORT_DESC]);
+    }
+
+    /**
+     * Image versions uploaded before the current main image, latest first.
+     * @return ImageVersion[]
+     */
+    public function getPreviousImageVersions()
+    {
+        return array_slice($this->getImageVersions()->with('image', 'thumbnail')->all(), 1);
     }
 
     /**

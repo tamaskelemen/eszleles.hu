@@ -14,7 +14,6 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
  * ObserveController implements the CRUD actions for Observe model.
@@ -131,13 +130,9 @@ class EclipseController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         if ($observe->load(Yii::$app->request->post())) {
-            if ($observe->image == null) {
-                $eclipseForm = new EclipseForm();
-                $eclipseForm->image = UploadedFile::getInstance($observe, 'image');
+            $eclipseForm = new EclipseForm();
 
-                $eclipseForm->uploadImage($observe->id);
-            }
-            if ($observe->save()) {
+            if ($eclipseForm->saveObservation($observe)) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }
         }

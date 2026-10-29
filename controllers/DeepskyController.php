@@ -15,7 +15,6 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
  * ObserveController implements the CRUD actions for Observe model.
@@ -133,13 +132,9 @@ class DeepskyController extends Controller
         }
 
         if ($observe->load(Yii::$app->request->post())) {
-            if ($observe->image == null) {
-                $deepskyForm = new DeepSkyForm();
-                $deepskyForm->image = UploadedFile::getInstance($observe, 'image');
+            $deepskyForm = new DeepSkyForm();
 
-                $deepskyForm->uploadImage($observe->id);
-            }
-            if ($observe->save()) {
+            if ($deepskyForm->saveObservation($observe)) {
                 return $this->redirect(['view', 'id' => $observe->id]);
             }
         }

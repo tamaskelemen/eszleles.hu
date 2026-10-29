@@ -404,3 +404,14 @@ div .help-block {
 .card {
     background-color: inherit;
 }
+.image-version {
+    cursor: pointer;
+}
+
+.image-version:hover {
+    text-decoration: none;
+}
+
+.image-version-date {
+    color: #adb5bd;
+}
