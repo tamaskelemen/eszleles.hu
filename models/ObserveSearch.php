@@ -116,7 +116,7 @@ class ObserveSearch extends Observe
             ->andFilterWhere(['ilike', 'location', $this->location])
             ->andFilterWhere(['ilike', 'source', $this->source])
             ->andFilterWhere(['ilike', 'description', $this->description])
-            ->andFilterWhere(['like', 'users.name', $this->observer])
+            ->andFilterWhere(['ilike', 'users.name', $this->observer])
             ->andFilterWhere(['>=', 'date', $this->fromDate])
             ->andFilterWhere(['<=', 'date', $this->toDate])
             ->andFilterWhere(['>=', 'uploaded_at', $this->fromUploadDate])
