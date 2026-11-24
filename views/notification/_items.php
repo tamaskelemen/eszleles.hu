@@ -8,7 +8,7 @@ use yii\helpers\StringHelper;
 /* @var $hasMore bool */
 ?>
 <?php if (empty($notifications)) { ?>
-    <p class="notifications__message">Még nincs értesítésed. Itt jelenik meg, ha valaki hozzászól egy észlelésedhez.</p>
+    <p class="notifications__message">Még nincs értesítésed. Itt jelenik meg, ha valaki hozzászól egy észlelésedhez, vagy válaszol egy hozzászólásodra.</p>
 <?php } ?>
 
 <?php foreach ($notifications as $notification) {

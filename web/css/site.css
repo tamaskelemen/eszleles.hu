@@ -1733,10 +1733,40 @@ time[data-toggle] {
     padding: 1rem 0;
     scroll-margin-top: 80px;
     border-top: 1px solid var(--line);
+    overflow-wrap: anywhere;
 }
 
-.comment-item p:last-child {
+.comment-item p:last-of-type {
     margin: 0;
+}
+
+.comment-replies,
+.reply-form {
+    margin-left: 1.25rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--line-strong);
+}
+
+.comment-replies .comment-item:first-child {
+    border-top: 0;
+}
+
+.reply-form {
+    padding-top: .5rem;
+    padding-bottom: 1rem;
+}
+
+.reply-button {
+    margin-top: .25rem;
+    padding: .25rem 0;
+    background: none;
+    border: 0;
+    color: var(--lamp-hover);
+    font-size: .875rem;
+}
+
+.reply-button:hover {
+    text-decoration: underline;
 }
 
 .comment {
