@@ -2,8 +2,8 @@
 namespace app\controllers;
 
 
-use app\models\BugReport;
-use app\models\BugReportSearch;
+use app\models\ActivitySearch;
+use app\models\User;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -46,9 +46,43 @@ class AdminController extends Controller
         return parent::beforeAction($action);
     }
 
+    /**
+     * Lists the activities of every user.
+     * @return string
+     */
     public function actionIndex()
     {
-        return $this->render("index");
+        $searchModel = new ActivitySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists the activities of a user.
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionUser(int $id)
+    {
+        $user = User::findOne($id);
+
+        if ($user === null) {
+            throw new NotFoundHttpException("A keresett oldal nem található");
+        }
+
+        $searchModel = new ActivitySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $user->id);
+
+        return $this->render('user', [
+            'user' => $user,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
 }

@@ -17,6 +17,9 @@ return [
     'ertesitesek' => '/notification/index',
     'ertesitesek/mind-olvasott' => '/notification/mark-all-seen',
 
+    'admin' => '/admin/index',
+    'admin/felhasznalo/<id:\d+>' => '/admin/user',
+
     'osszes' => 'observe/index',
     'kereses' => 'observe/search',
     //melyeg

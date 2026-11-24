@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Email;
 use app\components\Flash;
+use app\models\Activity;
 use app\models\CommentSearch;
 use app\models\forms\LostPasswordForm;
 use app\models\forms\SignupForm;
@@ -177,6 +178,7 @@ class SiteController extends Controller
             throw new NotFoundHttpException("A keresett oldal nem található.");
         }
         if (Yii::$app->user->login($user)) {
+            Activity::log($user->id, Activity::TYPE_LOGIN_RESET_LINK);
             $this->redirect("/user/change-password");
 
         }

@@ -45,6 +45,10 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/')?>">Főoldal</a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['admin/index', 'admin/user']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/admin/index')?>">Tevékenységnapló</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="<?= Url::toRoute('/bug-report/index')?>">Hibajelentések</a>
                 </li>

@@ -64,9 +64,32 @@ class LoginForm extends Model
 
     /**
      * Logs in a user using the provided username and password.
+     * Every attempt is logged if the email address belongs to a user.
      * @return bool whether the user is logged in successfully
      */
     public function login()
+    {
+        $isSuccessful = false;
+
+        try {
+            $isSuccessful = $this->authenticate();
+        } finally {
+            if (!$this->hasErrors('email') && $this->getUser()) {
+                Activity::log(
+                    $this->getUser()->id,
+                    $isSuccessful ? Activity::TYPE_LOGIN : Activity::TYPE_LOGIN_FAILED
+                );
+            }
+        }
+
+        return $isSuccessful;
+    }
+
+    /**
+     * @return bool whether the user is logged in successfully
+     * @throws \Exception
+     */
+    private function authenticate()
     {
         if ($this->validate()) {
             $user = $this->getUser();
