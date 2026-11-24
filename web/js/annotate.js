@@ -13,6 +13,17 @@ $(document).ready(function() {
         ],
     });
 
+    // Annotorious prevents the default of every touch on the image, which blocks scrolling and zooming the page.
+    // There is nothing to draw here, so keep the touches from it: it works with the mouse events the browser
+    // sends after a tap.
+    ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(function (type) {
+        $('#img-container')[0].addEventListener(type, function (event) {
+            if (event.target.closest('.a9s-annotationlayer')) {
+                event.stopPropagation();
+            }
+        }, {capture: true, passive: true});
+    });
+
     viewtag(img.id);
 
     // mouseover the taglist

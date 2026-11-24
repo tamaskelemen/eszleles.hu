@@ -9,7 +9,7 @@ $this->registerCssFile('/css/annotations.css', ['depends' => 'app\assets\AppAsse
 
 $this->registerCssFile('/lightgallery/css/lightgallery.css', ['depends' => 'app\assets\AppAsset']);
 $this->registerJsFile('/lightgallery/js/lightgallery.min.js', ['depends' => 'app\assets\AppAsset']);
-$this->registerJsFile("/js/observation.js", ['depends' => 'app\assets\AppAsset']);
+$this->registerJsFile("/js/observation.js?v=" . filemtime('../web/js/observation.js'), ['depends' => 'app\assets\AppAsset']);
 
 $isOwner = false;
 if (!Yii::$app->user->isGuest && $model->observer_id == Yii::$app->user->identity->id) {
@@ -20,7 +20,7 @@ if ($isOwner) {
     $this->registerJsFile('/js/annotate-admin.js', ['depends' => 'app\assets\AppAsset']);
 //    $this->registerJsFile('/js/image-tag-admin.js', ['depends' => 'app\assets\AppAsset']);
 } else {
-    $this->registerJsFile('/js/annotate.js', ['depends' => 'app\assets\AppAsset']);
+    $this->registerJsFile('/js/annotate.js?v=' . filemtime('../web/js/annotate.js'), ['depends' => 'app\assets\AppAsset']);
 //    $this->registerJsFile('/js/image-tag.js', ['depends' => 'app\assets\AppAsset']);
 }
 

@@ -1558,6 +1558,11 @@ time[data-toggle] {
     height: auto;
 }
 
+#img-container .img-view,
+#img-container .a9s-annotationlayer {
+    cursor: zoom-in;
+}
+
 .observe-form .img-container img {
     max-height: 320px;
     border-radius: var(--radius);
