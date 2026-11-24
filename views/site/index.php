@@ -181,7 +181,44 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
 
         <section class="news">
             <h2>Hírek</h2>
-            <article>
+            <article id="megujulas">
+                <h3>Megújulás</h3>
+                <p class="news__date">2026-11-24</p>
+
+                <p>
+                    Sok idő eltelt, mióta rendes törődést kapott ez az oldal. Stabilan növekszik az észlelők száma,
+                    ezzel arányosan, mind mennyiségben, mind minőségben gyarapodik az észlelések gyűjteménye.
+                </p>
+                <p>
+                    Megérett az idő, hogy az elavult rendszerünk megújuljon! Új külső, új tartalom.
+                    Lássuk, mi is változott!
+                </p>
+                <ul>
+                    <li>Új design, ami egy picit közelebb került így a trendekhez,</li>
+                    <li>Éjszakai mód. Most már sokkal szemkímélőbb lesz az éjszakai, távcső melletti használat,</li>
+                    <li>
+                        Értesítések: ha új hozzászólás érkezik egy kép alá (akár válaszként), értesítjük róla azt,
+                        akit ilyenkor értesíteni kell,
+                    </li>
+                    <li>
+                        „Korábbi eszközök” funkció feltöltésnél: Ha ugyanazt a felszerelést használtad, mint egy korábbi 
+                        észlelésednél, már nem kell újra kitöltened az összes mezőt.
+                    </li>
+                    <li>
+                        Képek módosítása: egy újabb, másféle képkidolgozás, vagy komplett csere. Az észlelés
+                        módosításánál új képet lehet feltölteni, lecserélve az előzőt. A korábbi verziók elérhetőek,
+                        így akár évekkel később visszatérve, kidolgozva ugyanazt a nyers képet meg tudjuk mutatni
+                        a képeink evolúcióját,
+                    </li>
+                    <li>Pár technikai apróság, amiről jobb nem is beszélni.</li>
+                </ul>
+                <p>
+                    További fejlesztések várhatóak, amint idő engedi. Noha igyekszünk lépést tartani a technológiával,
+                    néhány, motorháztető alatti apróság a rendíthetetlen AI ellenére is marad, ugyanis az oldal
+                    fejlesztőjének ez egy nosztalgiaprojektje is egyben.
+                </p>
+            </article>
+            <article id="vega-eszlelesek-feltoltve">
                 <h3>VEGA észlelések feltöltve</h3>
                 <p class="news__date">2021-05-20</p>
 
@@ -199,7 +236,7 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     fejlődése miatt.
                 </p>
             </article>
-            <article>
+            <article id="elindult-az-eszlelesfeltolto">
                 <h3>Elindult az észlelésfeltöltő!</h3>
                 <p class="news__date">2021-05-19</p>
 

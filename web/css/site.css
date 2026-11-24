@@ -1437,6 +1437,10 @@ time[data-toggle] {
     }
 }
 
+.news article {
+    scroll-margin-top: 80px;
+}
+
 .news article + article {
     margin-top: 2rem;
     padding-top: 2rem;
