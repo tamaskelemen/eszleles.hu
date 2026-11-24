@@ -23,6 +23,8 @@ use yii\db\Expression;
 class Notification extends \yii\db\ActiveRecord
 {
     const TYPE_COMMENT = 'comment';
+    const TYPE_REPLY = 'reply';
+    const TYPE_THREAD_REPLY = 'thread_reply';
 
     const PAGE_SIZE = 15;
 
@@ -70,6 +72,8 @@ class Notification extends \yii\db\ActiveRecord
     {
         return [
             self::TYPE_COMMENT => 'hozzászólt az észlelésedhez:',
+            self::TYPE_REPLY => 'válaszolt a hozzászólásodra:',
+            self::TYPE_THREAD_REPLY => 'válaszolt egy beszélgetésben, amelyhez hozzászóltál:',
         ];
     }
 

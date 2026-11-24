@@ -10,15 +10,17 @@ use yii\db\Exception;
 
 class CommentForm extends Model
 {
+    public $id;
     public $comment;
     public $observation_id;
+    public $parent_id;
 
     public function rules()
     {
         return [
             [['comment', 'observation_id'], 'required', 'message' => 'A mező kitöltése kötelező!'],
             ['comment', 'string'],
-            ['observation_id', 'integer'],
+            [['observation_id', 'parent_id'], 'integer'],
         ];
     }
 
@@ -38,6 +40,7 @@ class CommentForm extends Model
         $comment = new Comment();
         $comment->comment = $this->comment;
         $comment->observation_id = $this->observation_id;
+        $comment->parent_id = $this->parent_id;
         $comment->user_id = Yii::$app->user->getIdentity()->id;
 
         $transaction = Yii::$app->db->beginTransaction();
@@ -48,6 +51,7 @@ class CommentForm extends Model
 
             Notification::createForComment($comment);
             $transaction->commit();
+            $this->id = $comment->id;
 
             return true;
         } catch (\Exception $exception) {

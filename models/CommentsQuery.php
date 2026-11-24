@@ -31,4 +31,12 @@ class CommentsQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * @return CommentsQuery
+     */
+    public function firstLevel()
+    {
+        return $this->andWhere(['parent_id' => null]);
+    }
 }

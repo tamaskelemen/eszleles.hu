@@ -130,7 +130,7 @@ class ObserveController extends Controller
         if ($commentForm->load(Yii::$app->request->post()) && $commentForm->add()) {
 
             Flash::addSuccess("A hozzászólás sikeresen mentve.");
-            return $this->redirect(['/' . $commentForm->observation_id]);
+            return $this->redirect(['/' . $commentForm->observation_id, '#' => 'hozzaszolas-' . $commentForm->id]);
         }
 
         return $this->goBack();

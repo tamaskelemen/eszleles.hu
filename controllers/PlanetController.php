@@ -87,7 +87,7 @@ class PlanetController extends Controller
 
         $commentForm = new CommentForm();
         $commentForm->observation_id = $id;
-        $commentData = (new CommentSearch(["observation_id" => $id]))->search();
+        $commentData = (new CommentSearch(["observation_id" => $id]))->searchThreads();
 
         return $this->render('//observe/view', [
             'model' => $model,
