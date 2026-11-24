@@ -50,6 +50,9 @@ class Observe extends \yii\db\ActiveRecord
     const TYPE_SUN = "sun";
     const TYPE_ECLIPSE = "eclipse";
 
+    const PREVIOUS_VALUE_ATTRIBUTES = ['telescope', 'camera', 'mechanics', 'location'];
+    const PREVIOUS_VALUE_LIMIT = 20;
+
     /**
      * {@inheritdoc}
      */
@@ -194,6 +197,41 @@ class Observe extends \yii\db\ActiveRecord
 
     public static function getAttribteHelpText($attribute) {
         return self::getAllHelptext()[$attribute] ?? "";
+    }
+
+    /**
+     * Values the user has used in their earlier observations (of any type), latest first.
+     * Values that differ only in letter case or surrounding spaces are listed once.
+     *
+     * @param int $userId
+     * @return array lists of values indexed by attribute
+     */
+    public static function getPreviousValues($userId)
+    {
+        $observations = self::find()
+            ->select(self::PREVIOUS_VALUE_ATTRIBUTES)
+            ->ofUser($userId)
+            ->orderBy(['id' => SORT_DESC])
+            ->asArray()
+            ->all();
+
+        $previousValues = [];
+
+        foreach (self::PREVIOUS_VALUE_ATTRIBUTES as $attribute) {
+            $values = [];
+
+            foreach ($observations as $observation) {
+                $value = trim((string)$observation[$attribute]);
+
+                if ($value !== '') {
+                    $values += [mb_strtolower($value) => $value];
+                }
+            }
+
+            $previousValues[$attribute] = array_slice(array_values($values), 0, self::PREVIOUS_VALUE_LIMIT);
+        }
+
+        return $previousValues;
     }
 
     /**

@@ -851,6 +851,18 @@ input[type="checkbox"] {
     color: var(--text);
 }
 
+.previous-values .dropdown-menu {
+    width: 100%;
+    max-height: 18rem;
+    overflow-y: auto;
+}
+
+.previous-values .dropdown-item {
+    min-height: 44px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 .datepicker.dropdown-menu {
     padding: .5rem;
 }

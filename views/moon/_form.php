@@ -1,6 +1,7 @@
 <?php
 
 use app\widgets\DatePicker;
+use app\widgets\PreviousValueInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,9 +18,9 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6 col-12">
             <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'telescope')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'telescope')->widget(PreviousValueInput::class, ['options' => ['maxlength' => true]]) ?>
 
-            <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'location')->widget(PreviousValueInput::class, ['options' => ['maxlength' => true]]) ?>
 
             <?= $form->field($model, 'date')->widget(DatePicker::class, [
                 'options' => ['autocomplete' => 'off'],
@@ -41,9 +42,9 @@ use yii\widgets\ActiveForm;
         <div class="col-lg-6 col-12">
             <?= $this->render("//observe/_image-upload", ["form" => $form, "model" => $model]) ?>
 
-            <?= $form->field($model, 'camera')->textInput() ?>
+            <?= $form->field($model, 'camera')->widget(PreviousValueInput::class) ?>
 
-            <?= $form->field($model, 'mechanics')->textInput() ?>
+            <?= $form->field($model, 'mechanics')->widget(PreviousValueInput::class) ?>
 
             <?= $form->field($model, 'expo')->textInput() ?>
 
