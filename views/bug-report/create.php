@@ -9,7 +9,7 @@ $this->title = 'Hibajelentő';
 $this->params['breadcrumbs'][] = ['label' => 'Bug Reports', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container bug-report-create">
+<div class="container container-narrow bug-report-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p>

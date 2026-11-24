@@ -6,24 +6,18 @@ use yii\data\ActiveDataProvider;
 use yii\widgets\ListView;
 
 ?>
-<div>
-    <hr>
-    <h2>Hozzászólások (<?= $commentData->totalCount ?>)</h2>
-    <?php
-    if (!Yii::$app->user->isGuest) {
-        echo $this->render('../_common-items/_commentForm',
-                ['commentForm' => $commentForm]
-            );
-    }
+<h2>Hozzászólások (<?= $commentData->totalCount ?>)</h2>
+<?php
+if (!Yii::$app->user->isGuest) {
+    echo $this->render('../_common-items/_commentForm',
+            ['commentForm' => $commentForm]
+        );
+}
 
-    echo ListView::widget([
-        'dataProvider' => $commentData,
-        'itemView' => '../_common-items/_comment',
-        'emptyText' => '<i>Még nincs hozzászólás</i>'
-    ])
-
-//    foreach ($comments as $comment) {
-//        echo $this->render('../_common-items/_comment', ['comment' => $comment]);
-//    }
-    ?>
-</div>
+echo ListView::widget([
+    'dataProvider' => $commentData,
+    'itemView' => '../_common-items/_comment',
+    'summary' => '',
+    'emptyText' => 'Még nincs hozzászólás'
+])
+?>

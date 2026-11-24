@@ -11,13 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['profile', 
 $this->params['breadcrumbs'][] = 'Módosítás';
 ?>
 <div class="users-update">
-    <div class="text-center">
-        <h1>
-            <?= Html::encode($this->title) ?>
-        </h1>
-    </div>
+    <div class="container container-narrow">
+        <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="container">
         <?= $this->render('_form', [
             'model' => $model,
         ]) ?>

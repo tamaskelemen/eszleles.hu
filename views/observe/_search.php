@@ -11,10 +11,10 @@ use yii\widgets\ActiveForm;
 
 <div class="observe-search">
     <p>
-        <?= Html::button('Bővített keresés', ['class' => 'btn btn-primary', 'data-toggle' => "collapse", 'data-target' => '#search']) ?>
+        <?= Html::button('Bővített keresés', ['class' => 'btn btn-outline', 'data-toggle' => "collapse", 'data-target' => '#search']) ?>
     </p>
 
-    <div class="container collapse" id="search" >
+    <div class="panel collapse" id="search" >
         <?php $form = ActiveForm::begin([
             'action' => ['/observe/search'],
             'method' => 'get',
@@ -114,8 +114,8 @@ use yii\widgets\ActiveForm;
         <?php // echo $form->field($model, 'edited_at') ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Keresés', ['class' => 'btn btn-success']) ?>
-            <?= Html::resetButton('Törlés', ['class' => 'btn btn-info']) ?>
+            <?= Html::submitButton('Keresés', ['class' => 'btn btn-primary']) ?>
+            <?= Html::resetButton('Törlés', ['class' => 'btn btn-outline']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

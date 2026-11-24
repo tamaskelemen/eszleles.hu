@@ -15,12 +15,12 @@ $this->registerMetaTag([
 $this->title = 'Belépés';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login container">
+<div class="site-login container container-narrow">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Kérlek töltsd ki az alábbi mezőket a bejelentkezéshez:</p>
-    <div class="row">
-        <div class="col-lg-5">
+    <div class="panel">
+        <div>
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
                 'fieldConfig' => [

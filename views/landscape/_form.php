@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
     <div class="form-group">
-        <?= Html::submitButton('Feltöltés', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Feltöltés', ['class' => 'btn btn-primary btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

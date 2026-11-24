@@ -8,8 +8,8 @@ use yii\helpers\Url;
 $user = $model->user;
 ?>
 
-<div class="p-3 <?= $index % 2 == 0 ? "light-grey-background" : "" ?>">
-    <p><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> - <?= $model->created_at ?></p>
+<div class="comment-item">
+    <p class="comment-byline"><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> <?= Yii::$app->formatter->asTimeAgo($model->created_at) ?></p>
 
-    <p> <?= nl2br(Html::encode($model->comment)) ?></p>
+    <p><?= nl2br(Html::encode($model->comment)) ?></p>
 </div>

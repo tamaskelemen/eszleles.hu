@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
 ?>
-<div class="bug-report-view">
+<div class="bug-report-view container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -51,8 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \app\models\BugReport::getStatuses()[$model->status];
                 }
             ],
-            'created_at',
-            'updated_at',
+            'created_at:timeAgo',
+            'updated_at:timeAgo',
         ],
     ]) ?>
 

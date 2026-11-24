@@ -30,7 +30,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'newsletter')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Mentés', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Mentés', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

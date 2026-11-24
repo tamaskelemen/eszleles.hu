@@ -255,6 +255,24 @@ let site = (function site($) {
                 }
             });
 
+            body.tooltip({
+                selector: '[data-toggle=tooltip]',
+                boundary: 'window',
+                // touch screens have no hover, a tap gives focus instead
+                trigger: window.matchMedia('(hover: hover)').matches ? 'hover focus' : 'focus'
+            });
+
+            // iOS does not focus or blur these elements on its own
+            body.on('click', '[data-toggle=tooltip]', function () {
+                this.focus();
+            });
+
+            document.addEventListener('touchstart', function (e) {
+                if ($(e.target).closest('[data-toggle=tooltip]').length === 0) {
+                    $('[data-toggle=tooltip]:focus').trigger('blur');
+                }
+            }, { passive: true });
+
             body.on('click', 'a[data-ajax=1]', comm.ajaxLinkClick);
             body.on('click', 'a[data-view=modal]', comm.modalViewClick);
             body.on('submit', 'form[data-ajax=1]', comm.ajaxFormSubmit);

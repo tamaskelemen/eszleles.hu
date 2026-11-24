@@ -7,7 +7,7 @@ use yii\helpers\Html;
 $this->title = 'A gyűjtemény célja';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-about container">
+<div class="site-about container prose">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
