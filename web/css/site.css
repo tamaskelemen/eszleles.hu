@@ -1474,7 +1474,7 @@ time[data-toggle] {
 .comment-byline time {
     margin-left: .5rem;
     color: var(--muted);
-    font-size: .875rem;
+    font-size: .75rem;
     white-space: nowrap;
 }
 
@@ -1757,16 +1757,16 @@ time[data-toggle] {
 }
 
 .reply-button {
-    margin-top: .25rem;
-    padding: .25rem 0;
-    background: none;
-    border: 0;
-    color: var(--lamp-hover);
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .6rem;
+    padding: .25rem .75rem;
     font-size: .875rem;
 }
 
-.reply-button:hover {
-    text-decoration: underline;
+.reply-button .fa {
+    color: var(--muted);
 }
 
 .comment {

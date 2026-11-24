@@ -13,6 +13,9 @@ $user = $model->user;
     <p><?= nl2br(Html::encode($model->comment)) ?></p>
 
     <?php if ($replyFormId !== null) { ?>
-        <button class="reply-button" type="button" aria-expanded="false" aria-controls="<?= $replyFormId ?>">Válasz</button>
+        <button class="btn btn-outline reply-button" type="button" aria-expanded="false" aria-controls="<?= $replyFormId ?>">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Válasz
+        </button>
     <?php } ?>
 </div>
