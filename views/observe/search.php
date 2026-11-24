@@ -14,6 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
     [
+        'format' => 'raw',
+        'contentOptions' => ['class' => 'grid-thumb'],
+        'value' => function ($model) {
+            return Html::a(
+                Html::img($model->getThumbnailPath(), ['alt' => '', 'loading' => 'lazy', 'width' => 300, 'height' => 200]),
+                $model->getViewUrl(),
+                ['tabindex' => -1]
+            );
+        }
+    ],
+    [
         'attribute' => 'object_name',
         'format' => 'raw',
         'value' => function ($model) {
@@ -60,23 +71,20 @@ if (!Yii::$app->user->isGuest) {
 }
 
 ?>
-<div class="observe-index">
-    <div class="text-center">
-        <h1><?= Html::encode($this->title) ?></h1>
-        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    </div>
+<div class="observe-search-page container">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?= $this->render('_search', ['model' => $searchModel]) ?>
 
-    <div class="container">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => $columns,
-            'tableOptions' => ['class' => 'table table-striped'],
-            'pager' => [
-                'firstPageLabel' => 'Első',
-                'lastPageLabel'  => 'Utolsó'
-            ],
-            'summary' => '{begin, number}-{end, number}</b> az összesen <b>{totalCount, number}</b> észlelésből'
-        ]); ?>
-    </div>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => $columns,
+        'tableOptions' => ['class' => 'table'],
+        'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
+        'pager' => [
+            'firstPageLabel' => 'Első',
+            'lastPageLabel'  => 'Utolsó'
+        ],
+        'summary' => '{begin, number}-{end, number}</b> az összesen <b>{totalCount, number}</b> észlelésből'
+    ]); ?>
 </div>

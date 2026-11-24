@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
 
         $this->js = [
             'js/common.js?v=' . filemtime('../web/js/common.js'),
+            'js/night-mode.js?v=' . filemtime('../web/js/night-mode.js'),
         ];
 
         parent::__construct($config);

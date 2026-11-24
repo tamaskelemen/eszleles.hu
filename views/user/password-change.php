@@ -12,13 +12,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::$app->user->getIdentity()->nam
 $this->params['breadcrumbs'][] = 'Módosítás';
 ?>
 <div class="users-update">
-    <div class="text-center">
-        <h1>
-            <?= Html::encode($this->title) ?>
-        </h1>
-    </div>
+    <div class="container container-narrow">
+        <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="container">
         <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
@@ -26,7 +22,7 @@ $this->params['breadcrumbs'][] = 'Módosítás';
         <?= $form->field($model, 'password_confirm')->passwordInput() ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Mentés', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Mentés', ['class' => 'btn btn-primary']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -85,7 +85,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(4)->with('observer', 'comments', 'thumbnail')->all();
+        $latestObs = Observe::find()->orderBy(['uploaded_at' => SORT_DESC])->limit(8)->with('observer', 'comments', 'thumbnail')->all();
         $commentData = (new CommentSearch())->setLimit(4)->search();
         $commentData->pagination = false;
 

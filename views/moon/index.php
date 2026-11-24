@@ -1,31 +1,10 @@
 <?php
 
-use yii\helpers\Html;
-use app\widgets\DatePicker;
-use yii\widgets\ListView;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ObserveSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Hold észlelések';
 $this->params['breadcrumbs'][] = $this->title;
-?>
 
-<div class="observe-index">
-    <div class="text-center">
-        <h1>
-            <?= Html::encode($this->title) ?>
-        </h1>
-    </div>
-    <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <div class="container">
-    <?= ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemView' => '../_common-items/_listItem'
-    ])
-
-    ?>
-    </div>
-
-</div>
+echo $this->render('//_common-items/_listing', ['dataProvider' => $dataProvider]);

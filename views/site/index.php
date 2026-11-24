@@ -14,52 +14,69 @@ $this->title = 'VCSE Észlelések';
 
 $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszleloret.jpg" ])
 ?>
-<div class="site-index">
+<section class="hero">
+    <picture>
+        <source type="image/webp" srcset="/pictures/eszleloret-960.webp 960w, /pictures/eszleloret-1920.webp 1920w" sizes="100vw">
+        <img src="/pictures/eszleloret.jpg" alt="Távcsövek vörös fényben az észlelőréten, fölöttük a Tejút" fetchpriority="high">
+    </picture>
 
-    <div id="carouselEx" class="carousel slide" data-ride="carousel" data-interval="10000">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselEx" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselEx" data-slide-to="1"></li>
-            <li data-target="#carouselEx" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner"  >
-            <div class="carousel-title">
-                <div class="title-wrapper">
-                    <h1>Észlelés.hu</h1>
-                    <p class="lead">Csillagászati megfigyelések gyűjtőhelye.</p>
-                    <?php if (Yii::$app->user->isGuest) { ?>
-                        <p><a class="btn btn-lg btn-success" href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a></p>
-                        <p>vagy ha már regisztráltál, <a class="" href="<?= Url::toRoute('/site/login') ?>">lépj be</a>.</p>
-                    <?php } ?>
-                </div>
-            </div>
-            <div class="carousel-item active">
-                <img class="d-block w-100" style="object-position: center bottom; object-fit: cover;" src="/pictures/eszleloret.jpg" alt="First slide" ">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="/pictures/hold_schmallrafi.jpg" alt="VCSE Camp slide">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="/pictures/uridafoss.jpg" alt="Northern Lights">
-            </div>
+    <div class="container hero__content">
+        <div class="hero__block">
+            <h1>Észlelés.hu</h1>
+            <p class="hero__lead">Csillagászati megfigyelések gyűjtőhelye.</p>
+
+            <?= Html::beginForm(['/observe/search'], 'get', ['class' => 'hero__search', 'role' => 'search']) ?>
+                <label class="sr-only" for="hero-search">Objektum neve</label>
+                <input class="form-control" id="hero-search" type="search" name="ObserveSearch[object_name]" placeholder="Objektum, pl. M42 vagy Jupiter">
+                <button class="btn btn-primary" type="submit">Keresés</button>
+            <?= Html::endForm() ?>
+
+            <?php if (Yii::$app->user->isGuest) { ?>
+                <p class="hero__login">
+                    <a href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a>,
+                    vagy ha már regisztráltál, <a href="<?= Url::toRoute('/site/login') ?>">lépj be</a>.
+                </p>
+            <?php } ?>
         </div>
-        <a class="carousel-control-prev" href="#carouselEx" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselEx" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
-</div>
+</section>
 
+<div class="site-index">
+    <section class="container section">
+        <div class="section__head">
+            <h2>Legújabb feltöltések</h2>
+            <a href="<?= Url::toRoute('/observe/index') ?>">Összes észlelés</a>
+        </div>
 
-    <div class="body-content container">
-        <h2>Egy korszerű észlelésfeltöltő</h2>
+        <div class="obs-grid">
+            <?php foreach ($latestObs as $obs) { ?>
+                <div class="obs-cell">
+                    <?= $this->render('../_common-items/_listItem', ['model' => $obs]) ?>
+                </div>
+            <?php } ?>
+        </div>
+    </section>
 
-        <div class="row mb-5">
-            <div class="col-12">
+    <section class="container section">
+        <h2>Böngéssz típus szerint</h2>
+        <div class="eyepieces">
+            <?php foreach (Observe::getAllTypes() as $type => $label) { ?>
+                <a class="eyepiece" href="<?= Url::toRoute("/{$type}/index") ?>">
+                    <span class="eyepiece__field"><?= $this->render('../_common-items/_typeIcon', ['type' => $type]) ?></span>
+                    <?= $label ?>
+                </a>
+            <?php } ?>
+        </div>
+    </section>
+
+    <section class="moon-band">
+        <picture>
+            <source type="image/webp" srcset="/pictures/hold_schmallrafi-640.webp 640w, /pictures/hold_schmallrafi-1280.webp 1280w" sizes="(min-width: 992px) 60vw, 100vw">
+            <img src="/pictures/hold_schmallrafi.jpg" alt="Holdsarló hamuszürke fénnyel, fátyolfelhők mögött" loading="lazy">
+        </picture>
+        <div class="container">
+            <div class="moon-band__text">
+                <h2>Egy korszerű észlelésfeltöltő</h2>
                 <p>
                     Az amatőrcsillagászat fizetés és tiszteletdíj nélkül végzett csillagászat.
                     Egy-egy mélyég-objektum vagy üstökös megtekintése, látványának, alakjának,
@@ -67,7 +84,7 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     ki kikapcsolódásként, ki élvezetből nézegeti az égitesteket különbző távcsövekkel,
                     vagy éppen le is fotózza őket.
                 </p>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#restText" aria-expanded="false" aria-controls="restText">
+                <button class="btn btn-outline" type="button" data-toggle="collapse" data-target="#restText" aria-expanded="false" aria-controls="restText">
                     Mutass többet...
                 </button>
                 <div class="collapse mt-4" id="restText">
@@ -148,25 +165,25 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     </p>
                 </div>
             </div>
-
         </div>
+    </section>
 
-        <h2 class="pt-4">Legújabb feltöltések</h2>
+    <div class="container section home-columns">
+        <section>
+            <h2>Friss hozzászólások</h2>
+            <?= ListView::widget([
+                'dataProvider' => $commentData,
+                'itemView' => '_comment',
+                'emptyText' => 'Még nincs hozzászólás',
+                'summary' => '',
+            ]) ?>
+        </section>
 
-        <div class="row">
-            <?php
-            foreach ($latestObs as $obs) {
-                echo $this->render('../_common-items/_latestItem', ['model' => $obs]);
-            }
-            ?>
-        </div>
-
-        <hr>
-        <h2 class="pb-4">Hírek</h2>
-        <div class="row mb-5">
-            <div class="col-12">
-                <h5>VEGA észlelések feltöltve</h5>
-                <p><i>2021-05-20</i></p>
+        <section class="news">
+            <h2>Hírek</h2>
+            <article>
+                <h3>VEGA észlelések feltöltve</h3>
+                <p class="news__date">2021-05-20</p>
 
                 <p>
                     A <?= Html::a('VEGA', 'http://vcse.hu/vega-lista/') ?> a Vega Csillagászati egyesület folyóirata, amelyben évtizedek óta publikálva vannak az
@@ -181,11 +198,10 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     látszanak - akár a természet változása, akár a távcsövek, eszközök
                     fejlődése miatt.
                 </p>
-            </div>
-            <hr>
-            <div class="col-12">
-                <h5>Elindult az észlelésfeltöltő!</h5>
-                <p><i>2021-05-19</i></p>
+            </article>
+            <article>
+                <h3>Elindult az észlelésfeltöltő!</h3>
+                <p class="news__date">2021-05-19</p>
 
                 <p>
                     A <?= Html::a('Vega Csillagászati Egyesület', 'http://vcse.hu') ?> elindította a saját észlelésfeltöltőjét,
@@ -202,23 +218,23 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     funkcióval szeretnénk ellátni oldalunk (amatőr)csillagász társaink
                     örömére
                 </p>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2 class="pt-4">Friss hozzászólások</h2>
-
-            <div>
-                <?php
-                    echo ListView::widget([
-                        'dataProvider' => $commentData,
-                        'itemView' => '_comment',
-                        'emptyText' => '<i>Még nincs hozzászólás</i>',
-                        'summary' => '',
-                    ])
-                ?>
-            </div>
-
+            </article>
+        </section>
     </div>
+
+    <section class="aurora-band">
+        <picture>
+            <source type="image/webp" srcset="/pictures/uridafoss-800.webp 800w, /pictures/uridafoss-1600.webp 1600w" sizes="100vw">
+            <img src="/pictures/uridafoss.jpg" alt="Sarki fény egy befagyott folyó fölött" loading="lazy">
+        </picture>
+        <div class="container">
+            <h2>Te mit láttál az égen?</h2>
+            <p>Rajzot, fotót és szöveges leírást is feltölthetsz.</p>
+            <?php if (Yii::$app->user->isGuest) { ?>
+                <a class="btn btn-primary btn-lg" href="<?= Url::toRoute('/site/signup') ?>">Regisztrálok</a>
+            <?php } else { ?>
+                <a class="btn btn-primary btn-lg" href="<?= Url::toRoute('/deepsky/create') ?>">Mélyég-észlelés feltöltése</a>
+            <?php } ?>
+        </div>
+    </section>
 </div>

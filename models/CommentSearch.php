@@ -87,4 +87,19 @@ class CommentSearch extends Comment
 
         return $dataProvider;
     }
+
+    /**
+     * Creates data provider instance with the first level comments only, the replies are available through them
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchThreads()
+    {
+        $dataProvider = $this->search();
+        $dataProvider->query->firstLevel()->with('replies.user');
+        // notifications link to the comments, all of them should be on the page
+        $dataProvider->pagination = false;
+
+        return $dataProvider;
+    }
 }

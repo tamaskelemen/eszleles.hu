@@ -5,25 +5,25 @@
 use yii\data\ActiveDataProvider;
 use yii\widgets\ListView;
 
+$commentCount = $commentData->totalCount;
+foreach ($commentData->getModels() as $comment) {
+    $commentCount += count($comment->replies);
+}
 ?>
-<div>
-    <hr>
-    <h2>Hozzászólások (<?= $commentData->totalCount ?>)</h2>
-    <?php
-    if (!Yii::$app->user->isGuest) {
-        echo $this->render('../_common-items/_commentForm',
-                ['commentForm' => $commentForm]
-            );
-    }
+<h2>Hozzászólások (<?= $commentCount ?>)</h2>
+<?php
+if (!Yii::$app->user->isGuest) {
+    $this->registerJsFile('/js/comments.js?v=' . filemtime(Yii::getAlias('@webroot/js/comments.js')), ['depends' => 'app\assets\AppAsset']);
 
-    echo ListView::widget([
-        'dataProvider' => $commentData,
-        'itemView' => '../_common-items/_comment',
-        'emptyText' => '<i>Még nincs hozzászólás</i>'
-    ])
+    echo $this->render('../_common-items/_commentForm',
+            ['commentForm' => $commentForm]
+        );
+}
 
-//    foreach ($comments as $comment) {
-//        echo $this->render('../_common-items/_comment', ['comment' => $comment]);
-//    }
-    ?>
-</div>
+echo ListView::widget([
+    'dataProvider' => $commentData,
+    'itemView' => '../_common-items/_commentThread',
+    'summary' => '',
+    'emptyText' => 'Még nincs hozzászólás'
+])
+?>

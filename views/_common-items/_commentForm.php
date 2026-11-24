@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($commentForm, 'observation_id')->hiddenInput()->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Mentés', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Mentés', ['class' => 'btn btn-primary']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

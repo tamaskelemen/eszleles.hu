@@ -27,42 +27,34 @@ if ($isOwner) {
 $image = $model->getImage()->one();
 
 if ($image !== null) { ?>
-    <div id="lightgallery" >
-        <div data-src="<?= Yii::$app->getHomeUrl() . $image->path ?>">
-            <p class="mb-1">
-                <span class="fa fa-search-plus"></span>
-                Teljes képernyő
-            </p>
+    <div class="stage">
+        <div id="img-container" class="img-container">
+            <?= Html::img(
+                Yii::$app->getHomeUrl() . $image->path,
+                [
+                    'alt' => $model->object_name,
+                    'class'=> 'img-view',
+                    'id' => $image->id,
+                    'title' => $model->object_name,
+                ]) ?>
         </div>
-    </div>
-    <div id="img-container" class="img-container">
-        <?= Html::img(
-            Yii::$app->getHomeUrl() . $image->path,
-            [
-                'alt' => $model->object_name,
-                'class'=> 'img-fluid m-auto img-view',
-                'id' => $image->id,
-                'title' => $model->object_name,
-            ]) ?>
     </div>
 
     <div id="tagbox">
     </div>
 
-    <div class="row">
+    <div class="stage-bar">
         <?php if ($model->observer_id === Yii::$app->user->getId()) { ?>
-            <div class="container">
-                <div class="alert-info alert" role="alert">
-                    Szerkesztő mód: a képen megjelölheted a látható objektumokat, látnivalókat.
-                </div>
+            <div class="alert-info alert" role="alert">
+                Szerkesztő mód: a képen megjelölheted a látható objektumokat, látnivalókat.
             </div>
         <?php } ?>
 
-        <div id="taglist" class="col-10 ml-auto">
+        <div id="taglist">
             Jelölések:
         </div>
 
-        <div class="col-2 text-right" data-toggle="popover" data-content="
+        <div class="stage-bar__help" data-toggle="popover" data-content="
                   A feltöltött képeiden meg tudod jelölni a látható objektumat azok nevével. Egy objektumnak akár több nevet is megadhatsz.
                   A látogatók ezután az észlelésed adatlapján láthatják azokat, ezzel megkönnyítve nekik a beazonosítást.
                   A képeiden a jelölések szerkesztéséhez be kell jelentkezned.
@@ -70,30 +62,37 @@ if ($image !== null) { ?>
             Mi ez?
             <span class="fa fa-info-circle" ></span>
         </div>
+
+        <div id="lightgallery">
+            <div class="btn btn-outline" data-src="<?= Yii::$app->getHomeUrl() . $image->path ?>">
+                <span class="fa fa-search-plus"></span>
+                Teljes képernyő
+            </div>
+        </div>
     </div>
 
     <?php $previousVersions = $model->getPreviousImageVersions();
     if (!empty($previousVersions)) { ?>
-        <div class="image-versions mt-3">
-            <b class="text-white">Korábbi képverziók</b>
-            <div id="image-versions" class="row mt-2">
+        <div class="image-versions">
+            <h2>Korábbi képverziók</h2>
+            <div id="image-versions" class="image-versions__list">
                 <?php foreach ($previousVersions as $version) {
                     if ($version->image === null) {
                         continue;
                     }
                     $thumbnailPath = $version->thumbnail !== null ? $version->thumbnail->path : $version->image->path;
                     $uploadedAtDate = substr($version->created_at, 0, 16);
+                    $uploadedAtTag = Yii::$app->formatter->asTimeAgo($version->created_at, $uploadedAtDate);
                     $uploadedAt = "Feltöltve: " . $uploadedAtDate;
                     ?>
-                    <a class="image-version col-6 col-md-3 mb-2"
+                    <a class="image-version"
                        href="<?= Yii::$app->getHomeUrl() . $version->image->path ?>"
-                       data-sub-html="<?= Html::encode($uploadedAt) ?>">
+                       data-sub-html="<?= Html::encode("Feltöltve: " . $uploadedAtTag) ?>">
                         <?= Html::img(Yii::$app->getHomeUrl() . $thumbnailPath, [
                             'alt' => $model->object_name,
-                            'class' => 'img-fluid',
                             'title' => $uploadedAt,
                         ]) ?>
-                        <small class="image-version-date d-block text-center mt-1"><?= Html::encode($uploadedAtDate) ?></small>
+                        <small class="image-version-date" title="<?= Html::encode($uploadedAt) ?>"><?= strip_tags($uploadedAtTag) ?></small>
                     </a>
                 <?php } ?>
             </div>
@@ -101,6 +100,6 @@ if ($image !== null) { ?>
     <?php } ?>
     <?php
 } else { ?>
-    <p class="font-italic">Az észleléshez nem tartozik kép.</p>
+    <p class="no-image">Az észleléshez nem tartozik kép.</p>
 <?php }
 ?>

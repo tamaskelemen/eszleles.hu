@@ -8,6 +8,7 @@ $db = array_merge(
 
 $config = [
     'id' => 'basic',
+    'language' => 'hu',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -21,6 +22,9 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'formatter' => [
+            'class' => 'app\components\Formatter',
         ],
         'user' => [
             'identityClass' => 'app\models\User',

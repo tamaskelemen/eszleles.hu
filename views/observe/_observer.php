@@ -8,11 +8,13 @@ use yii\helpers\Url;
  */
 
 ?>
-<div>
-    <h4 class="mt-2">Észlelő:</h4>
-    <?= Html::a($user->name, Url::toRoute(["/user/profile", "id" => $user->id])) ?>
+<div class="observer">
+    <div>
+        <span class="observer__label">Észlelő</span>
+        <?= Html::a($user->name, Url::toRoute(["/user/profile", "id" => $user->id])) ?>
+    </div>
 
-    <p class="mt-1">
+    <p class="social">
         <?php foreach ($user->getSocialLinks() as $site => $link) {
             if ($link) { ?>
                 <?= Html::a(

@@ -1,42 +1,38 @@
 <?php
 
 use app\models\Observe;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
+/** @var $this yii\web\View */
 /** @var $model Observe */
 
-
+$commentCount = count($model->comments);
 ?>
-<div class="container list-item ">
-    <a href="<?= Url::toRoute(['/' . $model->type . '/view', 'id' => $model->id])?>">
-        <div class="row">
-            <div class="col-md-3 col-12 item-img-container">
-                <img class="w-100" src="<?= $model->getThumbnailPath() ?>" alt >
-                <?php
-                if ($model->isNew()) {
-                ?>
-                    <div class="list-top-right">Új feltöltés</div>
-                <?php
-                }
-                ?>
-                <div class="list-bottom-left"><?= $model->observer->name ?> </div>
-                <div class="list-bottom-right"><?= count($model->comments) ?> hozzászólás</div>
-            </div>
-            <div class="col-md-9 col-12 ">
-                <div class="font-weight-bold text-white">
-                    <?= $model->object_name ?>
-                </div>
-                <div class="item-title">
-                    <?= $model->date ?>
-                </div>
+<a class="obs-card" href="<?= Url::toRoute(['/' . $model->type . '/view', 'id' => $model->id]) ?>">
+    <div class="obs-card__img">
+        <img src="<?= $model->getThumbnailPath() ?>" alt="" width="300" height="200" loading="lazy">
+        <?php if ($model->isNew()) { ?>
+            <span class="obs-card__new">Új feltöltés</span>
+        <?php } ?>
+    </div>
 
-                <div class="item-desc">
-                    <?= $model->description?>
-                </div>
-            </div>
-
+    <div class="obs-card__body">
+        <div class="obs-card__type">
+            <?= $this->render('_typeIcon', ['type' => $model->type]) ?>
+            <?= Observe::getTypeName($model->type) ?>
+            <time><?= $model->date ?></time>
         </div>
-    </a>
-</div>
 
+        <h3><?= $model->object_name ?></h3>
 
+        <p><?= Html::encode($model->description) ?></p>
+
+        <div class="obs-card__meta">
+            <span><?= $model->observer->name ?></span>
+            <?php if ($commentCount > 0) { ?>
+                <span><?= $commentCount ?> hozzászólás</span>
+            <?php } ?>
+        </div>
+    </div>
+</a>

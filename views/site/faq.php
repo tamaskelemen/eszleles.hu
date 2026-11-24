@@ -1,6 +1,6 @@
 <?php
 ?>
-<div class="container">
+<div class="container container-narrow">
     <h1>Gyakran ismételt kérdések</h1>
     <div class="accordion"  id="accordion">
         <div class="card">

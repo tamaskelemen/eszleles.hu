@@ -10,13 +10,13 @@ use yii\bootstrap4\ActiveForm;
 $this->title = 'Regisztráció';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup container">
+<div class="site-signup container container-narrow">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Kérlek töltsd ki az alábbi mezőket a regisztrációhoz:</p>
 
-    <div class="row">
-        <div class="col-lg-5">
+    <div class="panel">
+        <div>
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
             <?= $form->field($signupForm, 'email')->textInput(['autofocus' => true]) ?>

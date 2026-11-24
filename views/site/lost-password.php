@@ -10,12 +10,12 @@ use yii\bootstrap4\ActiveForm;
 $this->title = 'Elfelejtett jelszó';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login container">
+<div class="site-login container container-narrow">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Kérlek add meg az email címed, ahová elküldhetjük az új jelszó beállításához a linket:</p>
-    <div class="row">
-        <div class="col-lg-5">
+    <div class="panel">
+        <div>
             <?php $form = ActiveForm::begin([
                 'id' => 'login-form',
                 'fieldConfig' => [
