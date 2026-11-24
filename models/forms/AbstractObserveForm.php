@@ -3,6 +3,7 @@
 namespace app\models\forms;
 
 use app\components\Flash;
+use app\models\Activity;
 use app\models\Image;
 use app\models\ImageVersion;
 use app\models\Observe;
@@ -139,6 +140,7 @@ class AbstractObserveForm extends Model
             $this->uploadImage($observe->id);
 
             $transaction->commit();
+            Activity::log(Yii::$app->user->id, Activity::TYPE_OBSERVATION_UPDATE, $observe->id);
 
             return true;
         } catch (\Exception $e) {

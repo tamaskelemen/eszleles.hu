@@ -2,6 +2,7 @@
 namespace app\models\forms;
 
 use app\components\Flash;
+use app\models\Activity;
 use app\models\Comment;
 use app\models\Notification;
 use Yii;
@@ -52,6 +53,7 @@ class CommentForm extends Model
             Notification::createForComment($comment);
             $transaction->commit();
             $this->id = $comment->id;
+            Activity::log($comment->user_id, Activity::TYPE_COMMENT, $comment->observation_id);
 
             return true;
         } catch (\Exception $exception) {

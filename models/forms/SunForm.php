@@ -2,6 +2,7 @@
 namespace app\models\forms;
 
 use app\components\Flash;
+use app\models\Activity;
 use app\models\Image;
 use app\models\Observe;
 use Yii;
@@ -33,7 +34,7 @@ class SunForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['object_type', 'type'], 'string', 'max' => 255],
+            [['object_type', '!type'], 'string', 'max' => 255],
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -78,6 +79,7 @@ class SunForm extends AbstractObserveForm
             $this->id = $observe->id;
 
             $transaction->commit();
+            Activity::log(Yii::$app->user->id, Activity::TYPE_OBSERVATION_CREATE, $observe->id);
 
             return true;
 

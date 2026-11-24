@@ -68,15 +68,15 @@ class Observe extends \yii\db\ActiveRecord
     {
         return [
             [['object_name', 'telescope', 'location', 'description', 'date'], 'required', 'message' => "A mezőt kötelező kitölteni!"],
-            [['seeing', 'transparency', 'observer_id'], 'default', 'value' => null],
-            [['seeing', 'transparency', 'observer_id'], 'integer'],
+            // attributes marked with ! are set by the application only, they can not be loaded from a request
+            [['seeing', 'transparency', '!observer_id'], 'default', 'value' => null],
+            [['seeing', 'transparency', '!observer_id'], 'integer'],
             [['seeing'], 'in', 'range' => range(0, 10)],
             [['transparency'], 'in', 'range' => range(0, 5)],
             [['date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['uploaded_at', 'edited_at'], 'safe'],
-            [['description', 'type', 'mechanics', 'color', 'filter', 'expo'], 'string'],
+            [['description', '!type', 'mechanics', 'color', 'filter', 'expo'], 'string'],
             [['object_name', 'catalog_number', 'constellation', 'object_type', 'telescope', 'camera', 'location', 'meteor_membership'], 'string', 'max' => 255],
-            [['observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
+            [['!observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
             [['brightness'], 'double'],
             [['moon_phase', 'coverage', 'duration'], 'string', 'max' => 255],
         ];

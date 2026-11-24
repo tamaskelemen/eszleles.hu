@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Activity;
+use app\models\Observe;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -32,6 +33,23 @@ use yii\helpers\Html;
             'value' => 'typeName',
             'contentOptions' => function (Activity $model) {
                 return $model->type === Activity::TYPE_LOGIN_FAILED ? ['class' => 'text-danger'] : [];
+            },
+        ],
+        [
+            'attribute' => 'observationName',
+            'label' => $searchModel->getAttributeLabel('observationName'),
+            'format' => 'raw',
+            'value' => function (Activity $model) {
+                if ($model->observation_id === null) {
+                    return '';
+                }
+
+                if ($model->observation === null) {
+                    return '<span class="text-muted">Törölt észlelés (#' . $model->observation_id . ')</span>';
+                }
+
+                return Html::a(Html::encode($model->observation->object_name), $model->observation->getViewUrl())
+                    . '<br><small class="text-muted">' . (Observe::getAllTypes()[$model->observation->type] ?? '') . '</small>';
             },
         ],
         'ip',

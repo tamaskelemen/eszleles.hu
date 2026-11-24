@@ -18,12 +18,17 @@ class ActivitySearch extends Activity
     public $userName;
 
     /**
+     * @var string part of the name of the observation
+     */
+    public $observationName;
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['userName', 'type', 'ip', 'user_agent'], 'string'],
+            [['userName', 'observationName', 'type', 'ip', 'user_agent'], 'string'],
         ];
     }
 
@@ -34,6 +39,7 @@ class ActivitySearch extends Activity
     {
         return array_merge(parent::attributeLabels(), [
             'userName' => 'Felhasználó',
+            'observationName' => 'Észlelés',
         ]);
     }
 
@@ -56,7 +62,7 @@ class ActivitySearch extends Activity
      */
     public function search($params, $userId = null)
     {
-        $query = Activity::find()->joinWith('user');
+        $query = Activity::find()->joinWith(['user', 'observation']);
 
         if ($userId !== null) {
             $query->ofUser($userId);
@@ -89,6 +95,7 @@ class ActivitySearch extends Activity
         }
 
         $query->andFilterWhere(['activities.type' => $this->type])
+            ->andFilterWhere(['ilike', 'observations.object_name', $this->observationName])
             ->andFilterWhere(['ilike', 'activities.ip', $this->ip])
             ->andFilterWhere(['ilike', 'activities.user_agent', $this->user_agent])
             ->andFilterWhere([

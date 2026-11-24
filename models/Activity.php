@@ -12,10 +12,12 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property string $type
+ * @property int|null $observation_id the observation the activity is about, it may be deleted since
  * @property string|null $ip
  * @property string|null $user_agent
  * @property string $created_at
  *
+ * @property Observe|null $observation
  * @property User $user
  */
 class Activity extends \yii\db\ActiveRecord
@@ -23,6 +25,10 @@ class Activity extends \yii\db\ActiveRecord
     const TYPE_LOGIN = 'login';
     const TYPE_LOGIN_FAILED = 'login_failed';
     const TYPE_LOGIN_RESET_LINK = 'login_reset_link';
+    const TYPE_LOGOUT = 'logout';
+    const TYPE_OBSERVATION_CREATE = 'observation_create';
+    const TYPE_OBSERVATION_UPDATE = 'observation_update';
+    const TYPE_COMMENT = 'comment';
 
     const USER_AGENT_LENGTH = 255;
 
@@ -41,7 +47,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'type'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'observation_id'], 'integer'],
             [['type'], 'in', 'range' => array_keys(self::getAllTypes())],
             [['ip'], 'string', 'max' => 45],
             [['user_agent'], 'string', 'max' => self::USER_AGENT_LENGTH],
@@ -58,6 +64,7 @@ class Activity extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'Felhasználó',
             'type' => 'Tevékenység',
+            'observation_id' => 'Észlelés',
             'ip' => 'IP cím',
             'user_agent' => 'Böngésző',
             'created_at' => 'Időpont (UTC)',
@@ -73,17 +80,23 @@ class Activity extends \yii\db\ActiveRecord
             self::TYPE_LOGIN => 'Sikeres belépés',
             self::TYPE_LOGIN_FAILED => 'Sikertelen belépés',
             self::TYPE_LOGIN_RESET_LINK => 'Belépés jelszó-visszaállító linkkel',
+            self::TYPE_LOGOUT => 'Kilépés',
+            self::TYPE_OBSERVATION_CREATE => 'Észlelés feltöltése',
+            self::TYPE_OBSERVATION_UPDATE => 'Észlelés módosítása',
+            self::TYPE_COMMENT => 'Hozzászólás',
         ];
     }
 
     /**
      * Logs an activity of a user. A failure is only written to the application log,
-     * it must not break what the user is doing.
+     * it must not break what the user is doing. For the same reason call it after the transaction is committed:
+     * a failed insert would make the database reject the rest of the transaction.
      *
      * @param int $userId
      * @param string $type
+     * @param int|null $observationId the observation the activity is about, if there is any
      */
-    public static function log($userId, $type)
+    public static function log($userId, $type, $observationId = null)
     {
         try {
             $request = Yii::$app->request;
@@ -91,6 +104,7 @@ class Activity extends \yii\db\ActiveRecord
             $activity = new self();
             $activity->user_id = $userId;
             $activity->type = $type;
+            $activity->observation_id = $observationId;
             $activity->ip = $request->userIP;
             // it can be anything, the database would reject invalid UTF-8
             $activity->user_agent = mb_substr(mb_scrub((string)$request->userAgent, 'UTF-8'), 0, self::USER_AGENT_LENGTH, 'UTF-8');
@@ -109,6 +123,14 @@ class Activity extends \yii\db\ActiveRecord
     public function getTypeName()
     {
         return self::getAllTypes()[$this->type] ?? $this->type;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery|ObservesQuery
+     */
+    public function getObservation()
+    {
+        return $this->hasOne(Observe::class, ['id' => 'observation_id']);
     }
 
     /**

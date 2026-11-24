@@ -38,10 +38,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['created_at', 'last_login', 'terms', 'name', 'newsletter'], 'safe'],
-            ['status', 'in', 'range' => [self::STATUS_MEMBER, self::STATUS_NOT_MEMBER]],
-            [['status'], 'integer'],
-            [['email', 'password_hash', 'password_reset_token', 'auth_key'], 'string', 'max' => 255],
+            [['name', 'newsletter'], 'safe'],
+            // attributes marked with ! are set by the application only, they can not be loaded from a request
+            ['!status', 'in', 'range' => [self::STATUS_MEMBER, self::STATUS_NOT_MEMBER]],
+            [['!status'], 'integer'],
+            [['email', '!password_hash', '!password_reset_token', '!auth_key'], 'string', 'max' => 255],
             ['introduction', 'string'],
             [['facebook', 'instagram', 'website', 'github'], 'string'],
         ];

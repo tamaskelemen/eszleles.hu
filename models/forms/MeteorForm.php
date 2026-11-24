@@ -2,6 +2,7 @@
 namespace app\models\forms;
 
 use app\components\Flash;
+use app\models\Activity;
 use app\models\Observe;
 use Yii;
 use yii\db\Exception;
@@ -83,6 +84,7 @@ class MeteorForm extends AbstractObserveForm
             $this->id = $observe->id;
 
             $transaction->commit();
+            Activity::log(Yii::$app->user->id, Activity::TYPE_OBSERVATION_CREATE, $observe->id);
 
             return true;
 

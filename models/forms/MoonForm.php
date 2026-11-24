@@ -2,6 +2,7 @@
 namespace app\models\forms;
 
 use app\components\Flash;
+use app\models\Activity;
 use app\models\Image;
 use app\models\Observe;
 use Yii;
@@ -43,8 +44,8 @@ class MoonForm extends AbstractObserveForm
     public function rules()
     {
         $rules = [
-            [['moon_phase', 'type'], 'string', 'max' => 255],
-            [['moon_phase', 'type'], 'safe'],
+            [['moon_phase', '!type'], 'string', 'max' => 255],
+            [['moon_phase'], 'safe'],
         ];
 
         return array_merge(parent::rules(), $rules);
@@ -90,6 +91,7 @@ class MoonForm extends AbstractObserveForm
             $this->id = $observe->id;
 
             $transaction->commit();
+            Activity::log(Yii::$app->user->id, Activity::TYPE_OBSERVATION_CREATE, $observe->id);
 
             return true;
 
