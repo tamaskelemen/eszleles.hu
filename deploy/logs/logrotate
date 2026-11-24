@@ -1,5 +1,6 @@
 /var/log/eszleles/*.log {
     daily
+    maxsize 100M
     rotate 14
     missingok
     notifempty
