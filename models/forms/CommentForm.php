@@ -3,6 +3,7 @@ namespace app\models\forms;
 
 use app\components\Flash;
 use app\models\Comment;
+use app\models\Notification;
 use Yii;
 use yii\base\Model;
 use yii\db\Exception;
@@ -39,13 +40,18 @@ class CommentForm extends Model
         $comment->observation_id = $this->observation_id;
         $comment->user_id = Yii::$app->user->getIdentity()->id;
 
+        $transaction = Yii::$app->db->beginTransaction();
         try {
             if (!$comment->save()) {
                 throw new Exception("A hozzászólás mentése nem sikerült.");
             }
 
+            Notification::createForComment($comment);
+            $transaction->commit();
+
             return true;
         } catch (\Exception $exception) {
+            $transaction->rollBack();
             Flash::addWarning($exception->getMessage());
             return false;
         }

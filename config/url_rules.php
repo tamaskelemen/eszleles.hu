@@ -14,6 +14,9 @@ return [
     'profil/modositas' => '/user/update',
     'profil/jelszo-valtoztatas' => '/user/change-password',
 
+    'ertesitesek' => '/notification/index',
+    'ertesitesek/mind-olvasott' => '/notification/mark-all-seen',
+
     'osszes' => 'observe/index',
     'kereses' => 'observe/search',
     //melyeg

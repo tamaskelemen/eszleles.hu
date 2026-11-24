@@ -8,6 +8,7 @@ use app\models\forms\CometForm;
 use app\models\forms\CommentForm;
 use app\models\observations\Comet;
 use Yii;
+use app\models\Notification;
 use app\models\Observe;
 use app\models\ObserveSearch;
 use yii\filters\AccessControl;
@@ -81,12 +82,15 @@ class CometController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        Notification::markSeen(Yii::$app->user->id, $model->id);
+
         $commentForm = new CommentForm();
         $commentForm->observation_id = $id;
         $commentData = (new CommentSearch(["observation_id" => $id]))->search();
 
         return $this->render('//observe/view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'commentForm' => $commentForm,
             'commentData' => $commentData,
         ]);

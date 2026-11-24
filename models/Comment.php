@@ -75,6 +75,24 @@ class Comment extends \yii\db\ActiveRecord
     }
 
     /**
+     * Everyone who should be notified about this comment, except the commenter.
+     *
+     * @return array notification types (`Notification::TYPE_*`) indexed by user id
+     */
+    public function getNotificationTypes()
+    {
+        $types = [];
+
+        if ($this->observation->observer_id !== null) {
+            $types[$this->observation->observer_id] = Notification::TYPE_COMMENT;
+        }
+
+        unset($types[$this->user_id]);
+
+        return $types;
+    }
+
+    /**
      * {@inheritdoc}
      * @return CommentsQuery the active query used by this AR class.
      */

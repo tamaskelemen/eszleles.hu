@@ -75,6 +75,10 @@ foreach (Observe::getAllTypes() as $type => $label) {
             VCSE Észlelések
         </a>
 
+        <?php if (!Yii::$app->user->isGuest) { ?>
+            <?= $this->render('//_common-items/_notificationBell') ?>
+        <?php } ?>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Menü megnyitása">
             <span class="navbar-toggler-icon"></span>
         </button>
