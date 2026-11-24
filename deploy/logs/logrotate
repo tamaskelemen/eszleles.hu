@@ -1,0 +1,13 @@
+/var/log/eszleles/*.log {
+    daily
+    rotate 14
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    create 640 root www-data
+    postrotate
+        systemctl reload apache2
+    endscript
+}

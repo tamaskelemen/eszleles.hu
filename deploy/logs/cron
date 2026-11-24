@@ -1,0 +1,1 @@
+* * * * * www-data zcat -f $(ls -tr /var/log/eszleles/access.log*) | goaccess - --log-format=COMBINED --no-global-config -o /var/lib/eszleles-logs/new.html >/dev/null 2>&1 && mv /var/lib/eszleles-logs/new.html /var/lib/eszleles-logs/report.html
