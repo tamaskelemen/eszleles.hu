@@ -69,7 +69,7 @@ foreach ($badges as $category) {
     <?= $this->render('_badges', ['categories' => $badges, 'isOwn' => $isOwn]) ?>
 
     <?php if ($skyMapStats !== null) { ?>
-        <h2>Égtérkép</h2>
+        <h2 class="profile__section" id="egterkep">Égtérkép</h2>
 
         <p class="skymap-credit">
             A térképen a nyilvánosan azonosított mélyég-objektumok szerepelnek. Források és az összes észlelő térképe:
@@ -81,7 +81,7 @@ foreach ($badges as $category) {
         <?= $this->render('//sky-map/_stats', ['stats' => $skyMapStats, 'isSingleObserver' => true]) ?>
     <?php } ?>
 
-    <h2>Észlelések (<?= count($observations) ?>)</h2>
+    <h2 class="profile__section" id="eszlelesek">Észlelések (<?= count($observations) ?>)</h2>
 
     <div class="obs-grid">
         <?php foreach ($observations as $observation) { ?>

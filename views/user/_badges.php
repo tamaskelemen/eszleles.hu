@@ -11,6 +11,11 @@ $groups = [
     Badges::GROUP_PROGRAM => 'Észlelőprogramok',
     Badges::GROUP_ACTIVITY => 'Jelvények',
 ];
+
+$sectionIds = [
+    Badges::GROUP_PROGRAM => 'eszleloprogramok',
+    Badges::GROUP_ACTIVITY => 'jelvenyek',
+];
 ?>
 <?php foreach ($groups as $group => $title) {
     $groupCategories = array_filter($categories, function ($category) use ($group) {
@@ -21,7 +26,7 @@ $groups = [
         continue;
     }
     ?>
-    <section class="badges" aria-labelledby="badges-<?= $group ?>">
+    <section class="badges" id="<?= $sectionIds[$group] ?>" aria-labelledby="badges-<?= $group ?>">
         <h2 id="badges-<?= $group ?>"><?= $title ?></h2>
 
         <?php if ($isOwn) { ?>

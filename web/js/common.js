@@ -273,6 +273,7 @@ let site = (function site($) {
                 }
             }, { passive: true });
 
+            body.on('click', 'a.anchor-link', anchorLinkClick);
             body.on('click', 'a[data-ajax=1]', comm.ajaxLinkClick);
             body.on('click', 'a[data-view=modal]', comm.modalViewClick);
             body.on('submit', 'form[data-ajax=1]', comm.ajaxFormSubmit);
@@ -283,6 +284,47 @@ let site = (function site($) {
                     replace: false
                 });
             });
+        });
+    }
+
+    // the browser itself updates the url and scrolls to the section
+    function anchorLinkClick(e) {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) {
+            return;
+        }
+
+        var link = $(this);
+
+        copyText(this.href)
+            .then(function () {
+                return 'Link kimásolva';
+            })
+            .catch(function () {
+                return 'A link a címsorból másolható';
+            })
+            .then(function (message) {
+                clearTimeout(link.data('copyTimeout'));
+                link.tooltip('dispose').tooltip({ title: message, trigger: 'manual', placement: 'bottom' }).tooltip('show');
+                link.data('copyTimeout', setTimeout(function () {
+                    link.tooltip('dispose');
+                }, 2000));
+            });
+    }
+
+    function copyText(text) {
+        // only available on https
+        if (navigator.clipboard) {
+            return navigator.clipboard.writeText(text);
+        }
+
+        return new Promise(function (resolve, reject) {
+            var field = $('<textarea readonly>').val(text).css({ position: 'fixed', top: 0, opacity: 0 }).appendTo('body');
+            field[0].select();
+
+            var isCopied = document.execCommand('copy');
+            field.remove();
+
+            isCopied ? resolve() : reject();
         });
     }
 

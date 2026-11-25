@@ -1533,8 +1533,21 @@ time[data-toggle] {
     }
 }
 
+.news,
 .news article {
     scroll-margin-top: 80px;
+}
+
+.anchor-link,
+.anchor-link:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+.anchor-link:hover::after,
+.anchor-link:focus-visible::after {
+    content: " #";
+    color: var(--lamp);
 }
 
 .news article + article {
@@ -1959,8 +1972,13 @@ time[data-toggle] {
 
 /* ---------- badges ---------- */
 
+.profile__section {
+    scroll-margin-top: 80px;
+}
+
 .badges {
     margin-bottom: 2.5rem;
+    scroll-margin-top: 80px;
 }
 
 .badges h2 {

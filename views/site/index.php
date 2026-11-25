@@ -182,10 +182,10 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
             ]) ?>
         </section>
 
-        <section class="news">
-            <h2>Hírek</h2>
+        <section class="news" id="hirek">
+            <h2><a class="anchor-link" href="#hirek">Hírek</a></h2>
             <article id="egterkep">
-                <h3>Égtérkép</h3>
+                <h3><a class="anchor-link" href="#egterkep">Égtérkép</a></h3>
                 <p class="news__date">2026-11-25</p>
 
                 <p>
@@ -205,7 +205,7 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
                 </a>
             </article>
             <article id="megujulas">
-                <h3>Megújulás</h3>
+                <h3><a class="anchor-link" href="#megujulas">Megújulás</a></h3>
                 <p class="news__date">2026-11-24</p>
 
                 <p>
@@ -248,7 +248,7 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
                 </button>
             </article>
             <article id="vega-eszlelesek-feltoltve">
-                <h3>VEGA észlelések feltöltve</h3>
+                <h3><a class="anchor-link" href="#vega-eszlelesek-feltoltve">VEGA észlelések feltöltve</a></h3>
                 <p class="news__date">2021-05-20</p>
 
                 <p>
@@ -272,7 +272,7 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
                 </button>
             </article>
             <article id="elindult-az-eszlelesfeltolto">
-                <h3>Elindult az észlelésfeltöltő!</h3>
+                <h3><a class="anchor-link" href="#elindult-az-eszlelesfeltolto">Elindult az észlelésfeltöltő!</a></h3>
                 <p class="news__date">2021-05-19</p>
 
                 <p>
