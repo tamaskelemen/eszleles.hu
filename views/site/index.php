@@ -195,7 +195,7 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
                 </p>
                 <p>
                     Természetesen, ha valakit a saját statisztikája érdekel, úgy a saját
-                    <?= Html::a('profilján', '/profil') ?> megteheti. Jó kihívás minden csillagképben csak egy valamit megfigyelni...
+                    <?= Html::a('profilján', Yii::$app->user->isGuest ? ['/site/login'] : ['/user/profile', 'id' => Yii::$app->user->getId()]) ?> megteheti. Jó kihívás minden csillagképben csak egy valamit megfigyelni...
                 </p>
                 <a class="news__image" href="<?= Url::toRoute('/sky-map/index') ?>">
                     <picture>
