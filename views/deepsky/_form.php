@@ -1,6 +1,7 @@
 <?php
 
 use app\widgets\DatePicker;
+use app\widgets\ObserveField;
 use app\widgets\PreviousValueInput;
 use app\widgets\SkyObjectInput;
 use yii\helpers\Html;
@@ -12,7 +13,10 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="observe-form">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'fieldClass' => ObserveField::class,
+        'options' => ['enctype' => 'multipart/form-data'],
+    ]); ?>
 
     <div class="row">
         <div class="col-lg-6 col-12">
