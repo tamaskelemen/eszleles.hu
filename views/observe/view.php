@@ -58,7 +58,12 @@ $user = $model->getObserver()->one();
                         <dd>
                             <ul class="sky-tags">
                                 <?php foreach ($model->visibleSkyObjectLinks as $link) { ?>
-                                    <li class="sky-tag"><?= Html::encode($link->getLabel()) ?></li>
+                                    <li>
+                                        <?= Html::a(Html::encode($link->getLabel()), $link->skyObject->getMapUrl(), [
+                                            'class' => 'sky-tag',
+                                            'title' => 'Megnyitás az égtérképen',
+                                        ]) ?>
+                                    </li>
                                 <?php } ?>
                             </ul>
                         </dd>

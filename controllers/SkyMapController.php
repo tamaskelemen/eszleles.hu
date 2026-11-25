@@ -15,8 +15,6 @@ use yii\web\NotFoundHttpException;
  */
 class SkyMapController extends Controller
 {
-    const OBSERVATION_LIMIT = 12;
-
     /**
      * @return string
      */
@@ -42,7 +40,7 @@ class SkyMapController extends Controller
     }
 
     /**
-     * Latest observations of an object.
+     * Observations of an object, the latest first.
      * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException
@@ -62,7 +60,6 @@ class SkyMapController extends Controller
             ->where(['id' => $observationIds])
             ->with('thumbnail', 'observer')
             ->orderBy(['date' => SORT_DESC, 'id' => SORT_DESC])
-            ->limit(self::OBSERVATION_LIMIT)
             ->all();
 
         return $this->asJson(array_map(function (Observe $observe) {

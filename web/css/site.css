@@ -1837,12 +1837,20 @@ time[data-toggle] {
 }
 
 .sky-tag {
+    display: block;
     max-width: 100%;
     padding: .15rem .6rem;
     background-color: var(--field-raised);
     border: 1px solid var(--line-strong);
     border-radius: var(--radius);
+    color: var(--text);
     font-size: .9375rem;
+}
+
+.sky-tag:hover {
+    border-color: var(--lamp);
+    color: #fff;
+    text-decoration: none;
 }
 
 .log-sheet__uploaded {
@@ -2218,10 +2226,6 @@ time[data-toggle] {
 }
 
 .skymap__observations small,
-.skymap__more {
-    color: var(--muted);
-}
-
 .skymap__foot {
     padding-top: .5rem;
     color: var(--muted);

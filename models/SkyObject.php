@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\SkyMatcher;
 use yii\db\Query;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "sky_objects".
@@ -108,6 +109,14 @@ class SkyObject extends \yii\db\ActiveRecord
         }
 
         return $label;
+    }
+
+    /**
+     * @return string the sky map with this object opened, the parameter is read by sky-map.js
+     */
+    public function getMapUrl()
+    {
+        return Url::to(['/sky-map/index', 'objektum' => $this->id]);
     }
 
     /**

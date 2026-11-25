@@ -22,6 +22,7 @@
     const HEAT_RADIUS = 4; // degrees
     const HEAT_RADIUS_LIMIT = 36; // pixels
     const LABEL_ZOOM = 5;
+    const URL_PARAM = 'objektum';
     const HIT_RADIUS = {mouse: 10, touch: 22};
     const DEGREE = Math.PI / 180;
     const FONT = 'Inter, Helvetica, Arial, sans-serif';
@@ -652,9 +653,34 @@
         tooltip.style.transform = `translate(${Math.max(4, x)}px, ${Math.max(4, y)}px)`;
     }
 
+    /** The address always points to the selected object, so it can be shared. */
+    function updateUrl() {
+        const url = new URL(window.location);
+
+        if (selected) {
+            url.searchParams.set(URL_PARAM, selected.id);
+        } else {
+            url.searchParams.delete(URL_PARAM);
+        }
+
+        if (url.href !== window.location.href) {
+            window.history.replaceState(window.history.state, '', url);
+        }
+    }
+
+    function openFromUrl() {
+        const id = Number(new URL(window.location).searchParams.get(URL_PARAM));
+        const object = objects.find(item => item.id === id);
+
+        if (object) {
+            focusObject(object);
+        }
+    }
+
     function closePanel() {
         lastPanelRequest++;
         selected = null;
+        updateUrl();
         panel.hidden = true;
         redraw();
     }
@@ -664,6 +690,7 @@
         const list = $('<ul class="skymap__observations">').append('<li>Betöltés…</li>');
 
         selected = object;
+        updateUrl();
         hideTooltip();
         redraw();
 
@@ -692,10 +719,6 @@
                         )
                     ).appendTo(list);
                 });
-
-                if (observations.length < object.observations) {
-                    list.append($('<li class="skymap__more">').text(`és még ${object.observations - observations.length} korábbi`));
-                }
             })
             .fail(function () {
                 if (request === lastPanelRequest) {
@@ -895,6 +918,7 @@
             objects = objectData;
             setBackground(backgroundData);
             updateMetric();
+            openFromUrl();
         })
         .catch(function () {
             message.textContent = 'A térképet nem sikerült betölteni.';
