@@ -7,6 +7,7 @@ use app\components\BadgeSync;
 use app\components\Flash;
 use app\components\SkyMap;
 use app\models\forms\PasswordChangeForm;
+use app\models\Notification;
 use app\models\Observe;
 use Yii;
 use app\models\User;
@@ -87,6 +88,7 @@ class UserController extends Controller
             $badges = Badges::findAll($user->id);
             // if something was missed, this repairs it
             BadgeSync::trySync($user->id, $badges);
+            Notification::markBadgesSeen($user->id);
         } else {
             $badges = Badges::groupStored($user->badges);
         }

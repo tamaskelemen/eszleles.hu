@@ -455,6 +455,10 @@ html[data-night] body::after {
     object-fit: cover;
 }
 
+.notification__badge {
+    text-align: center;
+}
+
 .notification__text,
 .notification__comment,
 .notification__time {
@@ -1957,6 +1961,10 @@ time[data-toggle] {
 
 .badges {
     margin-bottom: 2.5rem;
+}
+
+.badges h2 {
+    scroll-margin-top: 80px;
 }
 
 .badges__grid {

@@ -4,20 +4,23 @@ namespace app\models;
 
 use yii\db\Exception;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "notifications".
  *
- * Tells a user about a comment.
+ * Tells a user about a comment or an earned badge.
  *
  * @property int $id
  * @property int $user_id the user to be notified
- * @property int $comment_id
+ * @property int|null $comment_id null if it is about a badge
+ * @property int|null $badge_id null if it is about a comment
  * @property string $type why the user is notified
  * @property string $created_at
  * @property string|null $seen_at null if the notification is unread
  *
- * @property Comment $comment
+ * @property Comment|null $comment
+ * @property UserBadge|null $badge
  * @property User $user
  */
 class Notification extends \yii\db\ActiveRecord
@@ -25,6 +28,7 @@ class Notification extends \yii\db\ActiveRecord
     const TYPE_COMMENT = 'comment';
     const TYPE_REPLY = 'reply';
     const TYPE_THREAD_REPLY = 'thread_reply';
+    const TYPE_BADGE = 'badge';
 
     const PAGE_SIZE = 15;
 
@@ -42,11 +46,18 @@ class Notification extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'comment_id', 'type'], 'required'],
-            [['user_id', 'comment_id'], 'integer'],
+            [['user_id', 'type'], 'required'],
+            [['comment_id'], 'required', 'when' => function (self $model) {
+                return $model->type !== self::TYPE_BADGE;
+            }],
+            [['badge_id'], 'required', 'when' => function (self $model) {
+                return $model->type === self::TYPE_BADGE;
+            }],
+            [['user_id', 'comment_id', 'badge_id'], 'integer'],
             [['type'], 'in', 'range' => array_keys(self::getAllTypes())],
             [['created_at', 'seen_at'], 'safe'],
-            [['user_id', 'comment_id'], 'unique', 'targetAttribute' => ['user_id', 'comment_id']],
+            [['comment_id'], 'unique', 'targetAttribute' => ['user_id', 'comment_id']],
+            [['badge_id'], 'unique'],
         ];
     }
 
@@ -59,6 +70,7 @@ class Notification extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'Értesített felhasználó',
             'comment_id' => 'Hozzászólás',
+            'badge_id' => 'Jelvény',
             'type' => 'Típus',
             'created_at' => 'Létrehozva',
             'seen_at' => 'Olvasva',
@@ -66,7 +78,8 @@ class Notification extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return array texts that follow the name of the commenter and precede the name of the observation
+     * @return array texts that precede the name of the observation or the badge, the ones about a comment follow the name
+     * of the commenter
      */
     public static function getAllTypes()
     {
@@ -74,6 +87,7 @@ class Notification extends \yii\db\ActiveRecord
             self::TYPE_COMMENT => 'hozzászólt az észlelésedhez:',
             self::TYPE_REPLY => 'válaszolt a hozzászólásodra:',
             self::TYPE_THREAD_REPLY => 'válaszolt egy beszélgetésben, amelyhez hozzászóltál:',
+            self::TYPE_BADGE => 'Új jelvényt szereztél:',
         ];
     }
 
@@ -95,6 +109,22 @@ class Notification extends \yii\db\ActiveRecord
                 throw new Exception("Az értesítés mentése nem sikerült.");
             }
         }
+    }
+
+    /**
+     * Notifies a user about a new badge.
+     *
+     * @param UserBadge $badge
+     * @throws Exception
+     */
+    public static function createForBadge(UserBadge $badge)
+    {
+        // another request may be notifying about the same one
+        self::getDb()->createCommand()->upsert(
+            self::tableName(),
+            ['user_id' => $badge->user_id, 'badge_id' => $badge->id, 'type' => self::TYPE_BADGE],
+            false
+        )->execute();
     }
 
     /**
@@ -128,6 +158,16 @@ class Notification extends \yii\db\ActiveRecord
     }
 
     /**
+     * Marks the notifications of a user about badges as seen.
+     *
+     * @param int $userId
+     */
+    public static function markBadgesSeen($userId)
+    {
+        self::updateAll(['seen_at' => new Expression('NOW()')], ['user_id' => $userId, 'seen_at' => null, 'type' => self::TYPE_BADGE]);
+    }
+
+    /**
      * @return string
      */
     public function getTypeName()
@@ -136,11 +176,31 @@ class Notification extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        if ($this->type === self::TYPE_BADGE) {
+            return Url::toRoute(['/user/profile', 'id' => $this->user_id, '#' => 'badges-' . $this->badge->getCategoryData()['group']]);
+        }
+
+        return $this->comment->observation->getViewUrl() . '#hozzaszolas-' . $this->comment_id;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery|CommentsQuery
      */
     public function getComment()
     {
         return $this->hasOne(Comment::class, ['id' => 'comment_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery|UserBadgesQuery
+     */
+    public function getBadge()
+    {
+        return $this->hasOne(UserBadge::class, ['id' => 'badge_id']);
     }
 
     /**

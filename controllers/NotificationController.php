@@ -51,7 +51,7 @@ class NotificationController extends Controller
         $notifications = Notification::find()
             ->ofUser(Yii::$app->user->id)
             ->andFilterWhere(['<', 'id', $before])
-            ->with('comment.user', 'comment.observation.thumbnail')
+            ->with('comment.user', 'comment.observation.thumbnail', 'badge')
             ->orderBy(['id' => SORT_DESC])
             ->limit(Notification::PAGE_SIZE + 1)
             ->all();

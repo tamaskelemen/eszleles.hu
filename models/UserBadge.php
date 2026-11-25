@@ -38,6 +38,15 @@ class UserBadge extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array see Badges::getCategories(), a removed category has a general name
+     */
+    public function getCategoryData()
+    {
+        return Badges::getCategories()[$this->category]
+            ?? ['key' => $this->category, 'group' => Badges::GROUP_ACTIVITY, 'name' => 'Jelvény', 'glyph' => null];
+    }
+
+    /**
      * @return array level of a badge category, see Badges::build()
      */
     public function getLevel()
