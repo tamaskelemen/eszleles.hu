@@ -188,11 +188,33 @@ class SkyMap
     }
 
     /**
+     * @param int $userId
+     * @return array|null null if the user has nothing to show on the map
+     */
+    public static function getUserStats(int $userId)
+    {
+        $objects = self::findObjects($userId);
+
+        if (empty($objects)) {
+            return null;
+        }
+
+        // only the coverage is slow, it depends on nothing else than the objects, so it never has to be cleared
+        $key = [self::CACHE_KEY, 'coverage', array_column($objects, 'id')];
+        $coverage = Yii::$app->cache->getOrSet($key, function () use ($objects) {
+            return self::findCoverage($objects)[0];
+        }, self::CACHE_DURATION);
+
+        return self::countStats($objects, $userId) + ['coverage' => $coverage];
+    }
+
+    /**
+     * @param int|null $userId only the observations of this user count
      * @return array the publicly identified objects, the most observed first
      */
-    private static function findObjects()
+    public static function findObjects(?int $userId = null)
     {
-        $rows = self::linkQuery()
+        $rows = self::linkQuery($userId)
             ->select([
                 's.id', 's.name', 's.messier',
                 // the number most observers use
@@ -219,13 +241,13 @@ class SkyMap
         }, $rows);
     }
 
-    private static function countStats(array $objects)
+    private static function countStats(array $objects, ?int $userId = null)
     {
         $ids = array_column($objects, 'id');
 
         return [
-            'observations' => (int)self::linkQuery()->count('DISTINCT o.id'),
-            'observers' => (int)self::linkQuery()->count('DISTINCT o.observer_id'),
+            'observations' => (int)self::linkQuery($userId)->count('DISTINCT o.id'),
+            'observers' => (int)self::linkQuery($userId)->count('DISTINCT o.observer_id'),
             'objects' => count($objects),
             'constellations' => count(array_unique(array_column($objects, 'constellation'))),
             'messier' => (int)SkyObject::find()->where(['id' => $ids])->count('DISTINCT messier'),
@@ -314,14 +336,16 @@ class SkyMap
     }
 
     /**
+     * @param int|null $userId
      * @return Query
      */
-    private static function linkQuery()
+    private static function linkQuery(?int $userId = null)
     {
         return (new Query())
             ->from(['l' => 'observation_sky_objects'])
             ->innerJoin(['s' => 'sky_objects'], 's.id = l.sky_object_id')
             ->innerJoin(['o' => 'observations'], 'o.id = l.observation_id')
-            ->where(['l.status' => ObservationSkyObject::VISIBLE_STATUSES]);
+            ->where(['l.status' => ObservationSkyObject::VISIBLE_STATUSES])
+            ->andFilterWhere(['o.observer_id' => $userId]);
     }
 }

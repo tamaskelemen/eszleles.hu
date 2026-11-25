@@ -15,6 +15,8 @@
     const constellationNames = JSON.parse(root.dataset.constellations);
     const gaps = JSON.parse(root.dataset.gaps);
     const horizon = Number(root.dataset.horizon);
+    // the map of a profile, there are no observers to compare and no lists under the map
+    const isSingleObserver = 'singleObserver' in root.dataset;
 
     const MAX_ZOOM = 24;
     // the edge of the map runs between Virgo and Hercules, where the fewest objects are cut apart
@@ -624,7 +626,7 @@
     }
 
     function counts(object) {
-        return `${object.observations} észlelés, ${object.observers} észlelő`;
+        return isSingleObserver ? `${object.observations} észlelés` : `${object.observations} észlelés, ${object.observers} észlelő`;
     }
 
     function description(object) {
@@ -704,7 +706,7 @@
         panel.hidden = false;
         panel.scrollTop = 0;
 
-        $.getJSON(root.dataset.objectUrl.replace(/0$/, object.id))
+        $.getJSON(root.dataset.objectUrl.replace(/0(?=\?|$)/, object.id))
             .done(function (observations) {
                 if (request !== lastPanelRequest) {
                     return;
@@ -791,8 +793,10 @@
         maxValue = d3.max(objects, value) || 1;
         objects.sort((a, b) => value(b) - value(a));
         $('[data-legend-max]').text(objects.length ? `(legfeljebb ${maxValue} ${metric === 'observers' ? 'észlelő' : 'észlelés'} objektumonként)` : '');
-        renderTop();
-        renderTable();
+        if (!isSingleObserver) {
+            renderTop();
+            renderTable();
+        }
         redraw();
     }
 
@@ -910,7 +914,9 @@
     new ResizeObserver(resize).observe(stage);
     // the boxes keep their state on reload in some browsers
     $(root).find('[data-layer]').each((index, input) => layers[input.dataset.layer] = input.checked);
-    metric = root.querySelector('[name="skymap-metric"]:checked').value;
+    if (!isSingleObserver) {
+        metric = root.querySelector('[name="skymap-metric"]:checked').value;
+    }
 
     Promise.all([d3.json(root.dataset.backgroundUrl), d3.json(root.dataset.objectsUrl)])
         .then(function ([backgroundData, objectData]) {

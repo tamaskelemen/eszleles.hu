@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Flash;
+use app\components\SkyMap;
 use app\models\forms\PasswordChangeForm;
 use app\models\Observe;
 use Yii;
@@ -82,6 +83,7 @@ class UserController extends Controller
         return $this->render('view', [
             'user' => $user,
             'observations' => $observations,
+            'skyMapStats' => SkyMap::getUserStats($user->id),
         ]);
     }
 

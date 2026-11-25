@@ -32,20 +32,22 @@ class SkyMapController extends Controller
 
     /**
      * Objects of the map.
+     * @param int|null $userId only the ones observed by this user
      * @return \yii\web\Response
      */
-    public function actionData()
+    public function actionData(?int $userId = null)
     {
-        return $this->asJson(SkyMap::getData()['objects']);
+        return $this->asJson($userId === null ? SkyMap::getData()['objects'] : SkyMap::findObjects($userId));
     }
 
     /**
      * Observations of an object, the latest first.
      * @param int $id
+     * @param int|null $userId only the observations of this user
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionObject(int $id)
+    public function actionObject(int $id, ?int $userId = null)
     {
         if (SkyObject::findOne($id) === null) {
             throw new NotFoundHttpException("A keresett oldal nem található");
@@ -58,6 +60,7 @@ class SkyMapController extends Controller
 
         $observations = Observe::find()
             ->where(['id' => $observationIds])
+            ->andFilterWhere(['observer_id' => $userId])
             ->with('thumbnail', 'observer')
             ->orderBy(['date' => SORT_DESC, 'id' => SORT_DESC])
             ->all();

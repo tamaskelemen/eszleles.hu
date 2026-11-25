@@ -7,6 +7,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
 /* @var $observations app\models\Observe[] */
+/* @var $skyMapStats array|null null if there is nothing on the map */
 
 $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -43,6 +44,19 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php } ?>
     </header>
+
+    <?php if ($skyMapStats !== null) { ?>
+        <h2>Égtérkép</h2>
+
+        <p class="skymap-credit">
+            A térképen a nyilvánosan azonosított mélyég-objektumok szerepelnek. Források és az összes észlelő térképe:
+            <?= Html::a('Égtérkép', ['/sky-map/index']) ?>.
+        </p>
+
+        <?= $this->render('//sky-map/_map', ['gaps' => [], 'userId' => $user->id]) ?>
+
+        <?= $this->render('//sky-map/_stats', ['stats' => $skyMapStats, 'isSingleObserver' => true]) ?>
+    <?php } ?>
 
     <h2>Észlelések (<?= count($observations) ?>)</h2>
 
