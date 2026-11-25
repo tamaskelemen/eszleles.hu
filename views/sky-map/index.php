@@ -26,7 +26,7 @@ $tiles = [
     ['Csillagkép', $stats['constellations'] . ' / ' . count(Data::listConstellation()), 'amelyben már észleltünk'],
     ['Messier-objektum', $stats['messier'] . ' / ' . SkyMap::MESSIER_COUNT, $stats['messier'] >= SkyMap::MESSIER_COUNT ? 'a teljes katalógus megvan' : 'a katalógusból'],
     ['Caldwell-objektum', $stats['caldwell'] . ' / ' . SkyMap::CALDWELL_COUNT, 'a katalógusból'],
-    ['Lefedettség', $formatter->asPercent($stats['coverage']), 'a Magyarországról látható égből legfeljebb ' . SkyMap::COVER_RADIUS . '°-ra van észlelt objektum'],
+    ['Lefedettség', $formatter->asPercent($stats['coverage']), 'a Magyarországról látható ég ekkora részét észleltük már (objektumonként ' . SkyMap::COVER_RADIUS . '° sugarú körrel)'],
 ];
 ?>
 <div class="skymap-page container">
