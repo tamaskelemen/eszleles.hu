@@ -187,7 +187,7 @@ class SiteController extends Controller
             $account->updateAttributes($profile);
             SocialLogin::clearPending();
 
-            if (!SocialLogin::login($account->user)) {
+            if (!SocialLogin::login($account->user, $account->provider)) {
                 throw new Exception("Failed to log in user");
             }
             return $this->goBack('/');
@@ -238,7 +238,7 @@ class SiteController extends Controller
 
                 if ($user !== null) {
                     SocialLogin::clearPending();
-                    SocialLogin::login($user);
+                    SocialLogin::login($user, $profile['provider']);
                     Flash::addSuccess("Sikeres regisztráció!");
                     return $this->goBack('/');
                 }

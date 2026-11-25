@@ -91,16 +91,17 @@ class SocialLogin
 
     /**
      * @param User $user
+     * @param string $provider
      * @return bool whether the user is logged in successfully
      */
-    public static function login(User $user)
+    public static function login(User $user, $provider)
     {
         if (!Yii::$app->user->login($user, self::LOGIN_DURATION)) {
             return false;
         }
 
         $user->updateAttributes(['last_login' => new Expression("NOW()")]);
-        Activity::log($user->id, Activity::TYPE_LOGIN_SOCIAL);
+        Activity::log($user->id, "login_{$provider}");
 
         return true;
     }
@@ -176,7 +177,7 @@ class SocialLogin
             }
 
             self::connect($user, $profile);
-            Activity::log($user->id, Activity::TYPE_SOCIAL_CONNECT);
+            Activity::log($user->id, "connect_{$profile['provider']}");
             Flash::addSuccess("Összekapcsoltuk a profilodat a {$name} fiókoddal, ezután azzal is beléphetsz.");
         } catch (\Exception $e) {
             Yii::error($e, __METHOD__);
