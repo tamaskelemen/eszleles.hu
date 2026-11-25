@@ -12,9 +12,9 @@ $clients = SocialLogin::getClients();
     <div class="social-login">
         <?php foreach ($clients as $id => $client) { ?>
             <?= Html::a(
-                '<i class="fa fa-' . $client->getViewOptions()['icon'] . '" aria-hidden="true"></i> ' . Html::encode($client->getViewOptions()['label']),
+                Html::img('/pictures/icons/' . $client->getViewOptions()['icon'], ['alt' => '']) . Html::encode($client->getViewOptions()['label']),
                 ['/site/auth', 'authclient' => $id],
-                ['class' => 'btn btn-outline', 'rel' => 'nofollow']
+                ['class' => "btn btn-{$id}", 'rel' => 'nofollow']
             ) ?>
         <?php } ?>
     </div>

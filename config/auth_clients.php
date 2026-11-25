@@ -12,7 +12,7 @@ $clients = [
         ],
         'viewOptions' => [
             'label' => 'Folytatás Google-fiókkal',
-            'icon' => 'google',
+            'icon' => 'google.svg',
         ],
     ],
 ];

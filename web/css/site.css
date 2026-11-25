@@ -778,8 +778,35 @@ main > .container:first-child:not(.breadcrumb) {
     border-top: 1px solid var(--line);
 }
 
-.social-login .fa {
-    margin-right: .4rem;
+.social-login .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.social-login img {
+    width: 20px;
+    height: 20px;
+}
+
+/* the colors are from the branding guidelines of Google */
+.btn-google {
+    background-color: #fff;
+    border-color: #747775;
+    color: #1f1f1f;
+}
+
+.btn-google:hover,
+.btn-google:focus {
+    background-color: #e8eaed;
+    color: #1f1f1f;
+}
+
+/* a white button would be too bright */
+html[data-night] .btn-google {
+    background-color: #131314;
+    border-color: #8e918f;
+    color: #e3e3e3;
 }
 
 .form-group {
