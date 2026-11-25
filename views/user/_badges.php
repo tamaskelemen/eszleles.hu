@@ -27,7 +27,7 @@ $sectionIds = [
     }
     ?>
     <section class="badges" id="<?= $sectionIds[$group] ?>" aria-labelledby="badges-<?= $group ?>">
-        <h2 id="badges-<?= $group ?>"><?= $title ?></h2>
+        <h2 id="badges-<?= $group ?>"><a class="anchor-link" href="#<?= $sectionIds[$group] ?>"><?= $title ?></a></h2>
 
         <?php if ($isOwn) { ?>
             <p class="skymap-credit">
