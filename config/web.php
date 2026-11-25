@@ -9,6 +9,7 @@ $db = array_merge(
 $config = [
     'id' => 'basic',
     'language' => 'hu',
+    'timeZone' => 'Europe/Budapest',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -25,6 +26,7 @@ $config = [
         ],
         'formatter' => [
             'class' => 'app\components\Formatter',
+            'defaultTimeZone' => 'Europe/Budapest',
         ],
         'user' => [
             'identityClass' => 'app\models\User',

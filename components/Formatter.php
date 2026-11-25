@@ -18,7 +18,7 @@ class Formatter extends \yii\i18n\Formatter
      * Returns a `<time>` tag, so the result should not be encoded or placed inside a link
      * (the tooltip needs it to be focusable). Use `strip_tags()` to get the text only.
      * Values without a time part (date columns) are displayed as "ma" on the first day.
-     * Stored values are expected to be in [[defaultTimeZone]] (UTC), same as the database.
+     * Stored values are expected to be in [[defaultTimeZone]], same as the connection to the database.
      *
      * @param string|null $value timestamp, as it comes from the database
      * @param string|null $actualText text to display instead of $value as the actual timestamp

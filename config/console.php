@@ -8,6 +8,7 @@ $db = array_merge(
 
 $config = [
     'id' => 'basic-console',
+    'timeZone' => 'Europe/Budapest',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
