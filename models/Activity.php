@@ -29,6 +29,7 @@ class Activity extends \yii\db\ActiveRecord
     const TYPE_OBSERVATION_CREATE = 'observation_create';
     const TYPE_OBSERVATION_UPDATE = 'observation_update';
     const TYPE_COMMENT = 'comment';
+    const TYPE_IDENTIFICATION = 'identification';
 
     const USER_AGENT_LENGTH = 255;
 
@@ -84,6 +85,7 @@ class Activity extends \yii\db\ActiveRecord
             self::TYPE_OBSERVATION_CREATE => 'Észlelés feltöltése',
             self::TYPE_OBSERVATION_UPDATE => 'Észlelés módosítása',
             self::TYPE_COMMENT => 'Hozzászólás',
+            self::TYPE_IDENTIFICATION => 'Azonosítás szerkesztése',
         ];
     }
 

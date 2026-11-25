@@ -15,6 +15,17 @@ class Helper
         return Html::a("text", $url);
     }
 
+    /**
+     * Links given by the users must not run scripts ("javascript:").
+     *
+     * @param string|null $url
+     * @return bool
+     */
+    public static function isWebUrl($url)
+    {
+        return preg_match('~^https?://~i', (string)$url) === 1;
+    }
+
     public static function replaceUnaccent($string = null)
     {
         if (!is_string($string)) {

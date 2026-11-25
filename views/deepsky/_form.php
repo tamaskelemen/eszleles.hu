@@ -2,6 +2,7 @@
 
 use app\widgets\DatePicker;
 use app\widgets\PreviousValueInput;
+use app\widgets\SkyObjectInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -16,6 +17,8 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-lg-6 col-12">
             <?= $form->field($model, 'object_name')->textInput(['maxlength' => true]) ?>
+
+            <?= SkyObjectInput::widget(['model' => $model]) ?>
 
             <?= $form->field($model, 'telescope')->widget(PreviousValueInput::class, ['options' => ['maxlength' => true]]) ?>
 

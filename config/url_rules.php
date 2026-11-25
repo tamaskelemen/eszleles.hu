@@ -19,6 +19,13 @@ return [
 
     'admin' => '/admin/index',
     'admin/felhasznalo/<id:\d+>' => '/admin/user',
+    'admin/azonositas' => '/admin/identification',
+    'admin/azonositas/<id:\d+>' => '/admin/identify',
+    'admin/azonositas/mentes' => '/admin/identification-bulk',
+
+    'egterkep' => 'sky-map/index',
+    'egterkep/adatok' => 'sky-map/data',
+    'egterkep/objektum/<id:\d+>' => 'sky-map/object',
 
     'osszes' => 'observe/index',
     'kereses' => 'observe/search',

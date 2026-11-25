@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\components\Helper;
+use app\components\SkyLinker;
+use app\components\SkyMap;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -36,8 +38,10 @@ use yii\helpers\Url;
  * @property string $filter
  * @property string $duration
  * @property string $coverage
+ * @property bool $has_no_sky_object set by an admin, there is nothing to find in the title
  *
  * @property User $observer
+ * @property ObservationSkyObject[] $skyObjectLinks
  */
 class Observe extends \yii\db\ActiveRecord
 {
@@ -52,6 +56,12 @@ class Observe extends \yii\db\ActiveRecord
 
     const PREVIOUS_VALUE_ATTRIBUTES = ['telescope', 'camera', 'mechanics', 'location'];
     const PREVIOUS_VALUE_LIMIT = 20;
+
+    /** @var string[]|null sky objects chosen by the uploader, see SkyObjectInput */
+    public $skyObjectItems;
+
+    /** @var string|null the title the sky objects were chosen for, null if they were not chosen */
+    public $skyObjectTitle;
 
     /**
      * {@inheritdoc}
@@ -79,6 +89,8 @@ class Observe extends \yii\db\ActiveRecord
             [['!observer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['observer_id' => 'id']],
             [['brightness'], 'double'],
             [['moon_phase', 'coverage', 'duration'], 'string', 'max' => 255],
+            [['skyObjectItems'], 'each', 'rule' => ['string']],
+            [['skyObjectTitle'], 'string'],
         ];
     }
 
@@ -149,6 +161,89 @@ class Observe extends \yii\db\ActiveRecord
         $this->edited_at = new Expression("NOW()");
 
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($this->type !== self::TYPE_DEEP_SKY) {
+            return;
+        }
+
+        // the title counts too, the map lists the catalogs of the not identified ones
+        SkyMap::clearCache();
+
+        $isTitleChanged = $insert || array_key_exists('object_name', $changedAttributes);
+
+        if ($isTitleChanged) {
+            $this->setHasNoSkyObject(false);
+        }
+
+        if ($this->skyObjectTitle === null) {
+            if ($isTitleChanged || array_key_exists('constellation', $changedAttributes)) {
+                (new SkyLinker())->rematch($this);
+            }
+
+            return;
+        }
+
+        $linker = new SkyLinker();
+        $isComplete = trim($this->skyObjectTitle) === trim($this->object_name);
+        $linker->confirm($this, (array)$this->skyObjectItems, $isComplete);
+
+        // the form was sent before the objects of the new title could have been shown
+        if (!$isComplete) {
+            $linker->rematch($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        // the identifications are deleted by the foreign key
+        SkyMap::clearCache();
+    }
+
+    /**
+     * Saves the mark without touching anything else (e.g. the time of the last edit).
+     *
+     * @param bool $value
+     */
+    public function setHasNoSkyObject($value)
+    {
+        if ((bool)$this->has_no_sky_object !== $value) {
+            $this->updateAttributes(['has_no_sky_object' => $value]);
+            SkyMap::clearCache();
+        }
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSkyObjectLinks()
+    {
+        return $this->hasMany(ObservationSkyObject::class, ['observation_id' => 'id'])
+            ->with('skyObject')
+            ->orderBy(['observation_sky_objects.id' => SORT_ASC]);
+    }
+
+    /**
+     * Objects to show to the visitors.
+     * @return ObservationSkyObject[]
+     */
+    public function getVisibleSkyObjectLinks()
+    {
+        return array_filter($this->skyObjectLinks, function (ObservationSkyObject $link) {
+            return $link->isVisible();
+        });
     }
 
     public static function getVisibleAttributes()

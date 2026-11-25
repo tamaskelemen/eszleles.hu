@@ -105,6 +105,10 @@ foreach (Observe::getAllTypes() as $type => $label) {
                     <a class="nav-link" href="<?= Url::toRoute('/observe/search')?>">Keresés</a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['sky-map/index']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/sky-map/index')?>">Égtérkép <span class="nav-beta">Béta</span></a>
+                </li>
+
                 <li class="nav-item <?= in_array($route, ['site/about']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Célok</a>
                 </li>
@@ -180,7 +184,7 @@ foreach (Observe::getAllTypes() as $type => $label) {
                 <div class="alert-<?= $key ?> alert alert-dismissible" role="alert">
                     <?php
                         foreach ($value as $row) {
-                            echo $row;
+                            echo Html::encode($row);
                         }
                     ?>
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>

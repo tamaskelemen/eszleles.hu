@@ -75,11 +75,7 @@ $(document).ready(function() {
                 }
             })
             $('#taglist').append(
-                "<span class='tag-item' data-json='"
-                + tag.annotation
-                +  "'>"
-                + names
-                + "</span>"
+                $('<span class="tag-item">').attr('data-json', tag.annotation).text(names)
             );
 
         });

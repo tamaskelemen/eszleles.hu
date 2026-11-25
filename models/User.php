@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Helper;
 use Yii;
 use yii\base\NotSupportedException;
 
@@ -237,10 +238,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getSocialLinks()
     {
-        return [
+        return array_filter([
             'facebook' => $this->facebook,
 //            'instagram' => $this->instagram,
             'github' => $this->github,
-        ];
+        ], [Helper::class, 'isWebUrl']);
     }
 }

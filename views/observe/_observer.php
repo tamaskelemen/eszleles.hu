@@ -11,7 +11,7 @@ use yii\helpers\Url;
 <div class="observer">
     <div>
         <span class="observer__label">Észlelő</span>
-        <?= Html::a($user->name, Url::toRoute(["/user/profile", "id" => $user->id])) ?>
+        <?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id" => $user->id])) ?>
     </div>
 
     <p class="social">

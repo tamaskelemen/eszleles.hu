@@ -12,7 +12,7 @@ $user = $model->user;
         <img src="<?= $model->observation->getThumbnailPath() ?>" alt="<?= Html::encode($model->observation->object_name) ?>" width="300" height="200" loading="lazy">
     </a>
     <div>
-        <p class="comment-byline"><?= Html::a($user->name, Url::toRoute(["/user/profile", "id"=> $user->id])) ?> <?= Yii::$app->formatter->asTimeAgo($model->created_at) ?></p>
+        <p class="comment-byline"><?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id"=> $user->id])) ?> <?= Yii::$app->formatter->asTimeAgo($model->created_at) ?></p>
         <p><?= nl2br(Html::encode($model->comment)) ?></p>
     </div>
 </div>

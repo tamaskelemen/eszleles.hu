@@ -49,6 +49,10 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/admin/index')?>">Tevékenységnapló</a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['admin/identification', 'admin/identify']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/admin/identification')?>">Azonosítás</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="<?= Url::toRoute('/bug-report/index')?>">Hibajelentések</a>
                 </li>
@@ -68,7 +72,7 @@ $route = Yii::$app->controller->route;
 
 
                     <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
-                        <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Yii::$app->user->getIdentity()->email ?>)</a>
+                        <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Html::encode(Yii::$app->user->getIdentity()->email) ?>)</a>
                     </li>
                 <?php } ?>
             </ul>
@@ -109,7 +113,7 @@ $route = Yii::$app->controller->route;
                     <div class="alert-<?= $key ?> alert alert-dismissible" role="alert">
                         <?php
                         foreach ($value as $row) {
-                            echo $row;
+                            echo Html::encode($row);
                         }
                         ?>
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>

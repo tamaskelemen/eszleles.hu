@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'email',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a($model->email, Url::to(['/user/profile', 'id' => $model->id]));
+                    return Html::a(Html::encode($model->email), Url::to(['/user/profile', 'id' => $model->id]));
                 }
             ],
             'name',

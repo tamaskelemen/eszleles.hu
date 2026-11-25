@@ -14,6 +14,12 @@ class DeepSkyForm extends AbstractObserveForm
     public $object_type;
     public $type  = Observe::TYPE_DEEP_SKY;
 
+    /** @var string[]|null see Observe */
+    public $skyObjectItems;
+
+    /** @var string|null see Observe */
+    public $skyObjectTitle;
+
     /*
      * TODO:
      *  -datum helyett pontos ido kell
@@ -42,6 +48,8 @@ class DeepSkyForm extends AbstractObserveForm
     {
         $rules = [
             [['object_type', '!type'], 'string', 'max' => 255],
+            [['skyObjectItems'], 'each', 'rule' => ['string']],
+            [['skyObjectTitle'], 'string'],
         ];
         
         return array_merge(parent::rules(), $rules);
@@ -73,6 +81,8 @@ class DeepSkyForm extends AbstractObserveForm
         $observe->type = $this->type;
         $observe->filter = $this->filter;
         $observe->expo = $this->expo;
+        $observe->skyObjectItems = $this->skyObjectItems;
+        $observe->skyObjectTitle = $this->skyObjectTitle;
 
         $transaction = Yii::$app->db->beginTransaction();
 

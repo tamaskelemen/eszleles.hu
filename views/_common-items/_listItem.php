@@ -21,15 +21,15 @@ $commentCount = count($model->comments);
         <div class="obs-card__type">
             <?= $this->render('_typeIcon', ['type' => $model->type]) ?>
             <?= Observe::getTypeName($model->type) ?>
-            <time><?= $model->date ?></time>
+            <time><?= Html::encode($model->date) ?></time>
         </div>
 
-        <h3><?= $model->object_name ?></h3>
+        <h3><?= Html::encode($model->object_name) ?></h3>
 
         <p><?= Html::encode($model->description) ?></p>
 
         <div class="obs-card__meta">
-            <span><?= $model->observer->name ?></span>
+            <span><?= Html::encode($model->observer->name) ?></span>
             <?php if ($commentCount > 0) { ?>
                 <span><?= $commentCount ?> hozzászólás</span>
             <?php } ?>

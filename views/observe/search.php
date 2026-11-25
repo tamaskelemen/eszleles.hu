@@ -28,7 +28,7 @@ $columns = [
         'attribute' => 'object_name',
         'format' => 'raw',
         'value' => function ($model) {
-            return Html::a($model->object_name, $model->getViewUrl());
+            return Html::a(Html::encode($model->object_name), $model->getViewUrl());
         }
     ],
     [

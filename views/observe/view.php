@@ -27,13 +27,16 @@ $user = $model->getObserver()->one();
         <div class="obs-card__type">
             <?= $this->render('../_common-items/_typeIcon', ['type' => $model->type]) ?>
             <?= Observe::getTypeName($model->type) ?>
-            <time><?= $model->date ?></time>
+            <time><?= Html::encode($model->date) ?></time>
         </div>
-        <h1><?= $model->object_name?></h1>
+        <h1><?= Html::encode($model->object_name) ?></h1>
         <?php
         if ($model->observer_id === Yii::$app->user->id) {
             ?>
             <?= Html::a('Észlelés módosítása', ['update', 'id' => $model->id], ['class' => 'btn btn-outline']) ?>
+        <?php } ?>
+        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) { ?>
+            <?= Html::a('Azonosítás szerkesztése', ['/admin/identify', 'id' => $model->id], ['class' => 'btn btn-outline']) ?>
         <?php } ?>
     </header>
 
@@ -49,6 +52,19 @@ $user = $model->getObserver()->one();
             <?= $this->render('_observer', ['user' => $user]) ?>
 
             <dl>
+                <?php if ($model->visibleSkyObjectLinks) { ?>
+                    <div class="log-sheet__wide">
+                        <dt>Azonosított objektum</dt>
+                        <dd>
+                            <ul class="sky-tags">
+                                <?php foreach ($model->visibleSkyObjectLinks as $link) { ?>
+                                    <li class="sky-tag"><?= Html::encode($link->getLabel()) ?></li>
+                                <?php } ?>
+                            </ul>
+                        </dd>
+                    </div>
+                <?php } ?>
+
                 <?php foreach (Deepsky::getVisibleAttributes() as $attribute) {
                     if ($model->$attribute) {
                         $helpText = $model->getAttribteHelpText($attribute);
@@ -63,7 +79,7 @@ $user = $model->getObserver()->one();
                                     ></i>
                                 <?php } ?>
                             </dt>
-                            <dd><?= $model->$attribute ?></dd>
+                            <dd><?= Html::encode($model->$attribute) ?></dd>
                         </div>
                     <?php }
                 } ?>
