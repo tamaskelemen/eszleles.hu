@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <?php ActiveForm::end(); ?>
+
+            <?= $this->render('_social') ?>
         </div>
     </div>
 </div>

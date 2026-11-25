@@ -758,6 +758,30 @@ main > .container:first-child:not(.breadcrumb) {
     color: #fff;
 }
 
+.social-login {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+}
+
+.social-login__or {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.4rem 0;
+}
+
+.social-login__or::before,
+.social-login__or::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--line);
+}
+
+.social-login .fa {
+    margin-right: .4rem;
+}
+
 .form-group {
     margin-bottom: 1.4rem;
 }
@@ -782,6 +806,11 @@ form div.required > label.control-label::after {
     border-radius: var(--radius);
     color: #fff;
     font-size: 1rem;
+}
+
+.form-control[readonly] {
+    background-color: var(--field);
+    color: var(--text);
 }
 
 .form-control:focus {

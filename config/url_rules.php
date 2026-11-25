@@ -1,7 +1,10 @@
 <?php
 return [
     'regisztracio' => '/site/signup',
+    'regisztracio/befejezes' => '/site/social-signup',
+    'regisztracio/osszekapcsolas' => '/site/social-connect',
     'bejelentkezes' => '/site/login',
+    'bejelentkezes/<authclient:[a-z]+>' => '/site/auth',
     '<id:\d+>' => '/site/observation',
     'elfelejtett-jelszo' => '/site/lost-password',
     'uj-jelszo/<token:.*>' => '/site/new-password',

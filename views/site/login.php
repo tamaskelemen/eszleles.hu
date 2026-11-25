@@ -44,6 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>
                 <?= Html::a("Elfelejtetted a jelszavad?", [Url::toRoute(['/site/lost-password'])]) ?>
             </p>
+
+            <?= $this->render('_social') ?>
         </div>
     </div>
 </div>

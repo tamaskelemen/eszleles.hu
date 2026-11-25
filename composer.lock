@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5f7e91654f7ce0946381e167c43bf58",
+    "content-hash": "8ecd7c45493293cefd705588c39872c5",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -581,6 +581,56 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v9.99.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "support": {
+                "email": "info@paragonie.com",
+                "issues": "https://github.com/paragonie/random_compat/issues",
+                "source": "https://github.com/paragonie/random_compat"
+            },
+            "time": "2020-10-15T08:29:30+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1181,6 +1231,95 @@
             "time": "2026-10-28T21:50:56+00:00"
         },
         {
+            "name": "yiisoft/yii2-authclient",
+            "version": "2.2.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-authclient.git",
+                "reference": "afb7b222ad5433852c0378469f26ca5ecfbb8481"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/afb7b222ad5433852c0378469f26ca5ecfbb8481",
+                "reference": "afb7b222ad5433852c0378469f26ca5ecfbb8481",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": ">=1",
+                "php": ">=7.4",
+                "yiisoft/yii2": "~2.0.55",
+                "yiisoft/yii2-httpclient": "~2.0.5"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.95",
+                "mspirkov/yii2-rector": "^0.2",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6",
+                "rector/rector": "^2.6"
+            },
+            "suggest": {
+                "web-token/jwt-checker": "required for JWS, JWT or JWK related flows like OpenIDConnect",
+                "web-token/jwt-key-mgmt": "required for JWS, JWT or JWK related flows like OpenIDConnect",
+                "web-token/jwt-signature": "required for JWS, JWT or JWK related flows like OpenIDConnect",
+                "web-token/jwt-signature-algorithm-ecdsa": "required for JWS, JWT or JWK related flows like OpenIDConnect",
+                "web-token/jwt-signature-algorithm-hmac": "required for JWS, JWT or JWK related flows like OpenIDConnect",
+                "web-token/jwt-signature-algorithm-rsa": "required for JWS, JWT or JWK related flows like OpenIDConnect"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\authclient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "External authentication via OAuth and OpenID for the Yii framework",
+            "keywords": [
+                "OpenID Connect",
+                "OpenId",
+                "api",
+                "auth",
+                "oauth",
+                "yii2"
+            ],
+            "support": {
+                "forum": "https://www.yiiframework.com/forum/",
+                "irc": "ircs://irc.libera.chat:6697/yii",
+                "issues": "https://github.com/yiisoft/yii2-authclient/issues",
+                "source": "https://github.com/yiisoft/yii2-authclient",
+                "wiki": "https://www.yiiframework.com/wiki/"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/yiisoft",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/yiisoft",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-authclient",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-10-14T22:32:57+00:00"
+        },
+        {
             "name": "yiisoft/yii2-bootstrap4",
             "version": "2.0.12",
             "source": {
@@ -1360,6 +1499,83 @@
                 }
             ],
             "time": "2026-07-03T01:15:29+00:00"
+        },
+        {
+            "name": "yiisoft/yii2-httpclient",
+            "version": "2.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-httpclient.git",
+                "reference": "498e95675b6c10aa6426bfdd33773d600a4be8a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-httpclient/zipball/498e95675b6c10aa6426bfdd33773d600a4be8a0",
+                "reference": "498e95675b6c10aa6426bfdd33773d600a4be8a0",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": ">=1",
+                "php": ">=7.4",
+                "yiisoft/yii2": "~2.0.55"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6",
+                "yiisoft/yii2-coding-standards": "^3.0",
+                "yiisoft/yii2-debug": "^2.1"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\httpclient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "HTTP client extension for the Yii framework",
+            "keywords": [
+                "curl",
+                "http",
+                "httpclient",
+                "yii2"
+            ],
+            "support": {
+                "forum": "https://www.yiiframework.com/forum/",
+                "irc": "ircs://irc.libera.chat:6697/yii",
+                "issues": "https://github.com/yiisoft/yii2-httpclient/issues",
+                "source": "https://github.com/yiisoft/yii2-httpclient",
+                "wiki": "https://www.yiiframework.com/wiki/"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/yiisoft",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/yiisoft",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-httpclient",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-05-25T21:16:42+00:00"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -5444,8 +5660,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "yiisoft/yii2-bootstrap4": 20,
-        "kartik-v/yii2-widget-datepicker": 20
+        "kartik-v/yii2-widget-datepicker": 20,
+        "yiisoft/yii2-bootstrap4": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -5456,6 +5672,6 @@
         "ext-simplexml": "*",
         "ext-xmlwriter": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }

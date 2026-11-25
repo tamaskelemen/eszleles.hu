@@ -95,6 +95,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasMany(UserBadge::class, ['user_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery|SocialAccountsQuery
+     */
+    public function getSocialAccounts()
+    {
+        return $this->hasMany(SocialAccount::class, ['user_id' => 'id']);
+    }
+
     public function getObservations()
     {
         return $this->hasMany(Observe::class, ['observer_id' => 'id']);
@@ -127,6 +135,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return static::findOne(['email' => $email]);
     }
 
+    /**
+     * @param string $email
+     * @return bool whether a user has the address, regardless of the case of the letters
+     */
+    public static function isEmailTaken($email)
+    {
+        return static::find()->where(['lower(email)' => mb_strtolower($email)])->exists();
+    }
 
     /**
      * Finds user by password reset token
@@ -187,7 +203,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        // the users registered with an external account have no password
+        return !empty($this->password_hash)
+            && Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**

@@ -37,3 +37,4 @@ tests/_support/_generated
 
 config/db_local.php
 /config/smtp.php
+/config/social.php

@@ -30,6 +30,10 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => require __DIR__ . '/auth_clients.php',
+        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -55,7 +59,7 @@ $config = [
     ],
     'params' => $params,
     'name' => 'VCSE Észlelések',
-    'homeUrl' => YII_ENV_DEV ? 'http://obs.test' : 'https://eszleles.hu',
+    'homeUrl' => YII_ENV_DEV ? 'http://' . ($_SERVER['HTTP_HOST'] ?? 'obs.test') : 'https://eszleles.hu',
     'container' => [
         'definitions' => [
             \yii\widgets\LinkPager::class => \yii\bootstrap4\LinkPager::class,

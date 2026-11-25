@@ -4,13 +4,17 @@ namespace app\controllers;
 
 use app\components\Email;
 use app\components\Flash;
+use app\components\SocialAuthAction;
+use app\components\SocialLogin;
 use app\models\Activity;
 use app\models\CommentSearch;
 use app\models\forms\LostPasswordForm;
 use app\models\forms\SignupForm;
+use app\models\forms\SocialSignupForm;
 use app\models\Observe;
 use app\models\User;
 use Yii;
+use yii\authclient\ClientInterface;
 use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -30,8 +34,20 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout', 'auth', 'social-signup', 'social-connect'],
                 'rules' => [
+                    [
+                        'actions' => ['auth', 'social-signup', 'social-connect'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['auth', 'social-signup', 'social-connect'],
+                        'allow' => false,
+                        'denyCallback' => function ($rule, $action) {
+                            return $this->goHome();
+                        }
+                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
@@ -43,6 +59,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'social-connect' => ['post'],
                 ],
             ],
         ];
@@ -54,6 +71,11 @@ class SiteController extends Controller
     public function actions()
     {
         return [
+            'auth' => [
+                'class' => SocialAuthAction::class,
+                'successCallback' => [$this, 'onAuthSuccess'],
+                'cancelCallback' => [$this, 'onAuthCancel'],
+            ],
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
@@ -110,6 +132,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            SocialLogin::connectPending($model->getUser());
             return $this->goBack();
         }
 
@@ -143,6 +166,104 @@ class SiteController extends Controller
         return $this->render('signup', [
             'signupForm' => $signupForm
         ]);
+    }
+
+    /**
+     * Called after a successful login at the provider.
+     *
+     * @param ClientInterface $client
+     * @return Response
+     * @throws \Exception
+     */
+    public function onAuthSuccess(ClientInterface $client)
+    {
+        $profile = SocialLogin::getProfile($client);
+        // nothing else is requested from the provider, so the access token should not stay in the session
+        $client->setAccessToken(null);
+
+        $account = SocialLogin::findAccount($profile);
+
+        if ($account !== null) {
+            $account->updateAttributes($profile);
+            SocialLogin::clearPending();
+
+            if (!SocialLogin::login($account->user)) {
+                throw new Exception("Failed to log in user");
+            }
+            return $this->goBack('/');
+        }
+
+        SocialLogin::setPending($profile);
+
+        if ($profile['email'] !== null && User::isEmailTaken($profile['email'])) {
+            $name = $client->getTitle();
+            Flash::addInfo("Ezzel az email címmel ({$profile['email']}) már van profil az oldalon. Lépj be a jelszavaddal, és összekapcsoljuk a {$name} fiókoddal. Ha elfelejtetted a jelszavad, kérj újat.");
+            return $this->redirect(['login']);
+        }
+
+        return $this->redirect(['social-signup']);
+    }
+
+    /**
+     * Called if the user cancels the login at the provider.
+     *
+     * @param ClientInterface $client
+     * @return Response
+     */
+    public function onAuthCancel(ClientInterface $client)
+    {
+        Flash::addInfo("A belépést megszakítottad.");
+
+        return $this->redirect(['login']);
+    }
+
+    /**
+     * Finishes the registration with an external account.
+     *
+     * @return Response|string
+     */
+    public function actionSocialSignup()
+    {
+        $profile = SocialLogin::getPending();
+
+        if ($profile === null) {
+            return $this->redirect(['signup']);
+        }
+
+        $model = new SocialSignupForm($profile);
+
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                $user = $model->signup();
+
+                if ($user !== null) {
+                    SocialLogin::clearPending();
+                    SocialLogin::login($user);
+                    Flash::addSuccess("Sikeres regisztráció!");
+                    return $this->goBack('/');
+                }
+            } catch (\Exception $e) {
+                Yii::error($e, __METHOD__);
+                Flash::addDanger("Belső hiba történt.");
+            }
+        }
+
+        return $this->render('social-signup', [
+            'model' => $model,
+            'providerName' => SocialLogin::getProviderName($profile['provider']),
+        ]);
+    }
+
+    /**
+     * The external account will be connected to the existing account the user logs in to.
+     *
+     * @return Response
+     */
+    public function actionSocialConnect()
+    {
+        SocialLogin::requestConnect();
+
+        return $this->redirect(['login']);
     }
 
     public function actionLostPassword()
@@ -179,6 +300,7 @@ class SiteController extends Controller
         }
         if (Yii::$app->user->login($user)) {
             Activity::log($user->id, Activity::TYPE_LOGIN_RESET_LINK);
+            SocialLogin::connectPending($user);
             $this->redirect("/user/change-password");
 
         }

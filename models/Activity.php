@@ -25,6 +25,8 @@ class Activity extends \yii\db\ActiveRecord
     const TYPE_LOGIN = 'login';
     const TYPE_LOGIN_FAILED = 'login_failed';
     const TYPE_LOGIN_RESET_LINK = 'login_reset_link';
+    const TYPE_LOGIN_SOCIAL = 'login_social';
+    const TYPE_SOCIAL_CONNECT = 'social_connect';
     const TYPE_LOGOUT = 'logout';
     const TYPE_OBSERVATION_CREATE = 'observation_create';
     const TYPE_OBSERVATION_UPDATE = 'observation_update';
@@ -81,6 +83,8 @@ class Activity extends \yii\db\ActiveRecord
             self::TYPE_LOGIN => 'Sikeres belépés',
             self::TYPE_LOGIN_FAILED => 'Sikertelen belépés',
             self::TYPE_LOGIN_RESET_LINK => 'Belépés jelszó-visszaállító linkkel',
+            self::TYPE_LOGIN_SOCIAL => 'Belépés külső fiókkal',
+            self::TYPE_SOCIAL_CONNECT => 'Külső fiók összekapcsolása',
             self::TYPE_LOGOUT => 'Kilépés',
             self::TYPE_OBSERVATION_CREATE => 'Észlelés feltöltése',
             self::TYPE_OBSERVATION_UPDATE => 'Észlelés módosítása',
