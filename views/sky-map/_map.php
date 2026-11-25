@@ -76,6 +76,11 @@ $this->registerJsFile('/js/sky-map.js?v=' . filemtime(Yii::getAlias('@webroot/js
             <span class="skymap__ramp" aria-hidden="true"></span>
             <span>sok <span data-legend-max></span></span>
         </div>
+        <div class="skymap__program" hidden>
+            <span class="skymap__dot" aria-hidden="true"></span>
+            <span data-program-name role="status"></span>
+            <button type="button" class="skymap-link" data-action="hideProgram">Elrejtés</button>
+        </div>
         <p class="skymap__hint skymap__hint--mouse">Húzással mozgatható. Nagyítás: gombokkal, Ctrl + görgővel, vagy kattintás után görgővel.</p>
         <p class="skymap__hint skymap__hint--touch">Két ujjal mozgatható és nagyítható, teljes képernyőn egy ujjal is.</p>
     </div>

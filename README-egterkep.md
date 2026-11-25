@@ -167,6 +167,8 @@ programs (Észlelőprogramok): Messier, Caldwell, Herschel 400, RASC Finest NGC,
   by the approval of an admin may come later.
 - `components/SkyPrograms.php` describes the programs. Their items are in `sky_list_items`, written by `sky/import`: from the
   aliases, or from `seed/sky/lists/`. An item is done if any of its objects is publicly identified.
+- The "Mutasd a térképen" buttons of the profiles show every object of a program on the map of the profile in blue, the not
+  observed ones too (`/egterkep/eszleloprogram/<key>`).
 - `/eszleloprogramok` lists the programs and their objects. Everybody sees only their own observations there.
 
 "Visible from Hungary" means north of -35° here (`SkyPrograms::VISIBLE_DEC`): these rise to 7.5° at least in Budapest. It is

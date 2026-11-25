@@ -228,17 +228,39 @@ class SkyMap
             ->all();
 
         return array_map(function ($row) {
-            return [
-                'id' => (int)$row['id'],
-                'label' => SkyObject::buildLabel($row),
-                'type' => SkyObject::getTypeName($row['type']),
-                'constellation' => $row['constellation'],
-                'ra' => round($row['ra'], 3),
-                'dec' => round($row['dec'], 3),
+            return self::buildObject($row) + [
                 'observations' => (int)$row['observations'],
                 'observers' => (int)$row['observers'],
             ];
         }, $rows);
+    }
+
+    /**
+     * @param string $program
+     * @return array objects of the observing program, without the number of observations
+     */
+    public static function findProgramObjects($program)
+    {
+        $rows = (new Query())
+            ->select(['id', 'name', 'messier', 'common_name', 'type', 'constellation', 'ra', 'dec'])
+            ->from('sky_objects')
+            ->where(['id' => (new Query())->select('sky_object_id')->from('sky_list_items')->where(['list' => $program])])
+            ->orderBy(['id' => SORT_ASC])
+            ->all();
+
+        return array_map([self::class, 'buildObject'], $rows);
+    }
+
+    private static function buildObject(array $row)
+    {
+        return [
+            'id' => (int)$row['id'],
+            'label' => SkyObject::buildLabel($row),
+            'type' => SkyObject::getTypeName($row['type']),
+            'constellation' => $row['constellation'],
+            'ra' => round($row['ra'], 3),
+            'dec' => round($row['dec'], 3),
+        ];
     }
 
     private static function countStats(array $objects, ?int $userId = null)

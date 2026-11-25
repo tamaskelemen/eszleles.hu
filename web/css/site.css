@@ -68,6 +68,7 @@
 
     --radius: 4px;
     --section: clamp(3rem, 7vw, 5.5rem);
+    --program: #3d9bff;
 }
 
 /* ---------- base ---------- */
@@ -208,6 +209,8 @@ hr {
 html[data-night] {
     --muted: #cdd6d8;
     --line: #46545a;
+    /* blue would be black under the red light */
+    --program: #fff;
 }
 
 html[data-night] body::after {
@@ -2063,6 +2066,36 @@ time[data-toggle] {
     margin: .25rem 0 .75rem;
 }
 
+.badges__title {
+    display: flex;
+    align-items: center;
+}
+
+.badges__title .info-tip {
+    flex: none;
+    cursor: pointer;
+}
+
+.badges__map {
+    margin-left: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+}
+
+.badges__map:hover {
+    border-color: var(--text);
+}
+
+/* it keeps the focus after a click */
+.badges__map:focus:not(:focus-visible) {
+    outline: 0;
+}
+
+.badges__map[aria-pressed="true"] {
+    border-color: var(--program);
+    color: var(--program);
+}
+
 .badge-mark {
     display: inline-block;
     line-height: 0;
@@ -2453,6 +2486,24 @@ time[data-toggle] {
     height: 10px;
     background: linear-gradient(to right, #5c2013, #a83a24, #ff6a4d, #ffab96, #ffe9e2);
     border-radius: var(--radius);
+}
+
+.skymap__program {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .1rem .6rem;
+}
+
+.skymap__program[hidden] {
+    display: none;
+}
+
+.skymap__dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--program);
+    border-radius: 50%;
 }
 
 .skymap__hint {

@@ -2,6 +2,7 @@
 
 use app\components\Badges;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $categories array see Badges, without progress if it is not the own profile of the visitor */
@@ -41,12 +42,23 @@ $sectionIds = [
         <div class="badges__grid">
             <?php foreach ($groupCategories as $category) { ?>
                 <div class="badges__card">
-                    <h3>
+                    <h3 class="badges__title">
                         <?= $group === Badges::GROUP_PROGRAM
                             ? Html::a(Html::encode($category['name']), ['/program/view', 'key' => $category['key']])
                             : Html::encode($category['name']) ?>
                         <?php if ($isOwn && $category['note']) { ?>
                             <?= $this->render('//_common-items/_infoTip', ['label' => 'Mi számít bele?', 'text' => $category['note']]) ?>
+                        <?php } ?>
+                        <?php if ($group === Badges::GROUP_PROGRAM) { ?>
+                            <?= Html::button('<i class="fa fa-globe" aria-hidden="true"></i>', [
+                                'class' => 'info-tip badges__map',
+                                'title' => 'Mutasd a térképen',
+                                'aria-label' => $category['name'] . ': Mutasd a térképen',
+                                'aria-pressed' => 'false',
+                                'data-toggle' => 'tooltip',
+                                'data-map-program' => Url::to(['/sky-map/program', 'key' => $category['key']]),
+                                'data-name' => $category['name'],
+                            ]) ?>
                         <?php } ?>
                     </h3>
 

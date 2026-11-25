@@ -11,6 +11,7 @@
     const tooltip = root.querySelector('.skymap__tooltip');
     const panel = root.querySelector('.skymap__panel');
     const message = root.querySelector('.skymap__message');
+    const programLegend = root.querySelector('.skymap__program');
 
     const constellationNames = JSON.parse(root.dataset.constellations);
     const gaps = JSON.parse(root.dataset.gaps);
@@ -27,6 +28,9 @@
     const URL_PARAM = 'objektum';
     const HIT_RADIUS = {mouse: 10, touch: 22};
     const DEGREE = Math.PI / 180;
+    // larger than the stars, but a catalog of thousands would cover the sky
+    const PROGRAM_RADIUS = {few: 2.8, many: 1.6};
+    const PROGRAM_MANY = 1000;
     const FONT = 'Inter, Helvetica, Arial, sans-serif';
 
     // one hue from dark to light, the surface of the map is dark
@@ -43,6 +47,9 @@
     let metric = 'observations';
     let background = {stars: [], lines: {}, constellations: [], milkyWay: []};
     let objects = [];
+    // of the shown observing program: the ones among the observed objects, and the rest
+    let program = {observed: [], missing: []};
+    let lastProgramRequest = 0;
     let maxValue = 1;
     let size = {width: 0, height: 0};
     let selected = null;
@@ -128,7 +135,7 @@
 
     /** 0-1, logarithmic, otherwise a few popular objects would hide everything else */
     function intensity(object) {
-        return maxValue > 1 ? Math.log(value(object)) / Math.log(maxValue) : 0;
+        return maxValue > 1 && value(object) > 0 ? Math.log(value(object)) / Math.log(maxValue) : 0;
     }
 
     function buildHeatColors() {
@@ -371,7 +378,35 @@
     }
 
     function radiusOf(object) {
-        return (1.1 + 1.9 * intensity(object)) * Math.min(3, .8 + view.zoom / 5) * (size.width < 600 ? .7 : 1);
+        const radius = object.observations ? 1.1 + 1.9 * intensity(object) : PROGRAM_RADIUS[program.missing.length > PROGRAM_MANY ? 'many' : 'few'];
+
+        return radius * Math.min(3, .8 + view.zoom / 5) * (size.width < 600 ? .7 : 1);
+    }
+
+    /** One path for all, there may be thousands of them. */
+    function drawProgram(items, minRadius) {
+        context.beginPath();
+
+        items.forEach(function (object) {
+            object.point = projectVisible(object.ra, object.dec);
+
+            if (object.point) {
+                const radius = Math.max(minRadius, radiusOf(object));
+
+                context.moveTo(object.point[0] + radius, object.point[1]);
+                context.arc(object.point[0], object.point[1], radius, 0, 2 * Math.PI);
+            }
+        });
+
+        // it is different in night mode
+        context.fillStyle = getComputedStyle(root).getPropertyValue('--program').trim();
+        context.fill();
+
+        if (view.zoom > 2) {
+            context.strokeStyle = '#060a0f';
+            context.lineWidth = 1;
+            context.stroke();
+        }
     }
 
     function drawObjects() {
@@ -399,6 +434,9 @@
                 context.stroke();
             }
         }
+
+        drawProgram(program.missing, 0);
+        drawProgram(program.observed, program.missing.length ? radiusOf(program.missing[0]) : 0);
 
         [selected, hovered].forEach(function (object) {
             if (object && object.point) {
@@ -450,7 +488,7 @@
         context.strokeStyle = 'rgba(6, 10, 15, .85)';
         context.fillStyle = '#fff';
 
-        objects.forEach(function (object) {
+        objects.concat(program.missing).forEach(function (object) {
             if (!object.point) {
                 return;
             }
@@ -594,6 +632,7 @@
         out: () => zoomBy(.5),
         reset: () => moveTo(HOME),
         fullscreen: () => toggleFullscreen(!isFullscreen()),
+        hideProgram: hideProgram,
     };
 
     const keys = {
@@ -612,7 +651,7 @@
         let nearest = null;
         let distance = radius;
 
-        objects.forEach(function (object) {
+        objects.concat(program.missing).forEach(function (object) {
             const d = object.point ? Math.hypot(object.point[0] - point[0], object.point[1] - point[1]) : Infinity;
 
             // the first is the most observed
@@ -626,6 +665,10 @@
     }
 
     function counts(object) {
+        if (!object.observations) {
+            return 'Ezen a profilon még nincs észlelése';
+        }
+
         return isSingleObserver ? `${object.observations} észlelés` : `${object.observations} észlelés, ${object.observers} észlelő`;
     }
 
@@ -659,7 +702,8 @@
     function updateUrl() {
         const url = new URL(window.location);
 
-        if (selected) {
+        // the not observed ones are there only while their program is shown
+        if (selected && selected.observations) {
             url.searchParams.set(URL_PARAM, selected.id);
         } else {
             url.searchParams.delete(URL_PARAM);
@@ -706,6 +750,11 @@
         panel.hidden = false;
         panel.scrollTop = 0;
 
+        if (!object.observations) {
+            list.remove();
+            return;
+        }
+
         $.getJSON(root.dataset.objectUrl.replace(/0(?=\?|$)/, object.id))
             .done(function (observations) {
                 if (request !== lastPanelRequest) {
@@ -733,6 +782,63 @@
         root.scrollIntoView({behavior: 'smooth', block: 'start'});
         moveTo({ra: object.ra, dec: object.dec, zoom: Math.max(view.zoom, 6)});
         openPanel(object);
+    }
+
+    /* ---------- observing programs ---------- */
+
+    function markProgramButton(active) {
+        $('[data-map-program]').each(function () {
+            $(this).attr({
+                'aria-pressed': this === active,
+                // the tooltip reads it from here
+                title: '',
+                'data-original-title': this === active ? 'Elrejtés a térképről' : 'Mutasd a térképen',
+            });
+        });
+    }
+
+    function hideProgram() {
+        lastProgramRequest++;
+        program = {observed: [], missing: []};
+        programLegend.hidden = true;
+        markProgramButton(null);
+        closePanel();
+        hideTooltip();
+    }
+
+    function showProgram(button) {
+        hideProgram();
+
+        const request = lastProgramRequest;
+        const name = button.dataset.name;
+
+        markProgramButton(button);
+        root.scrollIntoView({behavior: 'smooth', block: 'start'});
+        moveTo(HOME);
+
+        loading.then(() => d3.json(button.dataset.mapProgram))
+            .then(function (items) {
+                if (request !== lastProgramRequest) {
+                    return;
+                }
+
+                const observed = new Map(objects.map(object => [object.id, object]));
+
+                program = {
+                    observed: items.filter(item => observed.has(item.id)).map(item => observed.get(item.id)),
+                    missing: items.filter(item => !observed.has(item.id)).map(item => Object.assign({observations: 0, observers: 0}, item)),
+                };
+                $(programLegend).find('[data-program-name]').text(name);
+                programLegend.hidden = false;
+                redraw();
+            })
+            .catch(function () {
+                if (request === lastProgramRequest) {
+                    markProgramButton(null);
+                    $(programLegend).find('[data-program-name]').text('Az észlelőprogramot nem sikerült betölteni.');
+                    programLegend.hidden = false;
+                }
+            });
     }
 
     /* ---------- lists ---------- */
@@ -877,6 +983,16 @@
         actions[this.dataset.action]();
     });
 
+    $(document).on('click', '[data-map-program]', function () {
+        $(this).tooltip('hide');
+
+        if (this.getAttribute('aria-pressed') === 'true') {
+            hideProgram();
+        } else {
+            showProgram(this);
+        }
+    });
+
     $(root).on('change', '[data-layer]', function () {
         layers[this.dataset.layer] = this.checked;
         redraw();
@@ -912,21 +1028,23 @@
     });
 
     new ResizeObserver(resize).observe(stage);
+    new MutationObserver(redraw).observe(document.documentElement, {attributeFilter: ['data-night']});
     // the boxes keep their state on reload in some browsers
     $(root).find('[data-layer]').each((index, input) => layers[input.dataset.layer] = input.checked);
     if (!isSingleObserver) {
         metric = root.querySelector('[name="skymap-metric"]:checked').value;
     }
 
-    Promise.all([d3.json(root.dataset.backgroundUrl), d3.json(root.dataset.objectsUrl)])
+    const loading = Promise.all([d3.json(root.dataset.backgroundUrl), d3.json(root.dataset.objectsUrl)])
         .then(function ([backgroundData, objectData]) {
             message.hidden = true;
             objects = objectData;
             setBackground(backgroundData);
             updateMetric();
             openFromUrl();
-        })
-        .catch(function () {
-            message.textContent = 'A térképet nem sikerült betölteni.';
         });
+
+    loading.catch(function () {
+        message.textContent = 'A térképet nem sikerült betölteni.';
+    });
 })(jQuery, window.d3);

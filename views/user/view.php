@@ -26,6 +26,9 @@ foreach ($badges as $category) {
         $topBadges[] = [$category, end($earned)];
     }
 }
+
+// the programs can be shown on the map even if nothing is observed yet
+$hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column($badges, 'group'), true);
 ?>
 <div class="user-view container">
     <header class="profile">
@@ -68,7 +71,7 @@ foreach ($badges as $category) {
 
     <?= $this->render('_badges', ['categories' => $badges, 'isOwn' => $isOwn]) ?>
 
-    <?php if ($skyMapStats !== null) { ?>
+    <?php if ($hasMap) { ?>
         <h2 class="profile__section" id="egterkep"><a class="anchor-link" href="#egterkep">Égtérkép</a></h2>
 
         <p class="skymap-credit">
@@ -78,7 +81,9 @@ foreach ($badges as $category) {
 
         <?= $this->render('//sky-map/_map', ['gaps' => [], 'userId' => $user->id]) ?>
 
-        <?= $this->render('//sky-map/_stats', ['stats' => $skyMapStats, 'isSingleObserver' => true]) ?>
+        <?php if ($skyMapStats !== null) { ?>
+            <?= $this->render('//sky-map/_stats', ['stats' => $skyMapStats, 'isSingleObserver' => true]) ?>
+        <?php } ?>
     <?php } ?>
 
     <h2 class="profile__section" id="eszlelesek"><a class="anchor-link" href="#eszlelesek">Észlelések (<?= count($observations) ?>)</a></h2>

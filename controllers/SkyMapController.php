@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\SkyMap;
+use app\components\SkyPrograms;
 use app\models\ObservationSkyObject;
 use app\models\Observe;
 use app\models\SkyObject;
@@ -38,6 +39,21 @@ class SkyMapController extends Controller
     public function actionData(?int $userId = null)
     {
         return $this->asJson($userId === null ? SkyMap::getData()['objects'] : SkyMap::findObjects($userId));
+    }
+
+    /**
+     * Objects of an observing program, whether they are observed or not.
+     * @param string $key
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionProgram(string $key)
+    {
+        if (!isset(SkyPrograms::getAll()[$key])) {
+            throw new NotFoundHttpException("A keresett oldal nem található");
+        }
+
+        return $this->asJson(SkyMap::findProgramObjects($key));
     }
 
     /**
