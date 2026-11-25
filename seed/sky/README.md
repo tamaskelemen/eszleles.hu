@@ -25,6 +25,13 @@ Data of the sky map, imported by `php yii sky/import`.
   and dashes do not matter. These win over the names in OpenNGC, and the first nickname of an object is the one we
   display. An alias can be a catalog number as well (see `M 102`).
 
+- `lists/` – observing programs, our own format (`number;objects`), made on 2026-11-25:
+  - `herschel400.csv` from the list of the
+    [Astronomical League](https://www.astroleague.org/herschel-400-observing-program/) in NGC order. It has NGC 2372 where
+    Wikipedia has NGC 650, the League accepts either of its two versions.
+  - `rasc.csv` from the Finest NGC checklist (version 2.1a) of the [RASC](https://www.rasc.ca), the combined objects are
+    chosen by hand.
+
 ## Adding a catalog
 
 1. Make a file with the columns `name;type;ra;dec;constellation;size;same_as`: type code of OpenNGC, degrees (J2000), arc

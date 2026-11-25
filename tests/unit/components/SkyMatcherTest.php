@@ -43,6 +43,34 @@ class SkyMatcherTest extends \Codeception\Test\Unit
         'vdB 152' => ['Cep', 333.4, 70.3, []],
     ];
 
+    public function testMatchTags()
+    {
+        $auto = SkyMatcher::STATUS_AUTO;
+        $review = SkyMatcher::STATUS_REVIEW;
+
+        foreach ([
+            [['M 42'], ['NGC 1976' => $auto]],
+            [['ngc1976', 'M 42'], ['NGC 1976' => $auto]],
+            [['M 81 / M 82'], ['NGC 3031' => $auto, 'NGC 3034' => $auto]],
+            [['Orion-köd (M 42)'], ['NGC 1976' => $auto]],
+            [['Orion-köd'], ['NGC 1976' => $review]],
+            [['HOLD', 'teszt', '', 'M13 környéke', 'NGC 99999'], []],
+            [['M 43'], ['NGC 1982' => $auto], ['NGC 1976']],
+            [['M 13'], ['NGC 6205' => $review], ['NGC 1976']],
+        ] as $index => $case) {
+            $known = array_map(function ($name) {
+                return ['ra' => self::OBJECTS[$name][1], 'dec' => self::OBJECTS[$name][2]];
+            }, $case[2] ?? []);
+            $statuses = [];
+
+            foreach ($this->createMatcher()->matchTags($case[0], $known) as $match) {
+                $statuses[$match['object']['name']] = $match['status'];
+            }
+
+            $this->assertSame($case[1], $statuses, "case $index");
+        }
+    }
+
     public function testMatch()
     {
         // not a data provider, because those run before the autoloader of Yii is set up
@@ -159,6 +187,11 @@ class SkyMatcherTest extends \Codeception\Test\Unit
 
     private function match($title, $constellation = null)
     {
+        return $this->createMatcher()->match($title, $constellation);
+    }
+
+    private function createMatcher()
+    {
         $aliases = [];
 
         foreach (self::OBJECTS as $name => list($objectConstellation, $ra, $dec, $others)) {
@@ -168,10 +201,8 @@ class SkyMatcherTest extends \Codeception\Test\Unit
             }
         }
 
-        $matcher = new SkyMatcher(function ($keys) use ($aliases) {
+        return new SkyMatcher(function ($keys) use ($aliases) {
             return array_intersect_key($aliases, array_flip($keys));
         });
-
-        return $matcher->match($title, $constellation);
     }
 }

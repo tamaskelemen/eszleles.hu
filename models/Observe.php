@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\BadgeSync;
 use app\components\Helper;
 use app\components\SkyLinker;
 use app\components\SkyMap;
@@ -170,6 +171,11 @@ class Observe extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
+        if ($insert || array_intersect_key($changedAttributes, ['type' => null, 'observer_id' => null])) {
+            BadgeSync::markChanged($this->observer_id);
+            BadgeSync::markChanged($changedAttributes['observer_id'] ?? null);
+        }
+
         if ($this->type !== self::TYPE_DEEP_SKY) {
             return;
         }
@@ -210,6 +216,7 @@ class Observe extends \yii\db\ActiveRecord
 
         // the identifications are deleted by the foreign key
         SkyMap::clearCache();
+        BadgeSync::markChanged($this->observer_id);
     }
 
     /**

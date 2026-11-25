@@ -1767,9 +1767,10 @@ time[data-toggle] {
 
 .observer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: .75rem 1rem;
     padding-bottom: 1rem;
 }
 
@@ -1934,6 +1935,173 @@ time[data-toggle] {
     display: flex;
     flex-wrap: wrap;
     gap: .75rem;
+}
+
+/* ---------- badges ---------- */
+
+.badges {
+    margin-bottom: 2.5rem;
+}
+
+.badges__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: 1rem;
+}
+
+.badges__card {
+    padding: 1rem 1.25rem;
+    background-color: var(--field);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.badges__card h3,
+.badges__card .h3 {
+    margin-bottom: .35rem;
+    font-size: 1.2rem;
+}
+
+.badges__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.badges__list--small {
+    flex-basis: 100%;
+    gap: .25rem;
+}
+
+.badges__list--small svg {
+    width: 34px;
+    height: 37px;
+}
+
+.badges__count {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 .75rem;
+    margin-bottom: .35rem;
+    font-size: .9375rem;
+}
+
+.badges__count b {
+    color: #fff;
+    font-weight: 500;
+}
+
+.badges__count span,
+.badges__next,
+.badges__text {
+    color: var(--muted);
+    font-size: .875rem;
+}
+
+.badges__text {
+    margin: .5rem 0 0;
+}
+
+.badges__bar {
+    height: 5px;
+    overflow: hidden;
+    background-color: var(--line);
+    border-radius: 3px;
+}
+
+.badges__bar span {
+    display: block;
+    height: 100%;
+    background-color: var(--lamp);
+    border-radius: 3px;
+}
+
+.badges__next {
+    margin: .25rem 0 .75rem;
+}
+
+.badge-mark {
+    display: inline-block;
+    line-height: 0;
+    border-radius: var(--radius);
+}
+
+.badge-mark__shape {
+    fill: var(--tier);
+}
+
+.badge-mark__glyph,
+.badge-mark__number {
+    fill: var(--sky-deep);
+    font-family: var(--display);
+    font-weight: 600;
+    text-anchor: middle;
+}
+
+.badge-mark__number {
+    font-size: 11px;
+}
+
+.badge-mark__icon {
+    fill: none;
+    stroke: var(--sky-deep);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.badge-mark--1 { --tier: #8b989c; }
+.badge-mark--2 { --tier: #bd8a5e; }
+.badge-mark--3 { --tier: #cbd9dd; }
+.badge-mark--4 { --tier: #e3b94f; }
+.badge-mark--5 { --tier: #54bfae; }
+.badge-mark--6 { --tier: #67a7e6; }
+.badge-mark--7 { --tier: #b08cea; }
+.badge-mark--8 { --tier: #ff6a4d; }
+
+.badge-mark--locked .badge-mark__shape {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-dasharray: 3 3;
+}
+
+.badge-mark--locked .badge-mark__glyph,
+.badge-mark--locked .badge-mark__number {
+    fill: var(--muted);
+}
+
+.badge-mark--locked .badge-mark__icon {
+    stroke: var(--muted);
+}
+
+.program-progress {
+    margin: 1.5rem 0;
+}
+
+.program-filter {
+    margin-bottom: 1.5rem;
+}
+
+.program-filter .nav-link {
+    color: var(--text);
+}
+
+.program-filter .nav-link.active {
+    background-color: var(--lamp);
+    color: var(--lamp-ink);
+}
+
+.program-table th[scope="row"] {
+    white-space: nowrap;
+}
+
+.program-table .fa-check {
+    color: var(--lamp);
+}
+
+.program-table .is-hidden:not(.is-done) {
+    opacity: .6;
 }
 
 /* ---------- footer ---------- */

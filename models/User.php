@@ -87,6 +87,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
 
+    /**
+     * @return \yii\db\ActiveQuery|UserBadgesQuery
+     */
+    public function getBadges()
+    {
+        return $this->hasMany(UserBadge::class, ['user_id' => 'id']);
+    }
+
     public function getObservations()
     {
         return $this->hasMany(Observe::class, ['observer_id' => 'id']);

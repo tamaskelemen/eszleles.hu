@@ -17,6 +17,13 @@ $tiles = [
     ['Caldwell-objektum', $stats['caldwell'] . ' / ' . SkyMap::CALDWELL_COUNT, 'a katalógusból'],
     ['Lefedettség', $formatter->asPercent($stats['coverage'], $isSingleObserver ? 1 : 0), 'a Magyarországról látható ég ekkora részét ' . ($isSingleObserver ? 'észlelte' : 'észleltük') . ' már (objektumonként ' . SkyMap::COVER_RADIUS . '° sugarú körrel)'],
 ];
+
+// the progress of a user is theirs only, their badges are public
+if ($isSingleObserver) {
+    $tiles = array_filter($tiles, function ($tile) {
+        return !in_array($tile[0], ['Csillagkép', 'Messier-objektum', 'Caldwell-objektum']);
+    });
+}
 ?>
 <section aria-labelledby="skymap-stats">
     <h2 id="skymap-stats">Számokban</h2>

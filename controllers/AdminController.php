@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 
+use app\components\BadgeSync;
 use app\components\Flash;
 use app\components\SkyLinker;
 use app\components\SkyMap;
@@ -169,6 +170,8 @@ class AdminController extends Controller
                     ['status' => ObservationSkyObject::STATUS_CONFIRMED, 'reason' => null],
                     ['observation_id' => $observe->id, 'status' => ObservationSkyObject::STATUS_REVIEW]
                 );
+                // updateAll() does not do it
+                BadgeSync::markChanged($observe->observer_id);
             }
 
             Activity::log(Yii::$app->user->id, Activity::TYPE_IDENTIFICATION, $observe->id);

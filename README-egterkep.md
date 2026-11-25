@@ -147,13 +147,59 @@ object of the catalog. A Caldwell number counts if any of its objects was observ
 The table at the bottom lists the catalogs we do not have, with the number of not identified observations that have such a
 number.
 
+### Badges and observing programs
+
+The profiles have badges (Jelvények) for uploads, comments, types of observations and constellations, and for observing
+programs (Észlelőprogramok): Messier, Caldwell, Herschel 400, RASC Finest NGC, NGC, Sharpless, Barnard and vdB.
+
+- `components/Badges.php` counts the badges of a user, it is slow (15-35 ms, 8 queries). The date of a badge is the date of
+  the item that reached the level.
+- `user_badges` stores the earned ones, so they can be displayed anywhere: `$user->badges`, use `with('badges')` for more
+  users. `UserBadge::filterHighest()` gives the highest one of every category, see the observation page.
+- `components/BadgeSync.php` keeps the table up to date. Whatever changes something that counts calls
+  `BadgeSync::markChanged()`, the marked users are counted again once, at the end of the request or the command, and the
+  differences are stored. Deleting a comment or correcting an identification takes the badge back too.
+- The models mark the users themselves. **`updateAll()`, `deleteAll()` and plain SQL do not**, call it by hand there. If
+  something is missed, the owner repairs it by opening their profile, or run `php yii badges/sync`.
+- Only the owner gets the missing badges and the progress, these are counted when their profile is opened. Everybody else
+  gets the stored ones. This is why the Messier, Caldwell and constellation tiles are not on the profiles.
+- The user is told about the new badges in a flash message, if it was their own request. A notification for the ones earned
+  by the approval of an admin may come later.
+- `components/SkyPrograms.php` describes the programs. Their items are in `sky_list_items`, written by `sky/import`: from the
+  aliases, or from `seed/sky/lists/`. An item is done if any of its objects is publicly identified.
+- `/eszleloprogramok` lists the programs and their objects. Everybody sees only their own observations there.
+
+"Visible from Hungary" means north of -35° here (`SkyPrograms::VISIBLE_DEC`): these rise to 7.5° at least in Budapest. It is
+stricter than the horizon of the map (-43°), where the objects barely rise.
+
+| | Visible | All |
+|---|---|---|
+| Messier | 110 | 110, and a separate badge for 109 without the disputed M 102 |
+| Caldwell | 67 | 109 |
+| NGC | 6,415 | 7,575, because duplicates and not existing objects of the 7,840 are left out |
+| Constellations | 63 | 88 |
+
+To add a program: a csv in `seed/sky/lists/` (`number;objects`), a constant, an entry in `FILES` and in `getAll()`, then
+`sky/import`.
+
+### Tags of the images
+
+`ImageTag` calls `SkyLinker::syncTags()` when a tag is saved or deleted, for every type of observation. The whole tag has to
+be the name of an object, or its parts separated by `/`, `,`, `;`, ` - ` or parentheses.
+
+- a catalog number is `auto`, a nickname is `review`
+- objects farther than 8° from the ones in the title are `review`
+- what the title or a person has linked, or a person has rejected, is left alone
+
+`observation_sky_objects.source` is `title` or `tag`: a change of one does not remove what was found in the other.
+
 ## Setup
 
 Needs PHP 7.4 or newer and PostgreSQL 9.4 or newer. There is nothing to configure and nothing is downloaded: the catalogs,
 the background of the map and D3 are in the repository (`seed/sky/`, `web/skymap/`).
 
 ```bash
-php yii migrate              # 2 new tables for the catalog, 1 for the identifications, 1 new column in observations
+php yii migrate              # tables of the catalog, the identifications and the observing programs
 php yii sky/import           # load the catalog, about 6 seconds, needs about 100 MB of memory
 php yii sky/match            # optional dry run, see below
 php yii sky/match --save     # identify the existing observations
@@ -166,6 +212,7 @@ With Docker: `docker exec -w /app eszleleshu-php-1 php yii sky/import` and so on
 | `php yii sky/import` | loads or refreshes the catalog, can be repeated any time |
 | `php yii sky/match` | dry run, writes `runtime/sky-match.csv` (opens in Excel), saves nothing |
 | `php yii sky/match --input=titles.csv` | dry run on a csv (`object_name,constellation,count`) instead of the database |
+| `php yii badges/sync` | counts the badges of every user again, can be repeated any time |
 | `php yii sky/match --save` | stores the matches, can be repeated any time, it does not touch the decisions of people |
 | `vendor/bin/codecept run unit components` | tests |
 
@@ -220,15 +267,16 @@ Check `NGC 6663` (marked Aql, but it is in Lyra) and `M15 GH (Per)` (probably Pe
 | What has changed | What to run after `git pull` |
 |---|---|
 | only code | nothing, except for `migrate` if there is a new migration |
+| the badges (first deploy of them) | `migrate`, `sky/import`, `sky/match --save` for the old tags, then `badges/sync`. Run `migrate` right after the pull, without it the profiles and the observations do not open, and deep sky observations can not be saved. Until `sky/import` the programs are only hidden |
 | anything in `seed/sky/` | `sky/import`, then `sky/match --save` |
 | `components/SkyMatcher.php` | `sky/match --save` |
 | the structure of the data in `components/SkyMap.php` | nothing, but change `SkyMap::CACHE_KEY` in the code |
 
 ### Undoing it
 
-Reverting the code is enough, the old code ignores the new tables. To remove the tables too, run `php yii migrate/down 2`
+Reverting the code is enough, the old code ignores the new tables. To remove the tables too, run `php yii migrate/down 5`
 before reverting the code, because it needs the migration files. **Every decision of the uploaders and the admins is lost
-with them.** It undoes the last two migrations, so check first with `php yii migrate/history` that they are these ones.
+with them.** It undoes the last five migrations (two of the map, three of the badges), so check first with `php yii migrate/history` that they are these ones.
 
 ## Maintenance
 
@@ -269,6 +317,8 @@ Dry run on the 2,254 deep sky observations of the live site (2026-11-25):
 | `controllers/AdminController.php`, `views/admin/identification.php`, `views/admin/identify.php` | admin pages |
 | `widgets/SkyObjectInput.php`, `widgets/views/skyObjectInput.php`, `web/js/sky-objects.js` | form input |
 | `migrations/m261125_100000_*`, `migrations/m261125_140000_*` | tables |
+| `components/Badges.php`, `components/BadgeSync.php`, `models/UserBadge.php`, `commands/BadgesController.php`, `views/user/_badges.php`, `views/_common-items/_badge*.php` | badges |
+| `components/SkyPrograms.php`, `controllers/ProgramController.php`, `views/program/`, `seed/sky/lists/` | observing programs |
 | `components/SkyMap.php`, `controllers/SkyMapController.php`, `views/sky-map/` | data and page of the map |
 | `web/js/sky-map.js`, `web/skymap/` | drawing, D3 and the background |
 | `tests/unit/components/` | tests, no database needed |

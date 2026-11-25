@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\components\Badges;
+use app\components\BadgeSync;
 use app\components\Flash;
 use app\components\SkyMap;
 use app\models\forms\PasswordChangeForm;
@@ -79,9 +81,20 @@ class UserController extends Controller
     {
         $user = $this->findModel($id);
         $observations = Observe::find()->where(['observer_id' => $user->id])->orderBy(['uploaded_at' => SORT_DESC])->with('observer', 'comments', 'thumbnail')->all();
-        
+        $isOwn = (int)Yii::$app->user->id === $user->id;
+
+        if ($isOwn) {
+            $badges = Badges::findAll($user->id);
+            // if something was missed, this repairs it
+            BadgeSync::trySync($user->id, $badges);
+        } else {
+            $badges = Badges::groupStored($user->badges);
+        }
+
         return $this->render('view', [
             'user' => $user,
+            'isOwn' => $isOwn,
+            'badges' => $badges,
             'observations' => $observations,
             'skyMapStats' => SkyMap::getUserStats($user->id),
         ]);

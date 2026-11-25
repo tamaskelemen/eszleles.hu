@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\SkyLinker;
 use Yii;
 
 /**
@@ -58,6 +59,42 @@ class ImageTag extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'annotation' => 'Komment',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->syncSkyObjects();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        $this->syncSkyObjects();
+    }
+
+    /**
+     * @return string[] what is written in the tag
+     */
+    public function getValues()
+    {
+        $annotation = json_decode((string)$this->annotation, true);
+        $body = is_array($annotation) && is_array($annotation['body'] ?? null) ? $annotation['body'] : [];
+
+        return array_values(array_filter(array_column($body, 'value'), 'is_string'));
+    }
+
+    private function syncSkyObjects()
+    {
+        if ($this->image !== null && $this->image->observe !== null) {
+            (new SkyLinker())->syncTags($this->image->observe);
+        }
     }
 
     /**

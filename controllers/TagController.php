@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Image;
 use app\models\ImageTag;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,9 +24,20 @@ class TagController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['create-json', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'create-json' => ['POST'],
                     'delete' => ['POST'],
                     'update' => ['POST'],
                 ],
@@ -77,7 +90,12 @@ class TagController extends Controller
     {
         $model = new ImageTag();
         $data = Yii::$app->request->post();
-;
+        $image = Image::findOne($data['image_id']);
+
+        if ($image === null || $image->observe->observer_id !== Yii::$app->user->identity->getId()) {
+            return false;
+        }
+
         $model->image_id = $data['image_id'];
         $model->annotation = json_encode($data['data']);
         $model->annotation_id = $data['annotation_id'];

@@ -27,6 +27,9 @@ return [
     'egterkep/adatok' => 'sky-map/data',
     'egterkep/objektum/<id:\d+>' => 'sky-map/object',
 
+    'eszleloprogramok' => 'program/index',
+    'eszleloprogramok/<key:[a-z0-9-]+>' => 'program/view',
+
     'osszes' => 'observe/index',
     'kereses' => 'observe/search',
     //melyeg

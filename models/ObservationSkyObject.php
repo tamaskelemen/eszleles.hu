@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\BadgeSync;
 use app\components\SkyMap;
 use app\components\SkyMatcher;
 
@@ -15,6 +16,7 @@ use app\components\SkyMatcher;
  * @property int $sky_object_id
  * @property string|null $designation the catalog number used in the title, if the object is known by another one
  * @property string $status
+ * @property string $source where the matcher found it
  * @property string|null $reason why it has to be reviewed
  * @property string $created_at
  *
@@ -31,6 +33,9 @@ class ObservationSkyObject extends \yii\db\ActiveRecord
     const STATUS_CONFIRMED = 'confirmed';
     /** removed by the uploader or an admin */
     const STATUS_REJECTED = 'rejected';
+
+    const SOURCE_TITLE = 'title';
+    const SOURCE_TAG = 'tag';
 
     const VISIBLE_STATUSES = [self::STATUS_AUTO, self::STATUS_CONFIRMED];
 
@@ -49,6 +54,10 @@ class ObservationSkyObject extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         SkyMap::clearCache();
+
+        if ($insert || !empty($changedAttributes)) {
+            BadgeSync::markChanged($this->observation->observer_id);
+        }
     }
 
     /**
@@ -58,6 +67,7 @@ class ObservationSkyObject extends \yii\db\ActiveRecord
     {
         parent::afterDelete();
         SkyMap::clearCache();
+        BadgeSync::markChanged($this->observation->observer_id);
     }
 
     /**

@@ -17,6 +17,7 @@ class SkyMatcher
     const REASON_CONSTELLATION = 'a csillagkép nem egyezik';
     const REASON_NICKNAME_CONFLICT = 'a becenév másik objektumot jelöl';
     const REASON_FAR = 'az objektumok messze vannak egymástól';
+    const REASON_TAG = 'képcímke alapján';
 
     /** Every way a catalog is written => the prefix of its keys */
     const CATALOGS = [
@@ -128,6 +129,55 @@ class SkyMatcher
             'unknown' => $unknown,
             'reasons' => $reasons,
         ];
+    }
+
+    /**
+     * Finds the objects of the tags of an image. The whole tag, or the parts of it ("M 81 / M 82"), have to be names of
+     * objects, anything else is ignored. Nicknames have to be reviewed, and objects far from the known ones too.
+     *
+     * @param string[] $tags
+     * @param array $known objects of the observation, each has ra and dec
+     * @return array lists of object, status and reasons indexed by object id
+     */
+    public function matchTags(array $tags, array $known = [])
+    {
+        $designations = [];
+        $nicknames = [];
+
+        foreach ($tags as $tag) {
+            foreach (preg_split('~[()/,;]|\s[-\x{2013}\x{2014}]\s~u', mb_scrub($tag, 'UTF-8')) as $part) {
+                $designation = self::designationKey($part);
+                $nickname = self::nicknameKey($part);
+
+                if ($designation !== null) {
+                    $designations[] = $designation;
+                } else if (strlen($nickname) >= self::NICKNAME_MIN_LENGTH) {
+                    $nicknames[] = $nickname;
+                }
+            }
+        }
+
+        $keys = array_values(array_unique(array_merge($designations, $nicknames)));
+        $found = empty($keys) ? [] : call_user_func($this->lookup, $keys);
+        $matches = [];
+
+        // a catalog number is stronger than a nickname of the same object
+        foreach ([[$designations, []], [$nicknames, [self::REASON_NICKNAME]]] as list($group, $reasons)) {
+            foreach ($group as $key) {
+                foreach ($found[$key] ?? [] as $object) {
+                    $isFar = !empty($known) && !self::isAnyNear([$object], $known);
+                    $allReasons = array_merge($reasons, $isFar ? [self::REASON_FAR] : []);
+
+                    $matches += [$object['id'] => [
+                        'object' => $object,
+                        'status' => empty($allReasons) ? self::STATUS_AUTO : self::STATUS_REVIEW,
+                        'reasons' => empty($allReasons) ? [] : array_merge([self::REASON_TAG], $allReasons),
+                    ]];
+                }
+            }
+        }
+
+        return $matches;
     }
 
     /**

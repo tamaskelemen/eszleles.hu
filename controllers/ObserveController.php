@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\BadgeSync;
 use app\components\Flash;
 use app\models\Comment;
 use app\models\forms\CommentForm;
@@ -149,6 +150,11 @@ class ObserveController extends Controller
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
+            // deleteAll() does not do it
+            foreach (Comment::find()->select('user_id')->distinct()->where(['observation_id' => $model->id])->column() as $userId) {
+                BadgeSync::markChanged($userId);
+            }
+
             // comments.observation_id has an ON DELETE NO ACTION foreign key
             Comment::deleteAll(['observation_id' => $model->id]);
             $model->delete();

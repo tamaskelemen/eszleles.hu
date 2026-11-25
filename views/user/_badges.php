@@ -1,0 +1,61 @@
+<?php
+
+use app\components\Badges;
+use yii\helpers\Html;
+
+/* @var $this yii\web\View */
+/* @var $categories array see Badges, without progress if it is not the own profile of the visitor */
+/* @var $isOwn bool */
+
+$groups = [
+    Badges::GROUP_PROGRAM => 'Észlelőprogramok',
+    Badges::GROUP_ACTIVITY => 'Jelvények',
+];
+?>
+<?php foreach ($groups as $group => $title) {
+    $groupCategories = array_filter($categories, function ($category) use ($group) {
+        return $category['group'] === $group;
+    });
+
+    if (empty($groupCategories)) {
+        continue;
+    }
+    ?>
+    <section class="badges" aria-labelledby="badges-<?= $group ?>">
+        <h2 id="badges-<?= $group ?>"><?= $title ?></h2>
+
+        <?php if ($isOwn) { ?>
+            <p class="skymap-credit">
+                A hiányzó jelvényeket és az előrehaladásodat csak te látod.
+                <?php if ($group === Badges::GROUP_PROGRAM) { ?>
+                    Az azonosított objektumok számítanak, a listák itt vannak: <?= Html::a('Észlelőprogramok', ['/program/index']) ?>.
+                <?php } ?>
+            </p>
+        <?php } ?>
+
+        <div class="badges__grid">
+            <?php foreach ($groupCategories as $category) { ?>
+                <div class="badges__card">
+                    <h3>
+                        <?= $group === Badges::GROUP_PROGRAM
+                            ? Html::a(Html::encode($category['name']), ['/program/view', 'key' => $category['key']])
+                            : Html::encode($category['name']) ?>
+                        <?php if ($isOwn && $category['note']) { ?>
+                            <?= $this->render('//_common-items/_infoTip', ['label' => 'Mi számít bele?', 'text' => $category['note']]) ?>
+                        <?php } ?>
+                    </h3>
+
+                    <?php if ($isOwn) { ?>
+                        <?= $this->render('//_common-items/_badgeProgress', ['category' => $category]) ?>
+                    <?php } ?>
+
+                    <div class="badges__list">
+                        <?php foreach ($category['levels'] as $level) { ?>
+                            <?= $this->render('//_common-items/_badge', ['category' => $category, 'level' => $level]) ?>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+    </section>
+<?php } ?>

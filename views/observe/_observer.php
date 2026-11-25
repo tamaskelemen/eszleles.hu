@@ -1,5 +1,7 @@
 <?php
 
+use app\components\Badges;
+use app\models\UserBadge;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -30,4 +32,15 @@ use yii\helpers\Url;
         }
         ?>
     </p>
+
+    <?php if ($user->badges) { ?>
+        <div class="badges__list badges__list--small" aria-label="Legmagasabb jelvények" role="group">
+            <?php foreach (UserBadge::filterHighest($user->badges) as $badge) { ?>
+                <?= $this->render('//_common-items/_badge', [
+                    'category' => Badges::getCategories()[$badge->category],
+                    'level' => $badge->getLevel(),
+                ]) ?>
+            <?php } ?>
+        </div>
+    <?php } ?>
 </div>

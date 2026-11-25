@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\BadgeSync;
 use Yii;
 
 /**
@@ -43,6 +44,40 @@ class Comment extends \yii\db\ActiveRecord
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => self::class, 'targetAttribute' => ['parent_id' => 'id', 'observation_id' => 'observation_id'], 'filter' => ['parent_id' => null]],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            BadgeSync::markChanged($this->user_id);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
+        // the replies are deleted by the foreign key
+        foreach ($this->getReplies()->select('user_id')->column() as $userId) {
+            BadgeSync::markChanged($userId);
+        }
+
+        return parent::beforeDelete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        BadgeSync::markChanged($this->user_id);
     }
 
     /**

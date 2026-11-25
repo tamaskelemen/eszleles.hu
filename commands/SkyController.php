@@ -1,9 +1,13 @@
 <?php
 namespace app\commands;
 
+use app\components\BadgeSync;
 use app\components\SkyLinker;
 use app\components\SkyMap;
 use app\components\SkyMatcher;
+use app\components\SkyPrograms;
+use app\models\Image;
+use app\models\ImageTag;
 use app\models\ObservationSkyObject;
 use app\models\Observe;
 use app\models\SkyObject;
@@ -18,6 +22,7 @@ class SkyController extends Controller
     /** Catalogs in our own format, see the README of seed/sky */
     const EXTRA_FILES = ['sharpless.csv', 'barnard.csv', 'ldn.csv', 'lbn.csv', 'vdb.csv'];
     const ALIAS_FILE = 'aliases.csv';
+    const LIST_DIRECTORY = 'lists/';
 
     /** Identifiers of OpenNGC we use => how the matcher knows the catalog */
     const IDENTIFIER_PREFIXES = [
@@ -80,6 +85,7 @@ class SkyController extends Controller
             $aliases = array_merge($aliases, $fileAliases);
 
             $this->saveAliases($aliases);
+            $this->importLists($aliases);
 
             SkyObject::updateAll(['common_name' => null]);
             foreach ($commonNames as $id => $commonName) {
@@ -88,6 +94,11 @@ class SkyController extends Controller
 
             $transaction->commit();
             SkyMap::clearCache();
+
+            // the lists may have changed
+            foreach (Observe::find()->select('observer_id')->distinct()->column() as $userId) {
+                BadgeSync::markChanged($userId);
+            }
         } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
@@ -171,6 +182,14 @@ class SkyController extends Controller
 
         foreach (Observe::find()->where(['type' => Observe::TYPE_DEEP_SKY])->each() as $observe) {
             $linker->rematch($observe);
+            $count++;
+        }
+
+        // the other types are matched by their tags only
+        $tagged = Image::find()->select('observe_id')->where(['id' => ImageTag::find()->select('image_id')]);
+
+        foreach (Observe::find()->where(['id' => $tagged])->andWhere(['!=', 'type', Observe::TYPE_DEEP_SKY])->each() as $observe) {
+            $linker->syncTags($observe);
             $count++;
         }
 
@@ -374,6 +393,74 @@ class SkyController extends Controller
 
         foreach (array_chunk($rows, 1000) as $chunk) {
             Yii::$app->db->createCommand()->batchInsert('sky_object_aliases', ['sky_object_id', 'alias'], $chunk)->execute();
+        }
+    }
+
+    /**
+     * Items of the observing programs.
+     *
+     * @param array $aliases lists of object ids indexed by alias
+     * @throws \Exception if a list is not complete
+     */
+    private function importLists(array $aliases)
+    {
+        $rows = [];
+
+        foreach (SkyPrograms::ALIAS_PREFIXES as $list => $prefix) {
+            $numbers = [];
+
+            foreach ($aliases as $alias => $objectIds) {
+                if (preg_match('~^' . $prefix . ' (\d+)$~', $alias, $match)) {
+                    $numbers[(int)$match[1]] = $objectIds;
+                }
+            }
+
+            ksort($numbers);
+
+            // many objects have more NGC numbers, they are listed by the first one
+            $isUnique = $list === SkyPrograms::NGC;
+            $used = [];
+
+            foreach ($numbers as $number => $objectIds) {
+                foreach ($objectIds as $objectId) {
+                    if ($isUnique && isset($used[$objectId])) {
+                        continue;
+                    }
+
+                    $used[$objectId] = true;
+                    $rows[] = [$list, $number, $objectId];
+                }
+            }
+        }
+
+        foreach (SkyPrograms::FILES as $list => list($file, $count)) {
+            $numbers = [];
+
+            foreach ($this->readCsv($this->path . self::LIST_DIRECTORY . $file, ';') as $row) {
+                foreach (explode(',', $row['objects']) as $designation) {
+                    $key = SkyMatcher::designationKey($designation);
+
+                    if (!isset($aliases[$key])) {
+                        throw new \Exception("Unknown object: $designation ($file)");
+                    }
+
+                    foreach ($aliases[$key] as $objectId) {
+                        $numbers[(int)$row['number']][$objectId] = [$list, (int)$row['number'], $objectId];
+                    }
+                }
+            }
+
+            if (count($numbers) !== $count) {
+                throw new \Exception("$file has " . count($numbers) . " items instead of $count");
+            }
+
+            $rows = array_merge($rows, ...array_map('array_values', array_values($numbers)));
+        }
+
+        Yii::$app->db->createCommand()->delete('sky_list_items')->execute();
+
+        foreach (array_chunk($rows, 1000) as $chunk) {
+            Yii::$app->db->createCommand()->batchInsert('sky_list_items', ['list', 'number', 'sky_object_id'], $chunk)->execute();
         }
     }
 
