@@ -50,7 +50,7 @@ class Badges
      * What anyone can see: the stored badges only, without any progress.
      *
      * @param UserBadge[] $badges of one user
-     * @return array categories with levels
+     * @return array categories with levels and note
      */
     public static function groupStored(array $badges)
     {
@@ -61,13 +61,36 @@ class Badges
         }
 
         $categories = [];
+        $totals = empty($levels) ? [] : SkyPrograms::getTotals();
 
         foreach (array_intersect_key(self::getCategories(), $levels) as $key => $category) {
             ArrayHelper::multisort($levels[$key], 'threshold');
-            $categories[] = ['levels' => $levels[$key]] + $category;
+            $categories[] = ['levels' => $levels[$key], 'note' => self::getNote($key, $totals)] + $category;
         }
 
         return $categories;
+    }
+
+    /**
+     * @param string $key of the category
+     * @param array $totals see SkyPrograms::getTotals()
+     * @return string|null what counts
+     */
+    private static function getNote($key, array $totals)
+    {
+        if ($key === 'constellations') {
+            return 'Azok a csillagképek számítanak, amelyekben van azonosított objektum az észlelések között. ' . SkyPrograms::getVisibilityNote();
+        }
+
+        $program = SkyPrograms::getAll()[$key] ?? null;
+
+        if ($program === null) {
+            return null;
+        }
+
+        $hasPart = isset($totals[$key]) && $totals[$key]['part'] < $totals[$key]['total'];
+
+        return $program['description'] . ($hasPart && $key !== SkyPrograms::MESSIER ? ' ' . SkyPrograms::getVisibilityNote() : '');
     }
 
     /**
@@ -116,7 +139,7 @@ class Badges
             'partNote' => 'Magyarországról látható',
             'total' => count(Data::listConstellation()),
             'totalTitle' => 'Minden csillagkép',
-            'note' => 'Azok a csillagképek számítanak, amelyekben van azonosított objektumod. ' . SkyPrograms::getVisibilityNote(),
+            'note' => self::getNote('constellations', $totals),
         ], SkyPrograms::findConstellations($userId));
 
         $done = SkyPrograms::findDone($userId);
@@ -127,7 +150,6 @@ class Badges
             }
 
             $isMessier = $key === SkyPrograms::MESSIER;
-            $hasPart = $totals[$key]['part'] < $totals[$key]['total'];
 
             $categories[] = self::build($definitions[$key] + [
                 'unit' => $program['unit'],
@@ -137,7 +159,7 @@ class Badges
                 'partNote' => $isMessier ? '(M 102 nélkül)' : 'Magyarországról látható',
                 'total' => $totals[$key]['total'],
                 'totalTitle' => "A teljes {$program['name']}",
-                'note' => $program['description'] . ($hasPart && !$isMessier ? ' ' . SkyPrograms::getVisibilityNote() : ''),
+                'note' => self::getNote($key, $totals),
             ], $done[$key] ?? []);
         }
 

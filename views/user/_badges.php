@@ -46,7 +46,7 @@ $sectionIds = [
                         <?= $group === Badges::GROUP_PROGRAM
                             ? Html::a(Html::encode($category['name']), ['/program/view', 'key' => $category['key']])
                             : Html::encode($category['name']) ?>
-                        <?php if ($isOwn && $category['note']) { ?>
+                        <?php if ($category['note']) { ?>
                             <?= $this->render('//_common-items/_infoTip', ['label' => 'Mi számít bele?', 'text' => $category['note']]) ?>
                         <?php } ?>
                         <?php if ($group === Badges::GROUP_PROGRAM) { ?>
