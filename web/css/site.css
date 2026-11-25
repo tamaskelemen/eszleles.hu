@@ -1544,6 +1544,22 @@ time[data-toggle] {
     font-size: .9rem;
 }
 
+.news__image {
+    display: block;
+}
+
+.news__image img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.news__toggle.collapsed .news__less,
+.news__toggle:not(.collapsed) .news__more {
+    display: none;
+}
+
 .comment-row {
     display: grid;
     grid-template-columns: 110px 1fr;

@@ -12,7 +12,10 @@ use yii\widgets\ListView;
 
 $this->title = 'VCSE Észlelések';
 
-$this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszleloret.jpg" ])
+$this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszleloret.jpg" ]);
+
+// a linked news post opens in full
+$this->registerJs("$('.news article').filter(function () { return '#' + this.id === location.hash; }).find('.collapse').collapse('show');");
 ?>
 <section class="hero">
     <picture>
@@ -181,6 +184,26 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
 
         <section class="news">
             <h2>Hírek</h2>
+            <article id="egterkep">
+                <h3>Égtérkép</h3>
+                <p class="news__date">2026-11-25</p>
+
+                <p>
+                    Az égboltra raktuk az észleléseket! <?= Html::a('Nézd meg te is', ['/sky-map/index']) ?>, hogy a
+                    közösségünk mekkora részét fedte le megfigyeléseivel az égboltnak. Egy kis statisztika, mely idővel
+                    csak bővülni, szépülni fog.
+                </p>
+                <p>
+                    Természetesen, ha valakit a saját statisztikája érdekel, úgy a saját
+                    <?= Html::a('profilján', '/profil') ?> megteheti. Jó kihívás minden csillagképben csak egy valamit megfigyelni...
+                </p>
+                <a class="news__image" href="<?= Url::toRoute('/sky-map/index') ?>">
+                    <picture>
+                        <source type="image/webp" srcset="/pictures/egterkep-640.webp 640w, /pictures/egterkep-1280.webp 1280w" sizes="(min-width: 992px) 50vw, 100vw">
+                        <img src="/pictures/egterkep.jpg" alt="Az égtérkép a közösség észleléseivel" width="1280" height="815" loading="lazy">
+                    </picture>
+                </a>
+            </article>
             <article id="megujulas">
                 <h3>Megújulás</h3>
                 <p class="news__date">2026-11-24</p>
@@ -189,34 +212,40 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     Sok idő eltelt, mióta rendes törődést kapott ez az oldal. Stabilan növekszik az észlelők száma,
                     ezzel arányosan, mind mennyiségben, mind minőségben gyarapodik az észlelések gyűjteménye.
                 </p>
-                <p>
-                    Megérett az idő, hogy az elavult rendszerünk megújuljon! Új külső, új tartalom.
-                    Lássuk, mi is változott!
-                </p>
-                <ul>
-                    <li>Új design, ami egy picit közelebb került így a trendekhez,</li>
-                    <li>Éjszakai mód. Most már sokkal szemkímélőbb lesz az éjszakai, távcső melletti használat,</li>
-                    <li>
-                        Értesítések: ha új hozzászólás érkezik egy kép alá (akár válaszként), értesítjük róla azt,
-                        akit ilyenkor értesíteni kell,
-                    </li>
-                    <li>
-                        „Korábbi eszközök” funkció feltöltésnél: Ha ugyanazt a felszerelést használtad, mint egy korábbi 
-                        észlelésednél, már nem kell újra kitöltened az összes mezőt.
-                    </li>
-                    <li>
-                        Képek módosítása: egy újabb, másféle képkidolgozás, vagy komplett csere. Az észlelés
-                        módosításánál új képet lehet feltölteni, lecserélve az előzőt. A korábbi verziók elérhetőek,
-                        így akár évekkel később visszatérve, kidolgozva ugyanazt a nyers képet meg tudjuk mutatni
-                        a képeink evolúcióját,
-                    </li>
-                    <li>Pár technikai apróság, amiről jobb nem is beszélni.</li>
-                </ul>
-                <p>
-                    További fejlesztések várhatóak, amint idő engedi. Noha igyekszünk lépést tartani a technológiával,
-                    néhány, motorháztető alatti apróság a rendíthetetlen AI ellenére is marad, ugyanis az oldal
-                    fejlesztőjének ez egy nosztalgiaprojektje is egyben.
-                </p>
+                <div class="collapse" id="megujulas-tovabb">
+                    <p>
+                        Megérett az idő, hogy az elavult rendszerünk megújuljon! Új külső, új tartalom.
+                        Lássuk, mi is változott!
+                    </p>
+                    <ul>
+                        <li>Új design, ami egy picit közelebb került így a trendekhez,</li>
+                        <li>Éjszakai mód. Most már sokkal szemkímélőbb lesz az éjszakai, távcső melletti használat,</li>
+                        <li>
+                            Értesítések: ha új hozzászólás érkezik egy kép alá (akár válaszként), értesítjük róla azt,
+                            akit ilyenkor értesíteni kell,
+                        </li>
+                        <li>
+                            „Korábbi eszközök” funkció feltöltésnél: Ha ugyanazt a felszerelést használtad, mint egy korábbi 
+                            észlelésednél, már nem kell újra kitöltened az összes mezőt.
+                        </li>
+                        <li>
+                            Képek módosítása: egy újabb, másféle képkidolgozás, vagy komplett csere. Az észlelés
+                            módosításánál új képet lehet feltölteni, lecserélve az előzőt. A korábbi verziók elérhetőek,
+                            így akár évekkel később visszatérve, kidolgozva ugyanazt a nyers képet meg tudjuk mutatni
+                            a képeink evolúcióját,
+                        </li>
+                        <li>Pár technikai apróság, amiről jobb nem is beszélni.</li>
+                    </ul>
+                    <p>
+                        További fejlesztések várhatóak, amint idő engedi. Noha igyekszünk lépést tartani a technológiával,
+                        néhány, motorháztető alatti apróság a rendíthetetlen AI ellenére is marad, ugyanis az oldal
+                        fejlesztőjének ez egy nosztalgiaprojektje is egyben.
+                    </p>
+                </div>
+                <button class="btn btn-outline news__toggle collapsed" type="button" data-toggle="collapse" data-target="#megujulas-tovabb" aria-expanded="false" aria-controls="megujulas-tovabb">
+                    <span class="news__more">Mutass többet...</span>
+                    <span class="news__less">Mutass kevesebbet</span>
+                </button>
             </article>
             <article id="vega-eszlelesek-feltoltve">
                 <h3>VEGA észlelések feltöltve</h3>
@@ -227,14 +256,20 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     amatőrcsillagászati megfigyelések. Ezeket összegyűjtve, rendezett formában elérhetővé tettük
                     weboldalunkon.
                 </p>
-                <p>
-                    A VEGA-ban közel 30 évre visszamenőleg találhatunk amatőrcsillagász megfigyeléseket.
-                    Most végre lehetőség nyílik hosszú idő távlatából újraolvasni
-                    egy-egy adott csillaghalmaz, üstökös, vagy épp nóva megfigyelést.
-                    Érdekes lehet felfedezni, az idő folyamán milyen változások
-                    látszanak - akár a természet változása, akár a távcsövek, eszközök
-                    fejlődése miatt.
-                </p>
+                <div class="collapse" id="vega-eszlelesek-feltoltve-tovabb">
+                    <p>
+                        A VEGA-ban közel 30 évre visszamenőleg találhatunk amatőrcsillagász megfigyeléseket.
+                        Most végre lehetőség nyílik hosszú idő távlatából újraolvasni
+                        egy-egy adott csillaghalmaz, üstökös, vagy épp nóva megfigyelést.
+                        Érdekes lehet felfedezni, az idő folyamán milyen változások
+                        látszanak - akár a természet változása, akár a távcsövek, eszközök
+                        fejlődése miatt.
+                    </p>
+                </div>
+                <button class="btn btn-outline news__toggle collapsed" type="button" data-toggle="collapse" data-target="#vega-eszlelesek-feltoltve-tovabb" aria-expanded="false" aria-controls="vega-eszlelesek-feltoltve-tovabb">
+                    <span class="news__more">Mutass többet...</span>
+                    <span class="news__less">Mutass kevesebbet</span>
+                </button>
             </article>
             <article id="elindult-az-eszlelesfeltolto">
                 <h3>Elindult az észlelésfeltöltő!</h3>
@@ -248,13 +283,19 @@ $this->registerMetaTag(["property" => "og:image", "content" => "/pictures/eszlel
                     magyar amatőrcsillagász társadalom hosszú évek
                     alatt gyűjtött megfigyeléseit.
                 </p>
-                <p>
-                    Folyamatosan fejlesztjük az oldalt.<br>
-                    Az oldalon szabadidőnkben, bármilyen profit nélkül dolgozunk,
-                    de a terveink listája hosszú. Ahogy időnk engedi, egyre több
-                    funkcióval szeretnénk ellátni oldalunk (amatőr)csillagász társaink
-                    örömére
-                </p>
+                <div class="collapse" id="elindult-az-eszlelesfeltolto-tovabb">
+                    <p>
+                        Folyamatosan fejlesztjük az oldalt.<br>
+                        Az oldalon szabadidőnkben, bármilyen profit nélkül dolgozunk,
+                        de a terveink listája hosszú. Ahogy időnk engedi, egyre több
+                        funkcióval szeretnénk ellátni oldalunk (amatőr)csillagász társaink
+                        örömére
+                    </p>
+                </div>
+                <button class="btn btn-outline news__toggle collapsed" type="button" data-toggle="collapse" data-target="#elindult-az-eszlelesfeltolto-tovabb" aria-expanded="false" aria-controls="elindult-az-eszlelesfeltolto-tovabb">
+                    <span class="news__more">Mutass többet...</span>
+                    <span class="news__less">Mutass kevesebbet</span>
+                </button>
             </article>
         </section>
     </div>
