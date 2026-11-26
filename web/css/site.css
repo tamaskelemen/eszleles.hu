@@ -954,6 +954,25 @@ input[type="checkbox"] {
     color: #fff;
 }
 
+.share__toggle {
+    min-width: 26px;
+    min-height: 26px;
+    padding: 0 .5rem;
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: .8125rem;
+    cursor: pointer;
+}
+
+.share__toggle:hover,
+.share__toggle:focus,
+.share.show .share__toggle {
+    border-color: var(--text);
+    color: #fff;
+}
+
 .tooltip--text .tooltip-inner {
     max-width: 18rem;
     padding: .6rem .8rem;
@@ -2017,6 +2036,19 @@ time[data-toggle] {
 
 .profile h1 {
     margin-bottom: .75rem;
+}
+
+.profile__title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+    margin-bottom: .75rem;
+}
+
+.profile__title h1 {
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
 }
 
 .profile__intro {

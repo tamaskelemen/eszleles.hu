@@ -273,6 +273,8 @@ let site = (function site($) {
                 }
             }, { passive: true });
 
+            body.on('click', '[data-share=1]', shareClick);
+            body.on('click', '[data-share-copy]', shareCopyClick);
             body.on('click', 'a.anchor-link', anchorLinkClick);
             body.on('click', 'a[data-ajax=1]', comm.ajaxLinkClick);
             body.on('click', 'a[data-view=modal]', comm.modalViewClick);
@@ -307,6 +309,49 @@ let site = (function site($) {
                 link.tooltip('dispose').tooltip({ title: message, trigger: 'manual', placement: 'bottom' }).tooltip('show');
                 link.data('copyTimeout', setTimeout(function () {
                     link.tooltip('dispose');
+                }, 2000));
+            });
+    }
+
+    // phones get the share sheet of the system, desktops the dropdown
+    function shareClick(e) {
+        if (!navigator.share || !window.matchMedia('(pointer: coarse)').matches) {
+            return;
+        }
+
+        // the body is before the document, so the dropdown does not open
+        e.preventDefault();
+        e.stopPropagation();
+
+        var button = $(this);
+
+        navigator.share({
+            title: button.data('title'),
+            text: button.data('text'),
+            url: button.data('url')
+        }).catch(function (error) {
+            if (error.name !== 'AbortError') {
+                button.dropdown('toggle');
+            }
+        });
+    }
+
+    function shareCopyClick() {
+        var button = $(this);
+        var toggle = button.closest('.share').find('[data-share=1]');
+
+        copyText(button.data('share-copy'))
+            .then(function () {
+                return 'Link kimásolva';
+            })
+            .catch(function () {
+                return 'A link a címsorból másolható';
+            })
+            .then(function (message) {
+                clearTimeout(toggle.data('copyTimeout'));
+                toggle.tooltip('dispose').tooltip({ title: message, trigger: 'manual', placement: 'bottom' }).tooltip('show');
+                toggle.data('copyTimeout', setTimeout(function () {
+                    toggle.tooltip('dispose');
                 }, 2000));
             });
     }

@@ -30,7 +30,7 @@ foreach (Observe::getAllTypes() as $type => $label) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:title" content="<?= Html::encode($this->title)?>" />
     <meta property="og:author" content="Vega Csillagászati Egyesület" />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="VCSE Észlelések" />
 
     <link rel="shortcut icon" href="/favicon_48x48.png?v=2" sizes="48x48" type="image/png" />
     <link rel="icon" href="/favicon_32x32.png?v=2" sizes="32x32" type="image/png" />
@@ -40,6 +40,9 @@ foreach (Observe::getAllTypes() as $type => $label) {
     <?php $this->registerMetaTag([
             'name' => 'description',
             'content' => 'Csillagászati megfigyelések, amatőrcsillagász észlelések online gyűjtőhelye. ']) ?>
+    <?php if (!isset($this->metaTags['og:type'])) {
+        $this->registerMetaTag(['property' => 'og:type', 'content' => 'website'], 'og:type');
+    } ?>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <script>

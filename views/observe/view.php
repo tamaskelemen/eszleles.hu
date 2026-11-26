@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
+use yii\helpers\Url;
 use app\models\Observe;
 use app\models\observations\Deepsky;
 
@@ -14,12 +16,18 @@ $this->title = $model->object_name;
 $this->params['breadcrumbs'][] = ['label' => ucfirst(\app\models\Observe::getTypeName($model->type)) . ' észlelések', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerMetaTag([
-        'name' => 'og:image',
-        'content' => $model->getImagePath() ?? "/brand-logo.png"
-]);
-
 $user = $model->getObserver()->one();
+
+$shareUrl = Url::to($model->getViewUrl(), true);
+$shareText = ucfirst(Observe::getTypeName($model->type)) . " észlelés – {$user->name}, {$model->date}";
+
+$this->registerMetaTag(['property' => 'og:url', 'content' => $shareUrl], 'og:url');
+$this->registerMetaTag(['property' => 'og:image', 'content' => Url::to($model->image ? $model->getImagePath() : '/brand-logo.png', true)], 'og:image');
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' => $model->description ? StringHelper::truncate($model->description, 200) : $shareText,
+], 'og:description');
+$this->registerMetaTag(['name' => 'twitter:card', 'content' => 'summary_large_image'], 'twitter:card');
 
 ?>
 <article class="observe-view container">
@@ -28,6 +36,11 @@ $user = $model->getObserver()->one();
             <?= $this->render('../_common-items/_typeIcon', ['type' => $model->type]) ?>
             <?= Observe::getTypeName($model->type) ?>
             <time><?= Html::encode($model->date) ?></time>
+            <?= $this->render('//_common-items/_share', [
+                'url' => $shareUrl,
+                'title' => $this->title,
+                'text' => $shareText,
+            ]) ?>
         </div>
         <h1><?= Html::encode($model->object_name) ?></h1>
         <?php

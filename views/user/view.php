@@ -3,6 +3,7 @@
 use app\components\Badges;
 use app\components\Helper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -15,6 +16,25 @@ use yii\widgets\DetailView;
 $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$shareUrl = Url::to(['/user/profile', 'id' => $user->id], true);
+$shareText = "{$user->name} észlelései a VCSE Észleléseken";
+
+$this->registerMetaTag(['property' => 'og:url', 'content' => $shareUrl], 'og:url');
+$this->registerMetaTag(['property' => 'og:type', 'content' => 'profile'], 'og:type');
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' => $user->introduction ?: $shareText,
+], 'og:description');
+// the latest observation with an image gives the preview
+$previewImage = '/brand-logo.png';
+foreach ($observations as $observation) {
+    if ($observation->thumbnail) {
+        $previewImage = $observation->getImagePath();
+        break;
+    }
+}
+$this->registerMetaTag(['property' => 'og:image', 'content' => Url::to($previewImage, true)], 'og:image');
 
 // the highest one of every category
 $topBadges = [];
@@ -33,7 +53,15 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
 <div class="user-view container">
     <header class="profile">
         <div>
-            <h1><?= Html::encode($this->title) ?></h1>
+            <div class="profile__title">
+                <h1><?= Html::encode($this->title) ?></h1>
+                <?= $this->render('//_common-items/_share', [
+                    'url' => $shareUrl,
+                    'title' => $this->title,
+                    'text' => $shareText,
+                    'label' => 'Profil megosztása',
+                ]) ?>
+            </div>
 
             <?php if ($user->introduction) { ?>
                 <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
