@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $this->render('_totals', ['key' => $key, 'totals' => $totals[$key]]) ?>
                 <?php } ?>
 
-                <p class="badges__text"><?= Html::encode($program['description']) ?></p>
+                <p class="badges__text"><?= SkyPrograms::getDescriptionHtml($program) ?></p>
             </div>
         <?php } ?>
     </div>

@@ -32,7 +32,7 @@ $filters = [
 <div class="container">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p class="skymap-lead"><?= Html::encode($program['description']) ?></p>
+    <p class="skymap-lead"><?= SkyPrograms::getDescriptionHtml($program) ?></p>
 
     <?= $this->render('_totals', ['key' => $key, 'totals' => $totals]) ?>
 

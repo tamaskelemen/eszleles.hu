@@ -4,6 +4,7 @@ namespace app\components;
 use app\models\ObservationSkyObject;
 use yii\db\Expression;
 use yii\db\Query;
+use yii\helpers\Html;
 
 /**
  * Observing programs: lists of deep sky objects to be observed. The items are in sky_list_items.
@@ -43,7 +44,8 @@ class SkyPrograms
 
     /**
      * @return array programs indexed by key: name, glyph (on the badge), unit (after a number), prefix (before the number
-     * of an item), levels (the partial and the full one are added by Badges), description
+     * of an item), levels (the partial and the full one are added by Badges), description, and optionally links
+     * (text in the description => URL, linked by getDescriptionHtml())
      */
     public static function getAll()
     {
@@ -56,6 +58,9 @@ class SkyPrograms
                 'levels' => [10, 25, 50, 75],
                 'description' => 'Charles Messier XVIII. századi katalógusa, a legismertebb mélyég-objektumokkal. Mind a 110 látható Magyarországról. '
                     . 'Az M 102 kiléte vitatott, nálunk az NGC 5866, ezért a nélküle teljes katalógusért (109) külön jelvény jár.',
+                'links' => [
+                    'Charles Messier' => 'https://hu.wikipedia.org/wiki/Charles_Messier',
+                ],
             ],
             self::CALDWELL => [
                 'name' => 'Caldwell-katalógus',
@@ -64,6 +69,9 @@ class SkyPrograms
                 'prefix' => 'C ',
                 'levels' => [10, 25, 50],
                 'description' => 'Patrick Caldwell-Moore 1995-ös válogatása azokból a látványos objektumokból, amelyek kimaradtak Messier katalógusából.',
+                'links' => [
+                    'Patrick Caldwell-Moore' => 'https://en.wikipedia.org/wiki/Patrick_Moore',
+                ],
             ],
             self::HERSCHEL_400 => [
                 'name' => 'Herschel 400',
@@ -73,6 +81,9 @@ class SkyPrograms
                 'levels' => [25, 50, 100, 200, 300],
                 'description' => 'Négyszáz objektum William Herschel felfedezései közül, az Astronomical League észlelőprogramja. '
                     . 'Két számpárja (NGC 2371 és 2372, NGC 6882 és 6885) a katalógusunkban ugyanaz az objektum.',
+                'links' => [
+                    'William Herschel' => 'https://hu.wikipedia.org/wiki/William_Herschel',
+                ],
             ],
             self::RASC => [
                 'name' => 'RASC Finest NGC',
@@ -81,6 +92,9 @@ class SkyPrograms
                 'prefix' => '',
                 'levels' => [25, 50],
                 'description' => 'A Kanadai Királyi Csillagászati Társaság (RASC) listája a legszebb NGC-objektumokról, Alan Dyer válogatása. Egyik sem Messier-objektum.',
+                'links' => [
+                    'legszebb NGC-objektumokról' => 'https://www.rasc.ca/finest-ngc-objects',
+                ],
             ],
             self::NGC => [
                 'name' => 'NGC-katalógus',
@@ -90,6 +104,9 @@ class SkyPrograms
                 'levels' => [10, 50, 100, 250, 500, 1000, 2000, 3000, 5000],
                 'description' => 'A New General Catalogue 7840 számot tartalmaz. Amelyik számok ugyanazt az objektumot jelölik, azokat egynek vesszük, '
                     . 'a nem létezőket pedig kihagyjuk.',
+                'links' => [
+                    'New General Catalogue' => 'https://vcse.hu/ngc-es-ic-melyeg-katalogus-csizmadia-szilard/',
+                ],
             ],
             self::SHARPLESS => [
                 'name' => 'Sharpless-katalógus',
@@ -98,6 +115,9 @@ class SkyPrograms
                 'prefix' => 'Sh2-',
                 'levels' => [10, 25, 50, 100],
                 'description' => 'Stewart Sharpless 1959-es katalógusa a HII-régiókról.',
+                'links' => [
+                    '1959-es katalógusa' => 'https://en.wikipedia.org/wiki/Sharpless_catalog',
+                ],
             ],
             self::BARNARD => [
                 'name' => 'Barnard-katalógus',
@@ -106,6 +126,9 @@ class SkyPrograms
                 'prefix' => 'B ',
                 'levels' => [10, 25, 50, 100],
                 'description' => 'Edward Emerson Barnard 1927-es katalógusa a sötét ködökről.',
+                'links' => [
+                    '1927-es katalógusa' => 'https://en.wikipedia.org/wiki/Barnard_Catalogue',
+                ],
             ],
             self::VDB => [
                 'name' => 'van den Bergh-katalógus',
@@ -114,8 +137,26 @@ class SkyPrograms
                 'prefix' => 'vdB ',
                 'levels' => [10, 25, 50, 100],
                 'description' => 'Sidney van den Bergh 1966-os katalógusa a reflexiós ködökről.',
+                'links' => [
+                    '1966-os katalógusa' => 'https://en.wikipedia.org/wiki/Van_den_Bergh_Catalog',
+                ],
             ],
         ];
+    }
+
+    /**
+     * The encoded description with the program's links in it.
+     */
+    public static function getDescriptionHtml(array $program)
+    {
+        $html = Html::encode($program['description']);
+
+        foreach ($program['links'] ?? [] as $text => $url) {
+            $encoded = Html::encode($text);
+            $html = str_replace($encoded, Html::a($encoded, $url, ['target' => '_blank', 'rel' => 'noopener']), $html);
+        }
+
+        return $html;
     }
 
     /**
