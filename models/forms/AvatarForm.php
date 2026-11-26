@@ -2,6 +2,7 @@
 
 namespace app\models\forms;
 
+use app\models\Activity;
 use app\models\Image;
 use app\models\User;
 use Yii;
@@ -59,10 +60,14 @@ class AvatarForm extends Model
             return false;
         }
 
+        $hadAvatar = $user->avatar_path !== null;
+
         if (!self::store($user, $this->image->tempName, User::AVATAR_SOURCE_UPLOAD)) {
             $this->addError('image', 'A képet nem sikerült feldolgozni.');
             return false;
         }
+
+        Activity::log($user->id, $hadAvatar ? Activity::TYPE_AVATAR_CHANGE : Activity::TYPE_AVATAR_UPLOAD);
 
         return true;
     }
@@ -116,6 +121,10 @@ class AvatarForm extends Model
             'avatar_source_url' => null,
         ]);
         self::deleteFile($previous);
+
+        if ($previous !== null) {
+            Activity::log($user->id, Activity::TYPE_AVATAR_DELETE);
+        }
     }
 
     /**

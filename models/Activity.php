@@ -33,6 +33,9 @@ class Activity extends \yii\db\ActiveRecord
     const TYPE_OBSERVATION_UPDATE = 'observation_update';
     const TYPE_COMMENT = 'comment';
     const TYPE_IDENTIFICATION = 'identification';
+    const TYPE_AVATAR_UPLOAD = 'avatar_upload';
+    const TYPE_AVATAR_CHANGE = 'avatar_change';
+    const TYPE_AVATAR_DELETE = 'avatar_delete';
 
     const USER_AGENT_LENGTH = 255;
 
@@ -91,6 +94,9 @@ class Activity extends \yii\db\ActiveRecord
             self::TYPE_OBSERVATION_UPDATE => 'Észlelés módosítása',
             self::TYPE_COMMENT => 'Hozzászólás',
             self::TYPE_IDENTIFICATION => 'Azonosítás szerkesztése',
+            self::TYPE_AVATAR_UPLOAD => 'Profilkép feltöltése',
+            self::TYPE_AVATAR_CHANGE => 'Profilkép cseréje',
+            self::TYPE_AVATAR_DELETE => 'Profilkép törlése',
         ];
     }
 
