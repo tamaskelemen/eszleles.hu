@@ -75,32 +75,51 @@ class CatalogFilter extends Filter
      */
     public static function getCatalogs()
     {
-        return Yii::$app->cache->getOrSet(self::CACHE_KEY, function () {
-            $counts = (new Query())
-                ->select(['count' => 'COUNT(*)', 'catalog'])
-                ->from(['c' => (new Query())->select(['catalog' => 'unnest(catalogs)'])->from('sky_objects')->where(['not in', 'type', SkyObject::NON_DEEP_SKY_TYPES])])
-                ->groupBy('catalog')
-                ->having(['>=', 'COUNT(*)', self::MIN_COUNT])
-                ->indexBy('catalog')
-                ->column();
-            $order = array_flip(array_keys(SkyObject::DESIGNATION_FORMATS));
+        $catalogs = Yii::$app->cache->get(self::CACHE_KEY);
 
-            uksort($counts, function ($a, $b) use ($order) {
-                return ($order[$a] ?? PHP_INT_MAX) <=> ($order[$b] ?? PHP_INT_MAX) ?: strcmp($a, $b);
-            });
-
-            $catalogs = [];
-
-            foreach ($counts as $catalog => $count) {
-                $catalogs[$catalog] = [
-                    'label' => SkyObject::formatCatalog($catalog),
-                    'description' => self::DESCRIPTIONS[$catalog] ?? null,
-                    'count' => (int)$count,
-                ];
-            }
-
+        if (is_array($catalogs)) {
             return $catalogs;
-        }, self::CACHE_DURATION);
+        }
+
+        $catalogs = self::findCatalogs();
+
+        // an empty list is not kept: the catalogs are filled by sky/import, maybe after the page was opened
+        if (!empty($catalogs)) {
+            Yii::$app->cache->set(self::CACHE_KEY, $catalogs, self::CACHE_DURATION);
+        }
+
+        return $catalogs;
+    }
+
+    /**
+     * @return array see getCatalogs()
+     */
+    private static function findCatalogs()
+    {
+        $counts = (new Query())
+            ->select(['count' => 'COUNT(*)', 'catalog'])
+            ->from(['c' => (new Query())->select(['catalog' => 'unnest(catalogs)'])->from('sky_objects')->where(['not in', 'type', SkyObject::NON_DEEP_SKY_TYPES])])
+            ->groupBy('catalog')
+            ->having(['>=', 'COUNT(*)', self::MIN_COUNT])
+            ->indexBy('catalog')
+            ->column();
+        $order = array_flip(array_keys(SkyObject::DESIGNATION_FORMATS));
+
+        uksort($counts, function ($a, $b) use ($order) {
+            return ($order[$a] ?? PHP_INT_MAX) <=> ($order[$b] ?? PHP_INT_MAX) ?: strcmp($a, $b);
+        });
+
+        $catalogs = [];
+
+        foreach ($counts as $catalog => $count) {
+            $catalogs[$catalog] = [
+                'label' => SkyObject::formatCatalog($catalog),
+                'description' => self::DESCRIPTIONS[$catalog] ?? null,
+                'count' => (int)$count,
+            ];
+        }
+
+        return $catalogs;
     }
 
     public static function clearCache()
