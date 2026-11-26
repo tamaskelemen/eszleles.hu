@@ -123,8 +123,15 @@ $formatter = Yii::$app->formatter;
     <p class="skymap-credit">
         A térképen a nyilvánosan azonosított objektumok szerepelnek.
         Objektumok: <?= Html::a('OpenNGC', 'https://github.com/mattiaverga/OpenNGC') ?>, Mattia Verga
-        (<?= Html::a('CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/') ?>), valamint Sharpless (1959), Barnard (1927), Lynds (1962, 1965) és van den Bergh (1966) katalógusa,
-        <?= Html::a('VizieR', 'https://vizier.cds.unistra.fr') ?>, CDS Strasbourg.
+        (<?= Html::a('CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/') ?>), <?php $vizier = function ($text, $source) {
+            return Html::a($text, 'https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=' . $source);
+        } ?>
+        valamint <?= $vizier('Sharpless (1959)', 'VII/20') ?>, <?= $vizier('Barnard (1927)', 'VII/220A') ?>,
+        Lynds (<?= $vizier('1962', 'VII/7A') ?>, <?= $vizier('1965', 'VII/9') ?>) és <?= $vizier('van den Bergh (1966)', 'VII/21') ?> katalógusa,
+        a Palomar-gömbhalmazok <?= $vizier('Harris (1996, 2010-es kiadás)', 'VII/202') ?>,
+        az Abell-planetárisködök a <?= $vizier('Strasbourg–ESO (Acker és mtsai., 1992)', 'V/84') ?>,
+        az Abell-galaxishalmazok <?= $vizier('Abell, Corwin és Olowin (1989)', 'VII/110A') ?> katalógusából,
+        <?= Html::a('VizieR', 'https://vizier.cds.unistra.fr') ?> és <?= Html::a('SIMBAD', 'https://simbad.cds.unistra.fr') ?>, CDS Strasbourg.
         Csillagok, csillagképek, Tejút: <?= Html::a('d3-celestial', 'https://github.com/ofrohn/d3-celestial') ?>, Olaf Frohn (BSD).
     </p>
 </div>
