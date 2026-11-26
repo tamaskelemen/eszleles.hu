@@ -8,14 +8,22 @@ $user = $model->user;
 ?>
 
 <div class="comment-item" id="hozzaszolas-<?= $model->id ?>">
-    <p class="comment-byline"><?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id"=> $user->id])) ?> <?= Yii::$app->formatter->asTimeAgo($model->created_at) ?></p>
+    <?= Html::a(
+        $this->render('//_common-items/_avatar', ['user' => $user, 'size' => 'small']),
+        Url::toRoute(["/user/profile", "id" => $user->id]),
+        ['tabindex' => -1, 'aria-hidden' => 'true']
+    ) ?>
 
-    <p><?= nl2br(Html::encode($model->comment)) ?></p>
+    <div class="comment-item__body">
+        <p class="comment-byline"><?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id"=> $user->id])) ?> <?= Yii::$app->formatter->asTimeAgo($model->created_at) ?></p>
 
-    <?php if ($replyFormId !== null) { ?>
-        <button class="btn btn-outline reply-button" type="button" aria-expanded="false" aria-controls="<?= $replyFormId ?>">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Válasz
-        </button>
-    <?php } ?>
+        <p><?= nl2br(Html::encode($model->comment)) ?></p>
+
+        <?php if ($replyFormId !== null) { ?>
+            <button class="btn btn-outline reply-button" type="button" aria-expanded="false" aria-controls="<?= $replyFormId ?>">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Válasz
+            </button>
+        <?php } ?>
+    </div>
 </div>

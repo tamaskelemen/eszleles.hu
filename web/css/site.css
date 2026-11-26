@@ -1974,10 +1974,18 @@ time[data-toggle] {
 }
 
 .comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
     padding: 1rem 0;
     scroll-margin-top: 80px;
     border-top: 1px solid var(--line);
     overflow-wrap: anywhere;
+}
+
+.comment-item__body {
+    flex: 1;
+    min-width: 0;
 }
 
 .comment-item p:last-of-type {
