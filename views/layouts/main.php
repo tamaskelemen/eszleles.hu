@@ -43,6 +43,22 @@ foreach (Observe::getAllTypes() as $type => $label) {
     <?php if (!isset($this->metaTags['og:type'])) {
         $this->registerMetaTag(['property' => 'og:type', 'content' => 'website'], 'og:type');
     } ?>
+    <?php // the defaults of the shared links, the pages may set their own
+    if (!isset($this->metaTags['og:url'])) {
+        $this->registerMetaTag(['property' => 'og:url', 'content' => Url::canonical()], 'og:url');
+    }
+    if (!isset($this->metaTags['og:image'])) {
+        $this->registerMetaTag(['property' => 'og:image', 'content' => Url::to('/pictures/eszleloret-og.jpg', true)], 'og:image');
+    }
+    if (!isset($this->metaTags['og:description'])) {
+        $this->registerMetaTag([
+            'property' => 'og:description',
+            'content' => 'Csillagászati megfigyelések, amatőrcsillagász észlelések online gyűjtőhelye.',
+        ], 'og:description');
+    }
+    if (!isset($this->metaTags['twitter:card'])) {
+        $this->registerMetaTag(['name' => 'twitter:card', 'content' => 'summary_large_image'], 'twitter:card');
+    } ?>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <script>

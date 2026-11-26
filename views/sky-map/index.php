@@ -2,6 +2,7 @@
 
 use app\components\Data;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $stats array */
@@ -11,6 +12,12 @@ use yii\helpers\Html;
 
 $this->title = 'Égtérkép';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerMetaTag(['property' => 'og:image', 'content' => Url::to('/pictures/egterkep.jpg', true)], 'og:image');
+$this->registerMetaTag([
+    'property' => 'og:description',
+    'content' => 'Így fedi le a közösség az égboltot: a feltöltött mélyég-észlelések az égtérképen.',
+], 'og:description');
 
 $formatter = Yii::$app->formatter;
 ?>

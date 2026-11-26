@@ -27,7 +27,7 @@ $this->registerMetaTag([
     'content' => $user->introduction ?: $shareText,
 ], 'og:description');
 // the latest observation with an image gives the preview
-$previewImage = '/brand-logo.png';
+$previewImage = '/pictures/eszleloret-og.jpg';
 foreach ($observations as $observation) {
     if ($observation->thumbnail) {
         $previewImage = $observation->getImagePath();

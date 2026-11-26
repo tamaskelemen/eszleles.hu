@@ -22,12 +22,11 @@ $shareUrl = Url::to($model->getViewUrl(), true);
 $shareText = ucfirst(Observe::getTypeName($model->type)) . " észlelés – {$user->name}, {$model->date}";
 
 $this->registerMetaTag(['property' => 'og:url', 'content' => $shareUrl], 'og:url');
-$this->registerMetaTag(['property' => 'og:image', 'content' => Url::to($model->image ? $model->getImagePath() : '/brand-logo.png', true)], 'og:image');
+$this->registerMetaTag(['property' => 'og:image', 'content' => Url::to($model->image ? $model->getImagePath() : '/pictures/eszleloret-og.jpg', true)], 'og:image');
 $this->registerMetaTag([
     'property' => 'og:description',
     'content' => $model->description ? StringHelper::truncate($model->description, 200) : $shareText,
 ], 'og:description');
-$this->registerMetaTag(['name' => 'twitter:card', 'content' => 'summary_large_image'], 'twitter:card');
 
 ?>
 <article class="observe-view container">

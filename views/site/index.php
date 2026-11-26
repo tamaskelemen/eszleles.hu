@@ -12,7 +12,8 @@ use yii\widgets\ListView;
 
 $this->title = 'VCSE Észlelések';
 
-$this->registerMetaTag(["property" => "og:image", "content" => \yii\helpers\Url::to("/pictures/eszleloret.jpg", true)], "og:image");
+$this->registerMetaTag(["property" => "og:image", "content" => Url::to("/pictures/hold_schmallrafi-og.jpg", true)], "og:image");
+$this->registerMetaTag(["property" => "og:url", "content" => Url::to("/", true)], "og:url");
 
 // a linked news post opens in full
 $this->registerJs("$('.news article').filter(function () { return '#' + this.id === location.hash; }).find('.collapse').collapse('show');");
