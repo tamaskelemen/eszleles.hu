@@ -12,6 +12,13 @@ foreach ($commentData->getModels() as $comment) {
 ?>
 <h2>Hozzászólások (<?= $commentCount ?>)</h2>
 <?php
+echo ListView::widget([
+    'dataProvider' => $commentData,
+    'itemView' => '../_common-items/_commentThread',
+    'summary' => '',
+    'emptyText' => 'Még nincs hozzászólás'
+]);
+
 if (!Yii::$app->user->isGuest) {
     $this->registerJsFile('/js/comments.js?v=' . filemtime(Yii::getAlias('@webroot/js/comments.js')), ['depends' => 'app\assets\AppAsset']);
 
@@ -19,11 +26,4 @@ if (!Yii::$app->user->isGuest) {
             ['commentForm' => $commentForm]
         );
 }
-
-echo ListView::widget([
-    'dataProvider' => $commentData,
-    'itemView' => '../_common-items/_commentThread',
-    'summary' => '',
-    'emptyText' => 'Még nincs hozzászólás'
-])
 ?>
