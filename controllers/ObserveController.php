@@ -83,6 +83,8 @@ class ObserveController extends Controller
     {
         $searchModel = new ObserveSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // for the sky map links
+        $dataProvider->query->with('skyObjectLinks');
 
         return $this->render('search', [
             'searchModel' => $searchModel,

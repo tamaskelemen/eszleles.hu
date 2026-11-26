@@ -32,6 +32,8 @@ class SkyMapController extends Controller
         $data = SkyMap::getData();
         $planId = Features::isEnabled(Features::OBSERVING_PLANS) ? Yii::$app->request->get('terv') : null;
         $plan = $planId === null ? null : ObservingPlan::find()->ofId((int)$planId)->one();
+        $programKey = Yii::$app->request->get('eszleloprogram');
+        $programs = SkyPrograms::getAll();
 
         return $this->render('index', [
             'stats' => $data['stats'],
@@ -40,6 +42,7 @@ class SkyMapController extends Controller
             'unmapped' => $data['unmapped'],
             // a plan that cannot be seen is left out without a word, the map is still useful
             'plan' => $plan !== null && $plan->isVisible() ? $plan : null,
+            'programKey' => is_string($programKey) && isset($programs[$programKey]) ? $programKey : null,
         ]);
     }
 

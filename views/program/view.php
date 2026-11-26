@@ -80,6 +80,7 @@ $filters = [
                         <?php if (!$isGuest) { ?>
                             <th scope="col">Észlelésed</th>
                         <?php } ?>
+                        <th scope="col"><span class="sr-only">Égtérkép</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,11 +91,15 @@ $filters = [
                         $typeName = SkyObject::getTypeName($first['type']);
                         $constellation = Html::encode(Data::listConstellation($first['constellation']));
                         $dec = str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $first['dec'])) . '°';
-                        $labels = array_map(function ($object) {
+                        // with the program shown, the not observed objects are on the map too
+                        $mapUrl = function ($object) use ($key) {
+                            return ['/sky-map/index', 'eszleloprogram' => $key, 'objektum' => $object['id']];
+                        };
+                        $labels = array_map(function ($object) use ($mapUrl) {
                             $label = Html::encode(SkyObject::buildLabel($object));
 
                             return $object['is_observed']
-                                ? Html::a($label, ['/sky-map/index', 'objektum' => $object['id']], ['title' => 'Megnyitás az égtérképen'])
+                                ? Html::a($label, $mapUrl($object), ['title' => 'Megnyitás az égtérképen'])
                                 : $label;
                         }, $objects);
                         ?>
@@ -116,6 +121,12 @@ $filters = [
                                     <?php } ?>
                                 </td>
                             <?php } ?>
+                            <td class="program-table__map">
+                                <?= Html::a('<i class="fa fa-globe" aria-hidden="true"></i>', $mapUrl($first), [
+                                    'title' => 'Megnyitás az égtérképen',
+                                    'aria-label' => 'Megnyitás az égtérképen',
+                                ]) ?>
+                            </td>
                         </tr>
                     <?php } ?>
                 </tbody>

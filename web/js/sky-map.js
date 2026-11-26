@@ -704,8 +704,10 @@
     function updateUrl() {
         const url = new URL(window.location);
 
-        // the not observed ones are there only while their program is shown
-        if (selected && selected.observations) {
+        // the not observed ones are there only while their program is shown, so only with the program in the URL
+        const programParam = root.dataset.programParam;
+
+        if (selected && (selected.observations || (programParam && url.searchParams.has(programParam)))) {
             url.searchParams.set(URL_PARAM, selected.id);
         } else {
             url.searchParams.delete(URL_PARAM);
@@ -718,7 +720,7 @@
 
     function openFromUrl() {
         const id = Number(new URL(window.location).searchParams.get(URL_PARAM));
-        const object = objects.find(item => item.id === id);
+        const object = objects.find(item => item.id === id) || program.missing.find(item => item.id === id);
 
         if (object) {
             focusObject(object);
@@ -943,7 +945,7 @@
         root.scrollIntoView({behavior: 'smooth', block: 'start'});
         moveTo(HOME);
 
-        loading.then(() => d3.json(programUrl))
+        return loading.then(() => d3.json(programUrl))
             .then(function (items) {
                 if (request !== lastProgramRequest) {
                     return;
@@ -1170,7 +1172,7 @@
             updateMetric();
 
             if (root.dataset.programUrl) {
-                showProgram(root.dataset.programUrl, root.dataset.programName);
+                showProgram(root.dataset.programUrl, root.dataset.programName).then(openFromUrl);
             } else {
                 openFromUrl();
             }

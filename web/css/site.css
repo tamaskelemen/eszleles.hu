@@ -2637,6 +2637,11 @@ time[data-toggle] {
     display: none;
 }
 
+.program-table__map {
+    width: 1%;
+    text-align: right;
+}
+
 /* on phones: number on the left, then the object, its details and own observation below each other */
 @media (max-width: 767px) {
     .program-table,
@@ -2651,7 +2656,7 @@ time[data-toggle] {
 
     .program-table tbody tr {
         display: grid;
-        grid-template-columns: minmax(2.75rem, auto) minmax(0, 1fr);
+        grid-template-columns: minmax(2.75rem, auto) minmax(0, 1fr) auto;
         column-gap: .75rem;
         align-items: start;
         padding: .75rem 0;
@@ -2702,6 +2707,12 @@ time[data-toggle] {
 
     .program-table__own.plan-observations {
         white-space: normal;
+    }
+
+    .program-table__map {
+        grid-column: 3;
+        grid-row: 1;
+        width: auto;
     }
 
 }

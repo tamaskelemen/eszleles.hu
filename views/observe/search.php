@@ -30,7 +30,21 @@ $columns = [
         'format' => 'raw',
         'mobile' => GridView::MOBILE_TITLE,
         'value' => function ($model) {
-            return Html::a(Html::encode($model->object_name), $model->getViewUrl());
+            $link = Html::a(Html::encode($model->object_name), $model->getViewUrl());
+            $skyObjects = $model->getVisibleSkyObjectLinks();
+
+            if (!$skyObjects) {
+                return $link;
+            }
+
+            return $link . ' ' . Html::a('<i class="fa fa-globe" aria-hidden="true"></i>', [
+                '/sky-map/index',
+                'objektum' => reset($skyObjects)->sky_object_id,
+            ], [
+                'class' => 'grid-map-link',
+                'title' => 'Megnyitás az égtérképen',
+                'aria-label' => 'Megnyitás az égtérképen',
+            ]);
         }
     ],
     [

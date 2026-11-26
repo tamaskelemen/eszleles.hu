@@ -1,6 +1,7 @@
 <?php
 
 use app\components\Data;
+use app\components\SkyPrograms;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -10,6 +11,7 @@ use yii\helpers\Url;
 /* @var $missing string[] abbreviations of constellations */
 /* @var $unmapped int[] number of observations indexed by catalog */
 /* @var $plan app\models\ObservingPlan|null shown on the map when it is opened */
+/* @var $programKey string|null observing program shown on the map when it is opened (when there is no plan) */
 
 $this->title = 'Égtérkép';
 $this->params['breadcrumbs'][] = $this->title;
@@ -37,11 +39,15 @@ $formatter = Yii::$app->formatter;
 
     <?= $this->render('_map', [
         'gaps' => $gaps,
-        'program' => $plan === null ? null : [
+        'program' => $plan !== null ? [
             'url' => Url::to(['/sky-map/plan', 'id' => $plan->id]),
             'name' => $plan->name,
             'param' => 'terv',
-        ],
+        ] : ($programKey !== null ? [
+            'url' => Url::to(['/sky-map/program', 'key' => $programKey]),
+            'name' => SkyPrograms::getAll()[$programKey]['name'],
+            'param' => 'eszleloprogram',
+        ] : null),
     ]) ?>
 
     <?= $this->render('_stats', ['stats' => $stats]) ?>
