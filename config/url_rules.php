@@ -16,6 +16,8 @@ return [
     'profil/<id:\d+>' => '/user/profile',
     'profil/modositas' => '/user/update',
     'profil/jelszo-valtoztatas' => '/user/change-password',
+    'profil/profilkep' => '/user/avatar',
+    'profil/profilkep/torles' => '/user/delete-avatar',
 
     'ertesitesek' => '/notification/index',
     'ertesitesek/mind-olvasott' => '/notification/mark-all-seen',

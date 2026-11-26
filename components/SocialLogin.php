@@ -2,6 +2,7 @@
 namespace app\components;
 
 use app\models\Activity;
+use app\models\forms\AvatarForm;
 use app\models\SocialAccount;
 use app\models\User;
 use Yii;
@@ -102,8 +103,31 @@ class SocialLogin
 
         $user->updateAttributes(['last_login' => new Expression("NOW()")]);
         Activity::log($user->id, "login_{$provider}");
+        self::copyAvatar($user, $provider);
 
         return true;
+    }
+
+    /**
+     * Copies the picture of the external account as the profile picture, see AvatarForm::copy(). A failure must not
+     * break the login.
+     *
+     * @param User $user
+     * @param string $provider
+     */
+    public static function copyAvatar(User $user, $provider)
+    {
+        $account = SocialAccount::find()->ofUser($user->id)->ofProvider($provider)->one();
+
+        if ($account === null) {
+            return;
+        }
+
+        try {
+            AvatarForm::copy($user, $provider, $account->picture_url);
+        } catch (\Exception $e) {
+            Yii::warning($e, __METHOD__);
+        }
     }
 
     /**
@@ -178,6 +202,7 @@ class SocialLogin
 
             self::connect($user, $profile);
             Activity::log($user->id, "connect_{$profile['provider']}");
+            self::copyAvatar($user, $profile['provider']);
             Flash::addSuccess("Összekapcsoltuk a profilodat a {$name} fiókoddal, ezután azzal is beléphetsz.");
         } catch (\Exception $e) {
             Yii::error($e, __METHOD__);

@@ -6,6 +6,7 @@ use app\components\Badges;
 use app\components\BadgeSync;
 use app\components\Flash;
 use app\components\SkyMap;
+use app\models\forms\AvatarForm;
 use app\models\forms\PasswordChangeForm;
 use app\models\Notification;
 use app\models\Observe;
@@ -30,10 +31,10 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'update', 'delete', 'change-password'],
+                'only' => ['index', 'update', 'delete', 'change-password', 'avatar', 'delete-avatar'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'update', 'change-password'],
+                        'actions' => ['index', 'update', 'change-password', 'avatar', 'delete-avatar'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -53,6 +54,7 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-avatar' => ['POST'],
                 ],
             ],
         ];
@@ -155,6 +157,38 @@ class UserController extends Controller
         return $this->render('password-change', [
             'model' => $pwChangeForm
         ]);
+    }
+
+    /**
+     * Uploads or replaces the profile picture of the logged in user.
+     * @return string|\yii\web\Response
+     */
+    public function actionAvatar()
+    {
+        $user = Yii::$app->user->getIdentity();
+        $model = new AvatarForm();
+
+        if (Yii::$app->request->isPost && $model->upload($user)) {
+            Flash::addSuccess("A profilképedet elmentettük.");
+            return $this->redirect(['profile', 'id' => $user->id]);
+        }
+
+        return $this->render('avatar', [
+            'model' => $model,
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionDeleteAvatar()
+    {
+        $user = Yii::$app->user->getIdentity();
+        AvatarForm::delete($user);
+        Flash::addSuccess("A profilképedet töröltük.");
+
+        return $this->redirect(['avatar']);
     }
 
     /**

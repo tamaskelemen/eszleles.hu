@@ -26,12 +26,19 @@ use yii\base\NotSupportedException;
  * @property string $website
  * @property string $github
  * @property string $introduction
+ * @property string|null $avatar_path the profile picture, see getAvatarUrl()
+ * @property string|null $avatar_source see AVATAR_SOURCE_*, or the id of the auth client the picture is copied from
+ * @property string|null $avatar_source_url the external picture the copy is made from
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const STATUS_NOT_MEMBER = 0;
     const STATUS_MEMBER = 1;
     const STATUS_DELETED = -1;
+
+    const DEFAULT_AVATAR = '/pictures/avatar.svg';
+    const AVATAR_SOURCE_UPLOAD = 'upload';
+    const AVATAR_SOURCE_REMOVED = 'removed';
 
     /**
      * {@inheritdoc}
@@ -269,5 +276,21 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 //            'instagram' => $this->instagram,
             'github' => $this->github,
         ], [Helper::class, 'isWebUrl']);
+    }
+
+    /**
+     * @return string the uploaded profile picture, or the default one
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatar_path ?: self::DEFAULT_AVATAR;
+    }
+
+    /**
+     * @return bool whether the picture of an external account may be copied as the profile picture
+     */
+    public function canCopyAvatar()
+    {
+        return !in_array($this->avatar_source, [self::AVATAR_SOURCE_UPLOAD, self::AVATAR_SOURCE_REMOVED], true);
     }
 }

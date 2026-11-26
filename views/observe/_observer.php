@@ -11,9 +11,16 @@ use yii\helpers\Url;
 
 ?>
 <div class="observer">
-    <div>
-        <span class="observer__label">Észlelő</span>
-        <?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id" => $user->id])) ?>
+    <div class="observer__name">
+        <?= Html::a(
+            $this->render('//_common-items/_avatar', ['user' => $user, 'size' => 'small']),
+            Url::toRoute(["/user/profile", "id" => $user->id]),
+            ['tabindex' => -1, 'aria-hidden' => 'true']
+        ) ?>
+        <div>
+            <span class="observer__label">Észlelő</span>
+            <?= Html::a(Html::encode($user->name), Url::toRoute(["/user/profile", "id" => $user->id])) ?>
+        </div>
     </div>
 
     <p class="social">

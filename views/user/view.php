@@ -52,47 +52,61 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
 ?>
 <div class="user-view container">
     <header class="profile">
-        <div>
-            <div class="profile__title">
-                <h1><?= Html::encode($this->title) ?></h1>
-                <?= $this->render('//_common-items/_share', [
-                    'url' => $shareUrl,
-                    'title' => $this->title,
-                    'text' => $shareText,
-                    'label' => 'Profil megosztása',
-                ]) ?>
-            </div>
+        <div class="profile__main">
+            <?= $this->render('//_common-items/_avatar', ['user' => $user, 'size' => 'large']) ?>
 
-            <?php if ($user->introduction) { ?>
-                <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
-            <?php } ?>
-
-            <p class="social">
-                <?= Helper::isWebUrl($user->website) ? Html::a(Html::encode($user->website), $user->website) : Html::encode($user->website) ?>
-                <?php foreach ($user->getSocialLinks() as $site => $link) {
-                    if ($link) { ?>
-                        <?= Html::a(
-                            Html::img("/pictures/icons/$site.svg", ['alt'=>"$site logo"]),
-                            $link
-                        ) ?>
-                    <?php }
-                }
-                ?>
-            </p>
-
-            <?php if ($topBadges) { ?>
-                <div class="badges__list" aria-label="Legmagasabb jelvények" role="group">
-                    <?php foreach ($topBadges as list($category, $level)) { ?>
-                        <?= $this->render('//_common-items/_badge', ['category' => $category, 'level' => $level]) ?>
-                    <?php } ?>
+            <div class="profile__body">
+                <div class="profile__title">
+                    <h1><?= Html::encode($this->title) ?></h1>
+                    <?= $this->render('//_common-items/_share', [
+                        'url' => $shareUrl,
+                        'title' => $this->title,
+                        'text' => $shareText,
+                        'label' => 'Profil megosztása',
+                    ]) ?>
                 </div>
-            <?php } ?>
+
+                <?php if ($user->introduction) { ?>
+                    <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
+                <?php } ?>
+
+                <p class="social">
+                    <?= Helper::isWebUrl($user->website) ? Html::a(Html::encode($user->website), $user->website) : Html::encode($user->website) ?>
+                    <?php foreach ($user->getSocialLinks() as $site => $link) {
+                        if ($link) { ?>
+                            <?= Html::a(
+                                Html::img("/pictures/icons/$site.svg", ['alt'=>"$site logo"]),
+                                $link
+                            ) ?>
+                        <?php }
+                    }
+                    ?>
+                </p>
+
+                <?php if ($topBadges) { ?>
+                    <div class="badges__list" aria-label="Legmagasabb jelvények" role="group">
+                        <?php foreach ($topBadges as list($category, $level)) { ?>
+                            <?= $this->render('//_common-items/_badge', ['category' => $category, 'level' => $level]) ?>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            </div>
         </div>
 
         <?php if ($isOwn) { ?>
-            <div class="profile__actions">
-                <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'btn btn-outline']) ?>
-                <?= Html::a('Jelszó megváltoztatása', ['change-password'], ['class' => 'btn btn-outline']) ?>
+            <div class="profile__actions dropdown">
+                <button class="btn btn-outline dropdown-toggle" type="button" id="profileSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Beállítások
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileSettings">
+                    <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'dropdown-item']) ?>
+                    <?= Html::a('Jelszó megváltoztatása', ['change-password'], ['class' => 'dropdown-item']) ?>
+                    <?= Html::a($user->avatar_path ? 'Profilkép szerkesztése' : 'Profilkép feltöltése', ['avatar'], ['class' => 'dropdown-item']) ?>
+                    <div class="dropdown-divider"></div>
+                    <?= Html::beginForm(['/site/logout'], 'post') ?>
+                    <button class="dropdown-item" type="submit">Kilépés</button>
+                    <?= Html::endForm() ?>
+                </div>
             </div>
         <?php } ?>
     </header>
