@@ -51,6 +51,8 @@
     let objects = [];
     // of the shown observing program: the ones among the observed objects, and the rest
     let program = {observed: [], missing: []};
+    // opened from the page URL, although it is neither observed nor in the shown program
+    let extra = [];
     let lastProgramRequest = 0;
     let maxValue = 1;
     let size = {width: 0, height: 0};
@@ -439,6 +441,7 @@
 
         drawProgram(program.missing, 0);
         drawProgram(program.observed, program.missing.length ? radiusOf(program.missing[0]) : 0);
+        drawProgram(extra, 0);
 
         [selected, hovered].forEach(function (object) {
             if (object && object.point) {
@@ -490,7 +493,7 @@
         context.strokeStyle = 'rgba(6, 10, 15, .85)';
         context.fillStyle = '#fff';
 
-        objects.concat(program.missing).forEach(function (object) {
+        objects.concat(program.missing, extra).forEach(function (object) {
             if (!object.point) {
                 return;
             }
@@ -653,7 +656,7 @@
         let nearest = null;
         let distance = radius;
 
-        objects.concat(program.missing).forEach(function (object) {
+        objects.concat(program.missing, extra).forEach(function (object) {
             const d = object.point ? Math.hypot(object.point[0] - point[0], object.point[1] - point[1]) : Infinity;
 
             // the first is the most observed
@@ -668,7 +671,7 @@
 
     function counts(object) {
         if (!object.observations) {
-            return 'Ezen a profilon még nincs észlelése';
+            return isSingleObserver ? 'Ezen a profilon még nincs észlelése' : 'Még nincs feltöltött észlelése';
         }
 
         return isSingleObserver ? `${object.observations} észlelés` : `${object.observations} észlelés, ${object.observers} észlelő`;
@@ -724,7 +727,24 @@
 
         if (object) {
             focusObject(object);
+            return;
         }
+
+        if (!id) {
+            return;
+        }
+
+        // e.g. a recommendation of the home page: any object of the catalog
+        d3.json(root.dataset.catalogObjectUrl.replace(/0(?=\?|$)/, id))
+            .then(function (item) {
+                const object = Object.assign({observations: 0, observers: 0}, item);
+
+                extra = [object];
+                focusObject(object);
+            })
+            .catch(function () {
+                // an object that does not exist: the map stays as it is
+            });
     }
 
     function closePanel() {

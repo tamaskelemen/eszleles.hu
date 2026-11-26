@@ -3508,3 +3508,581 @@ body.skymap-is-fullscreen .tooltip {
 .profile-plans[open] summary {
     margin-bottom: 1rem;
 }
+
+/* ---------- recommender of the home page ---------- */
+
+.recommender__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .recommender__layout {
+        grid-template-columns: minmax(0, 1fr) 340px;
+        align-items: start;
+    }
+}
+
+.rec-result {
+    min-height: 14rem;
+    transition: opacity .15s;
+}
+
+.rec-result[aria-busy="true"] {
+    opacity: .55;
+}
+
+.rec-loading,
+.rec-empty {
+    padding: 2rem 0;
+    color: var(--muted);
+}
+
+.rec-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background-color: var(--field);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+@media (min-width: 768px) {
+    .rec-card {
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 38%);
+    }
+
+    .rec-card__media {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rec-card__no-image {
+        flex: 1;
+    }
+}
+
+.rec-card__kind {
+    margin-bottom: .25rem;
+    color: var(--muted);
+    font-size: .875rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.rec-card__name {
+    margin-bottom: .35rem;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+}
+
+.rec-card__designations {
+    margin-bottom: .75rem;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+.rec-card__programs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+.rec-card__programs li {
+    padding: .1rem .55rem;
+    border: 1px solid var(--program);
+    border-radius: 999px;
+    color: #fff;
+    font-size: .8125rem;
+}
+
+.rec-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: .75rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.rec-facts dt {
+    color: var(--muted);
+    font-size: .8125rem;
+    font-weight: 500;
+}
+
+.rec-facts dd {
+    margin: 0;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.rec-facts__small dd {
+    color: var(--text);
+    font-size: .8125rem;
+}
+
+.rec-facts dd.not-set {
+    color: var(--muted);
+}
+
+.rec-status {
+    margin-bottom: .5rem;
+    color: var(--muted);
+}
+
+.rec-status--done {
+    color: #fff;
+}
+
+.rec-status--done .fa {
+    color: var(--lamp);
+}
+
+.rec-card__links {
+    margin: 0;
+}
+
+.rec-card__images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .5rem;
+}
+
+.rec-card__images--1 {
+    grid-template-columns: 1fr;
+}
+
+.rec-card__images img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.rec-card__no-image {
+    display: grid;
+    place-items: center;
+    min-height: 8rem;
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--muted);
+    text-align: center;
+}
+
+.rec-card__count {
+    margin: .5rem 0 0;
+    color: var(--muted);
+    font-size: .875rem;
+}
+
+.rec-context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem 1.25rem;
+    margin: .75rem 0 0;
+    color: var(--muted);
+    font-size: .875rem;
+}
+
+.rec-warning {
+    margin: .5rem 0 0;
+    color: var(--lamp-hover);
+    font-size: .875rem;
+}
+
+.rec-next {
+    margin-top: 1rem;
+}
+
+.rec-filters fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.rec-filters fieldset[disabled] {
+    opacity: .5;
+}
+
+/* guests see the filters down to the magnitude scale, the next one fades into the background, the rest is hidden */
+.rec-filters--locked {
+    position: relative;
+    overflow: hidden;
+}
+
+.rec-filters--locked .rec-filter--fenyesseg + .rec-filter ~ * {
+    display: none;
+}
+
+.rec-filters--locked .rec-filter--fenyesseg + .rec-filter {
+    /* its label and half of its field */
+    max-height: 3rem;
+    overflow: hidden;
+}
+
+.rec-filters--locked::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* from the hint under the magnitude scale, fully dark before the bottom */
+    height: 9rem;
+    background: linear-gradient(to bottom, transparent, var(--sky) 85%);
+    pointer-events: none;
+}
+
+.rec-filters fieldset[disabled] * {
+    cursor: not-allowed;
+}
+
+.rec-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.rec-cta p {
+    margin: 0;
+    color: #fff;
+    font-weight: 500;
+}
+
+.rec-filter + .rec-filter {
+    margin-top: 1.1rem;
+}
+
+.rec-filter__label,
+.rec-filters legend.rec-filter__label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .25rem;
+    margin-bottom: .4rem;
+    color: #fff;
+    font-size: .9375rem;
+    font-weight: 500;
+}
+
+.rec-filter__hint {
+    margin: .3rem 0 0;
+    color: var(--muted);
+    font-size: .8125rem;
+    line-height: 1.4;
+}
+
+.rec-filters .custom-select {
+    min-height: 38px;
+}
+
+.rec-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.rec-chip {
+    margin: 0;
+}
+
+.rec-chip input {
+    position: absolute;
+    opacity: 0;
+}
+
+.rec-chip span {
+    display: inline-block;
+    padding: .15rem .6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: .8125rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.rec-chip input:checked + span {
+    background-color: var(--lamp);
+    border-color: var(--lamp);
+    color: var(--lamp-ink);
+}
+
+.rec-chip input:focus-visible + span {
+    outline: 2px solid var(--lamp);
+    outline-offset: 2px;
+}
+
+.rec-switch-row {
+    display: flex;
+    align-items: center;
+    gap: .15rem;
+}
+
+.rec-switch-row .info-tip {
+    flex: none;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.rec-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+    font-size: .9375rem;
+    cursor: pointer;
+}
+
+.rec-switch input {
+    position: absolute;
+    opacity: 0;
+}
+
+.rec-switch__track {
+    flex: none;
+    position: relative;
+    width: 2.25rem;
+    height: 1.25rem;
+    background-color: var(--sky-deep);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    transition: background-color .15s;
+}
+
+.rec-switch__track::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(1.25rem - 6px);
+    height: calc(1.25rem - 6px);
+    background-color: var(--muted);
+    border-radius: 50%;
+    transition: transform .15s;
+}
+
+.rec-switch input:checked + .rec-switch__track {
+    background-color: var(--lamp);
+    border-color: var(--lamp);
+}
+
+.rec-switch input:checked + .rec-switch__track::after {
+    background-color: var(--lamp-ink);
+    transform: translateX(1rem);
+}
+
+.rec-switch input:focus-visible + .rec-switch__track {
+    outline: 2px solid var(--lamp);
+    outline-offset: 2px;
+}
+
+.rec-range__output {
+    color: var(--muted);
+    font-size: .8125rem;
+    font-weight: 400;
+}
+
+/* two range inputs on one track, only their handles take the pointer */
+.rec-range__track {
+    position: relative;
+    height: 1.5rem;
+    margin: 0 .5rem;
+}
+
+.rec-range__track::before,
+.rec-range__fill {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 2px;
+}
+
+.rec-range__track::before {
+    left: 0;
+    right: 0;
+    background-color: var(--line-strong);
+}
+
+.rec-range__fill {
+    background-color: var(--lamp);
+}
+
+.rec-range__mark {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--program);
+}
+
+.rec-range__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.rec-range__input::-webkit-slider-runnable-track {
+    background: none;
+}
+
+.rec-range__input::-moz-range-track {
+    background: none;
+}
+
+.rec-range__input::-webkit-slider-thumb {
+    width: 1.1rem;
+    height: 1.1rem;
+    background-color: #fff;
+    border: 2px solid var(--lamp);
+    border-radius: 50%;
+    pointer-events: auto;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.rec-range__input::-moz-range-thumb {
+    width: 1.1rem;
+    height: 1.1rem;
+    background-color: #fff;
+    border: 2px solid var(--lamp);
+    border-radius: 50%;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.rec-range__input:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--lamp);
+    outline-offset: 2px;
+}
+
+.rec-range__scale {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: .75rem;
+}
+
+.rec-credit {
+    margin: 1.5rem 0 0;
+    color: var(--muted);
+    font-size: .8125rem;
+}
+
+.rec-reset {
+    margin-top: 1rem;
+    padding-left: 0;
+    color: var(--lamp-hover);
+}
+
+/* ---------- location of the recommender (profile) ---------- */
+
+.location-current {
+    margin-bottom: 2rem;
+}
+
+.location-current p:last-child,
+.location-current form {
+    margin-bottom: 0;
+}
+
+.location-current p + form {
+    margin-top: .75rem;
+}
+
+.location-option {
+    margin-bottom: 2rem;
+}
+
+.location-option h3 {
+    margin-bottom: .35rem;
+}
+
+.location-option .text-muted {
+    margin-bottom: .75rem;
+}
+
+.location-message {
+    margin: .5rem 0 0;
+    color: var(--muted);
+}
+
+.location-message:empty {
+    display: none;
+}
+
+.location-search {
+    display: flex;
+    gap: .5rem;
+}
+
+.location-search .form-control {
+    min-width: 0;
+}
+
+.location-results {
+    margin: .5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.location-result {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    text-align: left;
+}
+
+.location-result:hover,
+.location-result:focus {
+    background-color: var(--field-raised);
+    color: #fff;
+}
+
+.location-map {
+    height: 360px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+/* the light tiles would dazzle on the dark page */
+.location-map .leaflet-tile-pane {
+    filter: brightness(.75) contrast(.95);
+}
+
+html[data-night] .location-map .leaflet-tile-pane {
+    filter: grayscale(1) brightness(.5);
+}
+
+.location-chosen {
+    margin-bottom: 1rem;
+}
+
+.location-credit {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: .8125rem;
+}

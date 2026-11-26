@@ -20,6 +20,8 @@ Data of the sky map, imported by `php yii sky/import`.
   | `abell.csv` | V/84, Acker A. et al., 1992, Strasbourg-ESO Catalogue of Galactic Planetary Nebulae, the Abell planetary nebulae | 86 |
   | `aco.csv` | VII/110A, Abell G.O., Corwin H.G., Olowin R.P., 1989, ApJS 70, 1, tables 3 and 4 (the southern supplement is left out) | 4076 |
 
+  - Optional columns for the recommender: `magnitude`, `surface_brightness` (mag/arcsec², estimated from the
+    magnitude and the axes if empty) and `min_axis` (arc minutes). None of the files above has them yet.
   - LDN and LBN have cross-references, `same_as` is from these. If the two positions are far from each other, the reference
     is probably a typo, so they are separate objects. The rest was chosen by hand.
   - The size of a Palomar cluster is twice its half-light radius (`Rh`). Pal 7, 9, 11 and 12 are in OpenNGC already

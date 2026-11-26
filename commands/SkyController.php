@@ -2,6 +2,7 @@
 namespace app\commands;
 
 use app\components\BadgeSync;
+use app\components\recommender\filters\CatalogFilter;
 use app\components\SkyLinker;
 use app\components\SkyMap;
 use app\components\SkyMatcher;
@@ -86,6 +87,7 @@ class SkyController extends Controller
 
             $this->saveAliases($aliases);
             $this->importLists($aliases);
+            $this->saveCatalogs();
 
             SkyObject::updateAll(['common_name' => null]);
             foreach ($commonNames as $id => $commonName) {
@@ -94,6 +96,7 @@ class SkyController extends Controller
 
             $transaction->commit();
             SkyMap::clearCache();
+            CatalogFilter::clearCache();
 
             // the lists may have changed
             foreach (Observe::find()->select('observer_id')->distinct()->column() as $userId) {
@@ -248,8 +251,14 @@ class SkyController extends Controller
                 'constellation' => preg_replace('~^Se\d$~', 'Ser', $row['Const']),
                 'ra' => 15 * self::parseSexagesimal($row['RA']),
                 'dec' => self::parseSexagesimal($row['Dec']),
-                'size' => $row['MajAx'] === '' ? null : (float)$row['MajAx'],
-            ])->execute();
+                'size' => self::parseNumber($row['MajAx']),
+            ] + self::brightnessColumns(
+                // the V magnitude is closer to what the eye sees
+                self::parseNumber($row['V-Mag']) ?? self::parseNumber($row['B-Mag']),
+                self::parseNumber($row['SurfBr']),
+                self::parseNumber($row['MajAx']),
+                self::parseNumber($row['MinAx'])
+            ))->execute();
         }
     }
 
@@ -266,8 +275,14 @@ class SkyController extends Controller
                 'constellation' => $row['constellation'],
                 'ra' => (float)$row['ra'],
                 'dec' => (float)$row['dec'],
-                'size' => $row['size'] === '' ? null : (float)$row['size'],
-            ])->execute();
+                'size' => self::parseNumber($row['size']),
+            ] + self::brightnessColumns(
+                // optional columns
+                self::parseNumber($row['magnitude'] ?? ''),
+                self::parseNumber($row['surface_brightness'] ?? ''),
+                self::parseNumber($row['size']),
+                self::parseNumber($row['min_axis'] ?? '')
+            ))->execute();
         }
     }
 
@@ -473,6 +488,53 @@ class SkyController extends Controller
         foreach (array_chunk($rows, 1000) as $chunk) {
             Yii::$app->db->createCommand()->batchInsert('sky_list_items', ['list', 'number', 'sky_object_id'], $chunk)->execute();
         }
+    }
+
+    /**
+     * The catalogs of an object are the prefixes of its designations ("NGC 1976" => "NGC"). The galaxy clusters above
+     * Abell 86 have an "ABELL" alias as well, but they belong to ACO only.
+     */
+    private function saveCatalogs()
+    {
+        Yii::$app->db->createCommand(<<<'SQL'
+UPDATE sky_objects o SET catalogs = COALESCE((
+    SELECT array_agg(DISTINCT split_part(a.alias, ' ', 1) ORDER BY split_part(a.alias, ' ', 1))
+    FROM sky_object_aliases a
+    WHERE a.sky_object_id = o.id AND a.alias LIKE '% %'
+), '{}')
+SQL
+        )->execute();
+
+        Yii::$app->db->createCommand(<<<'SQL'
+UPDATE sky_objects SET catalogs = array_remove(catalogs, 'ABELL')
+WHERE 'ACO' = ANY(catalogs) AND name NOT LIKE 'Abell %'
+SQL
+        )->execute();
+    }
+
+    /**
+     * @param float|null $magnitude
+     * @param float|null $surfaceBrightness given by the catalog, estimated if it is missing
+     * @param float|null $majorAxis arc minutes
+     * @param float|null $minorAxis arc minutes
+     * @return array
+     */
+    private static function brightnessColumns($magnitude, $surfaceBrightness, $majorAxis, $minorAxis)
+    {
+        return [
+            'magnitude' => $magnitude,
+            'surface_brightness' => $surfaceBrightness ?? SkyObject::estimateSurfaceBrightness($magnitude, $majorAxis, $minorAxis),
+            'min_axis' => $minorAxis,
+        ];
+    }
+
+    /**
+     * @param string $value
+     * @return float|null
+     */
+    private static function parseNumber($value)
+    {
+        return is_numeric($value) ? (float)$value : null;
     }
 
     private function findTitles()

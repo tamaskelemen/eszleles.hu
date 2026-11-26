@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\Email;
 use app\components\Flash;
+use app\components\recommender\Recommender;
 use app\components\SocialAuthAction;
 use app\components\SocialLogin;
 use app\models\Activity;
@@ -115,6 +116,7 @@ class SiteController extends Controller
         return $this->render('index', [
             'latestObs' => $latestObs,
             'commentData' => $commentData,
+            'recommender' => new Recommender(RecommendController::createContext()),
             ]
         );
     }

@@ -36,6 +36,8 @@ class Activity extends \yii\db\ActiveRecord
     const TYPE_AVATAR_UPLOAD = 'avatar_upload';
     const TYPE_AVATAR_CHANGE = 'avatar_change';
     const TYPE_AVATAR_DELETE = 'avatar_delete';
+    const TYPE_LOCATION_CHANGE = 'location_change';
+    const TYPE_LOCATION_DELETE = 'location_delete';
 
     const USER_AGENT_LENGTH = 255;
 
@@ -97,6 +99,8 @@ class Activity extends \yii\db\ActiveRecord
             self::TYPE_AVATAR_UPLOAD => 'Profilkép feltöltése',
             self::TYPE_AVATAR_CHANGE => 'Profilkép cseréje',
             self::TYPE_AVATAR_DELETE => 'Profilkép törlése',
+            self::TYPE_LOCATION_CHANGE => 'Helyszín megadása',
+            self::TYPE_LOCATION_DELETE => 'Helyszín törlése',
         ];
     }
 

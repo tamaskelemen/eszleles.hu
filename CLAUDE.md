@@ -50,6 +50,8 @@ Note the console config (`config/console.php`) uses `db.php` only, not `db_local
 
 **Access control.** Controllers use `AccessControl`: create/update require login; delete requires `User::isAdmin()` (the `is_admin` column). `AdminController` is the admin panel.
 
+**Recommender ("Mit észleljek most?").** The home page recommends a deep sky object visible now. `components/recommender/Context` holds the place (Budapest by default), time, Sun and Moon (`components/Astro` does the astronomy); `Recommender` builds one SQL query over `sky_objects` and picks a weighted random row. Each filter is a `Filter` subclass in `components/recommender/filters` (`apply()` narrows the query, optional `getWeight()` biases the pick) with its control in `views/recommend/filters/_<key>.php`; add or remove one via `Recommender::FILTERS`. Guests always get each filter's `getDefault()`, the controls are shown disabled. `magnitude`, `surface_brightness` (estimated when missing), `min_axis` and `catalogs` (alias prefixes) of `sky_objects` are filled by `php yii sky/import`, so a new catalog only needs its raw data.
+
 **Feature flags.** `components/Features::isEnabled()` reads `params['features']` (`config/params.php`). The observing plans ("Észlelési tervek") are built but switched off there; see `README-eszlelesi-tervek.md`.
 
 **Helpers.** `components/Flash` (flash messages), `components/Email` (templated mail from `mail/`), `components/Data` (deepsky object-type code lists), `components/Helper` (accent stripping for URLs).

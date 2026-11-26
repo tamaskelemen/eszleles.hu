@@ -107,6 +107,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
                     <?= Html::a('Adatok szerkesztése', ['update', 'id' => $user->id], ['class' => 'dropdown-item']) ?>
                     <?= Html::a('Jelszó megváltoztatása', ['change-password'], ['class' => 'dropdown-item']) ?>
                     <?= Html::a($user->avatar_path ? 'Profilkép szerkesztése' : 'Profilkép feltöltése', ['avatar'], ['class' => 'dropdown-item']) ?>
+                    <?= Html::a('Helyszín', ['location'], ['class' => 'dropdown-item']) ?>
                     <div class="dropdown-divider"></div>
                     <?= Html::beginForm(['/site/logout'], 'post') ?>
                     <button class="dropdown-item" type="submit">Kilépés</button>

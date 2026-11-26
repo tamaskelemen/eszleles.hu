@@ -18,6 +18,8 @@ return [
     'profil/jelszo-valtoztatas' => '/user/change-password',
     'profil/profilkep' => '/user/avatar',
     'profil/profilkep/torles' => '/user/delete-avatar',
+    'profil/helyszin' => '/user/location',
+    'profil/helyszin/torles' => '/user/delete-location',
 
     'ertesitesek' => '/notification/index',
     'ertesitesek/mind-olvasott' => '/notification/mark-all-seen',
@@ -28,9 +30,12 @@ return [
     'admin/azonositas/<id:\d+>' => '/admin/identify',
     'admin/azonositas/mentes' => '/admin/identification-bulk',
 
+    'ajanlo' => 'recommend/next',
+
     'egterkep' => 'sky-map/index',
     'egterkep/adatok' => 'sky-map/data',
     'egterkep/objektum/<id:\d+>' => 'sky-map/object',
+    'egterkep/katalogus/<id:\d+>' => 'sky-map/catalog-object',
     'egterkep/eszleloprogram/<key:[a-z0-9-]+>' => 'sky-map/program',
     'egterkep/terv/<id:\d+>' => 'sky-map/plan',
 

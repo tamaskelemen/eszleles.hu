@@ -20,6 +20,10 @@ use yii\helpers\Url;
  * @property double $ra right ascension in degrees (J2000)
  * @property double $dec declination in degrees (J2000)
  * @property double|null $size major axis in arc minutes
+ * @property double|null $min_axis minor axis in arc minutes
+ * @property double|null $magnitude visual (or blue, if that is the only one) magnitude
+ * @property double|null $surface_brightness mag/arcsec², from the catalog or estimated by estimateSurfaceBrightness()
+ * @property string[] $catalogs prefixes of the designations, e.g. ["M", "NGC"]
  */
 class SkyObject extends \yii\db\ActiveRecord
 {
@@ -27,12 +31,120 @@ class SkyObject extends \yii\db\ActiveRecord
     const ITEM_LIMIT = 100;
     const SEARCH_LIMIT = 10;
 
+    /** Types of OpenNGC that are not deep sky objects */
+    const NON_DEEP_SKY_TYPES = ['*', '**', '*Ass', 'Nova', 'Other', 'NonEx', 'Dup'];
+
+    /** Prefix of an alias key => how it is written, in the order the designations are listed */
+    const DESIGNATION_FORMATS = [
+        'M' => 'M %s',
+        'C' => 'C %s',
+        'NGC' => 'NGC %s',
+        'IC' => 'IC %s',
+        'SH2' => 'Sh2-%s',
+        'B' => 'B %s',
+        'VDB' => 'vdB %s',
+        'LBN' => 'LBN %s',
+        'LDN' => 'LDN %s',
+        'PAL' => 'Pal %s',
+        'ABELL' => 'Abell %s',
+        'ACO' => 'ACO %s',
+        'CR' => 'Cr %s',
+        'MEL' => 'Mel %s',
+        'TR' => 'Tr %s',
+        'STOCK' => 'Stock %s',
+        'BERKELEY' => 'Berkeley %s',
+        'KING' => 'King %s',
+        'HCG' => 'HCG %s',
+        'ARP' => 'Arp %s',
+        'CED' => 'Ced %s',
+        'GUM' => 'Gum %s',
+        'SIMEIS' => 'Simeis %s',
+        'UGC' => 'UGC %s',
+        'PGC' => 'PGC %s',
+    ];
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'sky_objects';
+    }
+
+    /**
+     * Mean surface brightness of an elliptical object.
+     *
+     * @param float|null $magnitude
+     * @param float|null $majorAxis arc minutes
+     * @param float|null $minorAxis arc minutes, the major one if it is not known
+     * @return float|null mag/arcsec²
+     */
+    public static function estimateSurfaceBrightness($magnitude, $majorAxis, $minorAxis)
+    {
+        if ($magnitude === null || !$majorAxis) {
+            return null;
+        }
+
+        $area = M_PI / 4 * ($majorAxis * 60) * (($minorAxis ?: $majorAxis) * 60);
+
+        return round($magnitude + 2.5 * log10($area), 2);
+    }
+
+    /**
+     * @param string $alias alias key, e.g. "SH2 155"
+     * @return string|null e.g. "Sh2-155", null for a nickname
+     */
+    public static function formatDesignation($alias)
+    {
+        $parts = explode(' ', $alias, 2);
+
+        if (count($parts) !== 2) {
+            return null;
+        }
+
+        return sprintf(self::DESIGNATION_FORMATS[$parts[0]] ?? $parts[0] . ' %s', $parts[1]);
+    }
+
+    /**
+     * @param string $catalog prefix of an alias key
+     * @return string e.g. "Sh2", the prefix itself for an unknown catalog
+     */
+    public static function formatCatalog($catalog)
+    {
+        return trim(str_replace(['%s', '-'], '', self::DESIGNATION_FORMATS[$catalog] ?? $catalog));
+    }
+
+    /**
+     * @return string[] every catalog number of the object, the best known first
+     */
+    public function getDesignations()
+    {
+        $aliases = (new Query())->select('alias')->from('sky_object_aliases')->where(['sky_object_id' => $this->id])->column();
+        $order = array_flip(array_keys(self::DESIGNATION_FORMATS));
+        $designations = [];
+
+        foreach ($aliases as $alias) {
+            $designation = self::formatDesignation($alias);
+
+            if ($designation !== null) {
+                $catalog = explode(' ', $alias)[0];
+                $designations[] = [$order[$catalog] ?? count($order), $alias, $designation];
+            }
+        }
+
+        usort($designations, function ($a, $b) {
+            return $a[0] - $b[0] ?: strnatcmp($a[1], $b[1]);
+        });
+
+        return array_values(array_unique(array_column($designations, 2)));
+    }
+
+    /**
+     * @return string the nickname, the Messier number or the catalog number
+     */
+    public function getDisplayName()
+    {
+        return $this->common_name ?: ($this->messier ? 'M ' . $this->messier : $this->name);
     }
 
     /**

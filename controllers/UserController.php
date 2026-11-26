@@ -10,6 +10,7 @@ use app\components\Flash;
 use app\components\SkyMap;
 use app\models\ObservingPlan;
 use app\models\forms\AvatarForm;
+use app\models\forms\LocationForm;
 use app\models\forms\PasswordChangeForm;
 use app\models\Notification;
 use app\models\Observe;
@@ -34,10 +35,10 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'update', 'delete', 'change-password', 'avatar', 'delete-avatar'],
+                'only' => ['index', 'update', 'delete', 'change-password', 'avatar', 'delete-avatar', 'location', 'delete-location'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'update', 'change-password', 'avatar', 'delete-avatar'],
+                        'actions' => ['index', 'update', 'change-password', 'avatar', 'delete-avatar', 'location', 'delete-location'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,6 +59,7 @@ class UserController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'delete-avatar' => ['POST'],
+                    'delete-location' => ['POST'],
                 ],
             ],
         ];
@@ -208,6 +210,37 @@ class UserController extends Controller
         Flash::addSuccess("A profilképedet töröltük.");
 
         return $this->redirect(['avatar']);
+    }
+
+    /**
+     * Sets the place the recommender of the home page calculates with.
+     * @return string|\yii\web\Response
+     */
+    public function actionLocation()
+    {
+        $user = Yii::$app->user->getIdentity();
+        $model = LocationForm::fromUser($user);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save($user)) {
+            Flash::addSuccess("A helyszínt elmentettük, az ajánló ezentúl ezzel számol.");
+            return $this->redirect(['location']);
+        }
+
+        return $this->render('location', [
+            'model' => $model,
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionDeleteLocation()
+    {
+        LocationForm::delete(Yii::$app->user->getIdentity());
+        Flash::addSuccess("A helyszínt töröltük, az ajánló újra Budapesttel számol.");
+
+        return $this->redirect(['location']);
     }
 
     /**

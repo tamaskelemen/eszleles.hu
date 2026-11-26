@@ -57,6 +57,23 @@ class SkyMapController extends Controller
     }
 
     /**
+     * One object of the catalog, observed or not: the map opens it from its URL when it is not on the map.
+     * @param int $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionCatalogObject(int $id)
+    {
+        $object = SkyMap::findCatalogObject($id);
+
+        if ($object === null) {
+            throw new NotFoundHttpException("A keresett oldal nem található");
+        }
+
+        return $this->asJson($object);
+    }
+
+    /**
      * Objects of an observing program, whether they are observed or not.
      * @param string $key
      * @return \yii\web\Response

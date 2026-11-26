@@ -253,10 +253,21 @@ class SkyMap
     }
 
     /**
-     * @param Query $ids sky object ids
+     * Any object of the catalog, for opening one on the map that has no observation and is not in the shown list.
+     *
+     * @param int $id
+     * @return array|null the object without the number of observations, null if it does not exist
+     */
+    public static function findCatalogObject(int $id)
+    {
+        return self::findListObjects([$id])[0] ?? null;
+    }
+
+    /**
+     * @param Query|int[] $ids sky object ids
      * @return array
      */
-    private static function findListObjects(Query $ids)
+    private static function findListObjects($ids)
     {
         $rows = (new Query())
             ->select(['id', 'name', 'messier', 'common_name', 'type', 'constellation', 'ra', 'dec'])

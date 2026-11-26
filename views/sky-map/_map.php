@@ -22,6 +22,7 @@ $this->registerJsFile('/js/sky-map.js?v=' . filemtime(Yii::getAlias('@webroot/js
 <div class="skymap" id="skymap"
      data-objects-url="<?= Url::to(['/sky-map/data', 'userId' => $userId]) ?>"
      data-object-url="<?= Url::to(['/sky-map/object', 'id' => 0, 'userId' => $userId]) ?>"
+     data-catalog-object-url="<?= Url::to(['/sky-map/catalog-object', 'id' => 0]) ?>"
      data-background-url="/skymap/background.json?v=<?= filemtime(Yii::getAlias('@webroot/skymap/background.json')) ?>"
      data-constellations="<?= Html::encode(Json::encode(Data::listConstellation())) ?>"
      data-gaps="<?= Html::encode(Json::encode($gaps)) ?>"

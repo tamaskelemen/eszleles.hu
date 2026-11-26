@@ -29,6 +29,9 @@ use yii\base\NotSupportedException;
  * @property string|null $avatar_path the profile picture, see getAvatarUrl()
  * @property string|null $avatar_source see AVATAR_SOURCE_*, or the id of the auth client the picture is copied from
  * @property string|null $avatar_source_url the external picture the copy is made from
+ * @property string|null $location_name the place of the recommender, see LocationForm
+ * @property double|null $location_latitude
+ * @property double|null $location_longitude positive to the east
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -74,6 +77,22 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'instagram' => 'Instagram',
             'github' => 'Github',
             'introduction' => 'Bemutatkozás',
+        ];
+    }
+
+    /**
+     * @return array|null name, latitude and longitude of the place the recommender calculates with, null if not set
+     */
+    public function getLocation()
+    {
+        if ($this->location_latitude === null || $this->location_longitude === null) {
+            return null;
+        }
+
+        return [
+            'name' => $this->location_name,
+            'latitude' => (float)$this->location_latitude,
+            'longitude' => (float)$this->location_longitude,
         ];
     }
 

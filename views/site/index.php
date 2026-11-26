@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $latestObs Observe[] */
 /* @var $commentData Comment[] */
+/* @var $recommender app\components\recommender\Recommender */
 
 use app\models\Comment;
 use app\models\Observe;
@@ -46,6 +47,8 @@ $this->registerJs("$('.news article').filter(function () { return '#' + this.id 
 </section>
 
 <div class="site-index">
+    <?= $this->render('//recommend/_panel', ['recommender' => $recommender]) ?>
+
     <section class="container section">
         <div class="section__head">
             <h2>Legújabb feltöltések</h2>
