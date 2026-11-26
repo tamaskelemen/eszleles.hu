@@ -40,4 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $this->render('_social') ?>
         </div>
     </div>
+
+    <p class="text-center mt-3">
+        Már van fiókod? <?= Html::a('Jelentkezz be!', ['/site/login']) ?>
+    </p>
 </div>
