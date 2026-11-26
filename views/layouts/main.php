@@ -128,10 +128,6 @@ foreach (Observe::getAllTypes() as $type => $label) {
                     <a class="nav-link" href="<?= Url::toRoute('/sky-map/index')?>">Égtérkép <span class="nav-beta">Béta</span></a>
                 </li>
 
-                <li class="nav-item <?= in_array($route, ['site/about']) ? 'active' : '' ?>">
-                    <a class="nav-link" href="<?= Url::toRoute('/site/about')?>">Célok</a>
-                </li>
-
                 <li class="nav-item <?= in_array($route, ['site/faq']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/site/faq')?>">GY.I.K.</a>
                 </li>
@@ -215,6 +211,7 @@ foreach (Observe::getAllTypes() as $type => $label) {
 <footer class="footer">
     <div class="container">
         <ul class="list-unstyled">
+            <li><?= Html::a('Célok', Url::toRoute("/site/about")) ?></li>
             <li><?= Html::a('Gyakran ismételt kérdések', Url::toRoute("/site/faq")) ?></li>
             <li><?= Html::a('Hibabejelentő', Url::toRoute("/bug-report/create"), ['target' => '_blank']) ?></li>
             <li><?= Html::a('Adatvédelmi nyilatkozat', Url::to("/eula.pdf"), ['target' => '_blank']) ?></li>
