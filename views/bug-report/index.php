@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use app\widgets\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BugReportSearch */
@@ -26,16 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
 //            'id',
 //            'user_id',
-            'title:ntext',
+            [
+                'attribute' => 'title',
+                'format' => 'ntext',
+                'mobile' => GridView::MOBILE_TITLE,
+            ],
 //            'description:ntext',
             [
                 'attribute' => 'status',
+                'mobile' => GridView::MOBILE_META,
                 'value' => function ($model) {
                     return \app\models\BugReport::getStatuses()[$model->status];
                 }
             ],
             [
                 'attribute' => 'type',
+                'mobile' => GridView::MOBILE_META,
                 'value' => function ($model) {
                     return \app\models\BugReport::getTypes()[$model->type];
                 }

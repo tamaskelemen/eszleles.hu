@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use app\widgets\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CollectionSearch */
@@ -25,9 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'name',
+                [
+                    'attribute' => 'name',
+                    'mobile' => GridView::MOBILE_TITLE,
+                ],
                 'description',
-                'user_id',
+                [
+                    'attribute' => 'user_id',
+                    'mobile' => GridView::MOBILE_META,
+                ],
                 //'is_public:boolean',
                 //'is_open:boolean',
                 //'from_date',

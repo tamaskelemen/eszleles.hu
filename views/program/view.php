@@ -69,7 +69,7 @@ $filters = [
         <p>Nincs ilyen objektum.</p>
     <?php } else { ?>
         <div class="table-responsive">
-            <table class="table program-table">
+            <table class="table program-table<?= $isGuest ? '' : ' program-table--own' ?>">
                 <thead>
                     <tr>
                         <th scope="col">Szám</th>
@@ -87,6 +87,9 @@ $filters = [
                         $own = $observations[$number] ?? [];
                         $first = $objects[0];
                         $isVisible = max(array_column($objects, 'dec')) >= SkyPrograms::VISIBLE_DEC;
+                        $typeName = SkyObject::getTypeName($first['type']);
+                        $constellation = Html::encode(Data::listConstellation($first['constellation']));
+                        $dec = str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $first['dec'])) . '°';
                         $labels = array_map(function ($object) {
                             $label = Html::encode(SkyObject::buildLabel($object));
 
@@ -97,12 +100,15 @@ $filters = [
                         ?>
                         <tr class="<?= $own ? 'is-done' : '' ?> <?= $isVisible ? '' : 'is-hidden' ?>">
                             <th scope="row"><?= Html::encode($program['prefix'] . $number) ?></th>
-                            <td><?= implode(', ', $labels) ?></td>
-                            <td><?= SkyObject::getTypeName($first['type']) ?></td>
-                            <td><?= Html::encode(Data::listConstellation($first['constellation'])) ?></td>
-                            <td><?= str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $first['dec'])) ?>°</td>
+                            <td class="program-table__object">
+                                <?= implode(', ', $labels) ?>
+                                <div class="program-table__meta"><?= $typeName ?> · <?= $constellation ?> · <?= $dec ?></div>
+                            </td>
+                            <td class="program-table__detail"><?= $typeName ?></td>
+                            <td class="program-table__detail"><?= $constellation ?></td>
+                            <td class="program-table__detail"><?= $dec ?></td>
                             <?php if (!$isGuest) { ?>
-                                <td>
+                                <td class="program-table__own">
                                     <?php if ($own) { ?>
                                         <i class="fa fa-check" aria-hidden="true"></i>
                                         <?= Html::a(Html::encode(substr((string)$own[0]['date'], 0, 10) ?: 'megvan'), Url::to(["/{$own[0]['type']}/view", 'id' => $own[0]['id']])) ?>

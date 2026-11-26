@@ -2,7 +2,7 @@
 
 use app\models\Activity;
 use app\models\Observe;
-use yii\grid\GridView;
+use app\widgets\GridView;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -16,7 +16,10 @@ use yii\helpers\Html;
     'options' => ['class' => 'grid-view table-responsive'],
     'emptyText' => 'Nincs megjeleníthető tevékenység.',
     'columns' => [
-        'created_at',
+        [
+            'attribute' => 'created_at',
+            'mobile' => GridView::MOBILE_META,
+        ],
         [
             'attribute' => 'userName',
             'label' => $searchModel->getAttributeLabel('userName'),
@@ -30,6 +33,7 @@ use yii\helpers\Html;
         [
             'attribute' => 'type',
             'filter' => Activity::getAllTypes(),
+            'mobile' => GridView::MOBILE_TITLE,
             'value' => 'typeName',
             'contentOptions' => function (Activity $model) {
                 return $model->type === Activity::TYPE_LOGIN_FAILED ? ['class' => 'text-danger'] : [];
@@ -52,7 +56,10 @@ use yii\helpers\Html;
                     . '<br><small class="text-muted">' . (Observe::getAllTypes()[$model->observation->type] ?? '') . '</small>';
             },
         ],
-        'ip',
+        [
+            'attribute' => 'ip',
+            'mobile' => GridView::MOBILE_META,
+        ],
         [
             'attribute' => 'user_agent',
             'contentOptions' => ['style' => 'overflow-wrap: anywhere'],

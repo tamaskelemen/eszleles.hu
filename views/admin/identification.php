@@ -4,7 +4,7 @@ use app\models\IdentificationSearch;
 use app\models\ObservationSkyObject;
 use app\models\Observe;
 use yii\grid\CheckboxColumn;
-use yii\grid\GridView;
+use app\widgets\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -27,6 +27,7 @@ $columns = array_merge($columns, [
     [
         'label' => 'Kép',
         'format' => 'raw',
+        'mobile' => GridView::MOBILE_MEDIA,
         'value' => function (Observe $model) {
             return $model->thumbnail ? Html::img($model->thumbnail->path, ['alt' => '', 'width' => 80, 'loading' => 'lazy']) : '';
         },
@@ -35,6 +36,7 @@ $columns = array_merge($columns, [
         'attribute' => 'object_name',
         'label' => $searchModel->getAttributeLabel('object_name'),
         'format' => 'raw',
+        'mobile' => GridView::MOBILE_TITLE,
         'filter' => Html::activeTextInput($searchModel, 'object_name', ['class' => 'form-control']),
         'value' => function (Observe $model) {
             return Html::a(Html::encode($model->object_name), $model->getViewUrl());
@@ -54,6 +56,7 @@ $columns = array_merge($columns, [
         'attribute' => 'type',
         'enableSorting' => false,
         'filter' => Observe::getAllTypes(),
+        'mobile' => GridView::MOBILE_META,
         'value' => function (Observe $model) {
             return Observe::getTypeName($model->type);
         },
@@ -62,6 +65,7 @@ $columns = array_merge($columns, [
         'label' => $searchModel->getAttributeLabel('observerName'),
         'attribute' => 'observerName',
         'enableSorting' => false,
+        'mobile' => GridView::MOBILE_NOTE,
         'value' => function (Observe $model) {
             return $model->observer ? $model->observer->name : '';
         },
@@ -97,6 +101,7 @@ $columns = array_merge($columns, [
     [
         'label' => '',
         'format' => 'raw',
+        'mobile' => GridView::MOBILE_ACTIONS,
         'value' => function (Observe $model) {
             return Html::a('Szerkesztés', ['/admin/identify', 'id' => $model->id], ['class' => 'btn btn-outline btn-sm']);
         },

@@ -113,7 +113,7 @@ $filters = [
         <p>Nincs ilyen objektum.</p>
     <?php } else { ?>
         <div class="table-responsive">
-            <table class="table program-table">
+            <table class="table program-table<?= $isGuest ? '' : ' program-table--own' ?>">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -130,19 +130,23 @@ $filters = [
                     <?php foreach ($items as $id => $object) {
                         $own = $observations[$id] ?? [];
                         $label = Html::encode(SkyObject::buildLabel($object));
+                        $typeName = SkyObject::getTypeName($object['type']);
+                        $constellation = Html::encode(Data::listConstellation($object['constellation']));
+                        $dec = str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $object['dec'])) . '°';
                         ?>
                         <tr id="terv-<?= $object['item_id'] ?>" class="<?= $own ? 'is-done' : '' ?> <?= $object['dec'] >= SkyPrograms::VISIBLE_DEC ? '' : 'is-hidden' ?>">
                             <th scope="row"><?= $positions[$id] + 1 ?></th>
-                            <td>
+                            <td class="program-table__object">
                                 <?= $object['is_observed']
                                     ? Html::a($label, ['/sky-map/index', 'objektum' => $id], ['title' => 'Megnyitás az égtérképen'])
                                     : $label ?>
+                                <div class="program-table__meta"><?= $typeName ?> · <?= $constellation ?> · <?= $dec ?></div>
                             </td>
-                            <td><?= SkyObject::getTypeName($object['type']) ?></td>
-                            <td><?= Html::encode(Data::listConstellation($object['constellation'])) ?></td>
-                            <td><?= str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $object['dec'])) ?>°</td>
+                            <td class="program-table__detail"><?= $typeName ?></td>
+                            <td class="program-table__detail"><?= $constellation ?></td>
+                            <td class="program-table__detail"><?= $dec ?></td>
                             <?php if (!$isGuest) { ?>
-                                <td class="plan-observations">
+                                <td class="program-table__own plan-observations">
                                     <?php
                                     $hidden = 0;
 

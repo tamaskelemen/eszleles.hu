@@ -2,7 +2,7 @@
 
 use app\models\Observe;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use app\widgets\GridView;
 use app\widgets\DatePicker;
 
 /* @var $this yii\web\View */
@@ -16,6 +16,7 @@ $columns = [
     [
         'format' => 'raw',
         'contentOptions' => ['class' => 'grid-thumb'],
+        'mobile' => GridView::MOBILE_MEDIA,
         'value' => function ($model) {
             return Html::a(
                 Html::img($model->getThumbnailPath(), ['alt' => '', 'loading' => 'lazy', 'width' => 300, 'height' => 200]),
@@ -27,6 +28,7 @@ $columns = [
     [
         'attribute' => 'object_name',
         'format' => 'raw',
+        'mobile' => GridView::MOBILE_TITLE,
         'value' => function ($model) {
             return Html::a(Html::encode($model->object_name), $model->getViewUrl());
         }
@@ -34,6 +36,7 @@ $columns = [
     [
         'attribute' => 'type',
         'filter' => Observe::getAllTypes(),
+        'mobile' => GridView::MOBILE_META,
         'value' => function ($model) {
             return Observe::getTypeName($model->type);
         }
@@ -51,13 +54,18 @@ $columns = [
             ]
         ]),
         'format' => 'html',
+        'mobile' => GridView::MOBILE_META,
     ],
     [
         'attribute' => 'observer',
         'value' => 'observer.name',
-        'label' => 'Észlelő'
+        'label' => 'Észlelő',
+        'mobile' => GridView::MOBILE_NOTE,
     ],
-    'telescope'
+    [
+        'attribute' => 'telescope',
+        'mobile' => GridView::MOBILE_HIDDEN,
+    ],
 ];
 
 if (!Yii::$app->user->isGuest) {
@@ -80,7 +88,7 @@ if (!Yii::$app->user->isGuest) {
         'filterModel' => $searchModel,
         'columns' => $columns,
         'tableOptions' => ['class' => 'table'],
-        'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
+        'layout' => "{summary}\n{toolbar}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
         'pager' => [
             'firstPageLabel' => 'Első',
             'lastPageLabel'  => 'Utolsó'

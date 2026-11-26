@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use app\widgets\GridView;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -27,11 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'email',
                 'format' => 'raw',
+                'mobile' => GridView::MOBILE_TITLE,
                 'value' => function ($model) {
                     return Html::a(Html::encode($model->email), Url::to(['/user/profile', 'id' => $model->id]));
                 }
             ],
-            'name',
+            [
+                'attribute' => 'name',
+                'mobile' => GridView::MOBILE_META,
+            ],
 //            'last_login',
 //            'password_hash',
             //'password_reset_token',

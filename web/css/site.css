@@ -1259,6 +1259,228 @@ a.desc::after {
     color: var(--text);
 }
 
+/* ---------- grid view: cards on phones (app\widgets\GridView) ---------- */
+
+.grid-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.grid-toolbar__filter {
+    flex: none;
+    min-height: 44px;
+}
+
+.grid-toolbar__filter[aria-expanded="true"] {
+    border-color: var(--lamp);
+}
+
+.grid-toolbar__sort {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.grid-toolbar__label {
+    margin: 0;
+    color: var(--muted);
+    font-size: .875rem;
+}
+
+.grid-toolbar__sort select {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+}
+
+@media (max-width: 767px) {
+    .grid-view--stack table,
+    .grid-view--stack thead,
+    .grid-view--stack tbody,
+    .grid-view--stack tr,
+    .grid-view--stack td {
+        display: block;
+        width: 100%;
+    }
+
+    .grid-view--stack .table-responsive {
+        overflow: visible;
+    }
+
+    .grid-view--stack table {
+        border: 0;
+    }
+
+    .grid-view--stack tbody tr:nth-of-type(odd) {
+        background: none;
+    }
+
+    .grid-view--stack thead tr:not(.filters),
+    .grid-view--stack .filters {
+        display: none;
+    }
+
+    /* filters, opened by the "Szűrés" button */
+
+    .grid-view--stack.is-filtering .filters {
+        display: block;
+        margin-bottom: 1rem;
+        padding: .5rem 0 1rem;
+        border-bottom: 1px solid var(--line-strong);
+    }
+
+    .grid-view--stack .filters td {
+        min-width: 0;
+        padding: .4rem 0;
+        border: 0;
+    }
+
+    .grid-view--stack .filters td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: .25rem;
+        color: var(--muted);
+        font-size: .875rem;
+    }
+
+    .grid-view--stack .filters .grid-filter--empty {
+        display: none;
+    }
+
+    /* rows */
+
+    .grid-view--stack tbody tr {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        padding: .9rem 0;
+        border-top: 1px solid var(--line);
+    }
+
+    .grid-view--stack tbody tr:hover {
+        background: none;
+    }
+
+    .grid-view--stack tbody td {
+        flex: 1 0 100%;
+        width: auto;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .grid-view--stack tbody td:empty,
+    .grid-view--stack tbody .grid-cell--hidden {
+        display: none;
+    }
+
+    .grid-view--stack .grid-cell--title {
+        order: 1;
+        font-weight: 600;
+        font-size: 1.0625rem;
+    }
+
+    .grid-view--stack .grid-cell--meta {
+        order: 2;
+        flex: 0 1 auto;
+        margin-top: .15rem;
+        color: var(--muted);
+        font-size: .875rem;
+    }
+
+    .grid-view--stack .grid-cell--note {
+        order: 3;
+        margin-top: .15rem;
+        color: var(--muted);
+        font-size: .875rem;
+    }
+
+    .grid-view--stack .grid-cell--meta ~ .grid-cell--meta::before {
+        content: "·";
+        margin: 0 .4em;
+    }
+
+    .grid-view--stack .grid-cell--label {
+        order: 4;
+        position: relative;
+        margin-top: .35rem;
+        padding-left: 7.5rem;
+    }
+
+    .grid-view--stack .grid-cell--label[data-label]::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 7rem;
+        color: var(--muted);
+        font-size: .875rem;
+    }
+
+    .grid-view--stack .grid-cell--label:not([data-label]) {
+        padding-left: 0;
+    }
+
+    .grid-view--stack .grid-cell--actions {
+        order: 5;
+        margin-top: .6rem;
+    }
+
+    /* picture on the left */
+
+    .grid-view--stack tr:has(> .grid-cell--media:not(:empty)) {
+        min-height: calc(56px + 1.8rem);
+        padding-left: 96px;
+    }
+
+    .grid-view--stack .grid-cell--media,
+    .grid-view--stack .grid-cell--media.grid-thumb {
+        position: absolute;
+        top: .9rem;
+        left: 0;
+        width: 84px;
+        padding: 0 !important;
+    }
+
+    .grid-view--stack .grid-cell--media img {
+        display: block;
+        width: 84px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 2px;
+    }
+
+    /* checkbox in the top left corner, over the picture if there is one */
+
+    .grid-view--stack .grid-cell--select {
+        position: absolute;
+        top: .9rem;
+        left: 0;
+        z-index: 1;
+        width: auto;
+        padding: .1rem .3rem;
+        background-color: var(--sky);
+        border-radius: var(--radius);
+    }
+
+    .grid-view--stack tr:not(:has(> .grid-cell--media)):has(> .grid-cell--select) {
+        padding-left: 2rem;
+    }
+
+    .grid-view--stack .grid-cell--select input {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 .pagination {
     flex-wrap: wrap;
     gap: .35rem;
@@ -2409,6 +2631,79 @@ time[data-toggle] {
 
 .program-table .is-hidden:not(.is-done) {
     opacity: .6;
+}
+
+.program-table__meta {
+    display: none;
+}
+
+/* on phones: number on the left, then the object, its details and own observation below each other */
+@media (max-width: 767px) {
+    .program-table,
+    .program-table tbody {
+        display: block;
+    }
+
+    .program-table thead,
+    .program-table .program-table__detail {
+        display: none;
+    }
+
+    .program-table tbody tr {
+        display: grid;
+        grid-template-columns: minmax(2.75rem, auto) minmax(0, 1fr);
+        column-gap: .75rem;
+        align-items: start;
+        padding: .75rem 0;
+        border-top: 1px solid var(--line);
+    }
+
+    .program-table tbody tr:hover {
+        background: none;
+    }
+
+    .program-table tbody th,
+    .program-table tbody td {
+        padding: 0;
+        border: 0;
+    }
+
+    .program-table th[scope="row"] {
+        color: var(--muted);
+        font-family: var(--display);
+        font-weight: 600;
+    }
+
+    .program-table .is-done th[scope="row"] {
+        color: var(--lamp);
+    }
+
+    .program-table__object {
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .program-table__meta {
+        display: block;
+        margin-top: .15rem;
+        color: var(--muted);
+        font-size: .875rem;
+        font-weight: 400;
+    }
+
+    .program-table__own {
+        grid-column: 2;
+        font-size: .875rem;
+    }
+
+    .program-table__own:has(*) {
+        margin-top: .4rem;
+    }
+
+    .program-table__own.plan-observations {
+        white-space: normal;
+    }
+
 }
 
 /* ---------- footer ---------- */
