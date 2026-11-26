@@ -718,8 +718,8 @@
         }
     }
 
-    function openFromUrl() {
-        const id = Number(new URL(window.location).searchParams.get(URL_PARAM));
+    // id: read from the page URL before anything closes the panel and removes it from there
+    function openFromUrl(id) {
         const object = objects.find(item => item.id === id) || program.missing.find(item => item.id === id);
 
         if (object) {
@@ -1171,10 +1171,12 @@
             setBackground(backgroundData);
             updateMetric();
 
+            const id = Number(new URL(window.location).searchParams.get(URL_PARAM));
+
             if (root.dataset.programUrl) {
-                showProgram(root.dataset.programUrl, root.dataset.programName).then(openFromUrl);
+                showProgram(root.dataset.programUrl, root.dataset.programName).then(() => openFromUrl(id));
             } else {
-                openFromUrl();
+                openFromUrl(id);
             }
         });
 

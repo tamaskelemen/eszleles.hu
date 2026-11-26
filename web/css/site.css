@@ -2642,6 +2642,12 @@ time[data-toggle] {
     text-align: right;
 }
 
+.program-table__map .is-empty {
+    color: var(--muted);
+    opacity: .6;
+    cursor: help;
+}
+
 /* on phones: number on the left, then the object, its details and own observation below each other */
 @media (max-width: 767px) {
     .program-table,

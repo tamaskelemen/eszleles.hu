@@ -122,10 +122,29 @@ $filters = [
                                 </td>
                             <?php } ?>
                             <td class="program-table__map">
-                                <?= Html::a('<i class="fa fa-globe" aria-hidden="true"></i>', $mapUrl($first), [
-                                    'title' => 'Megnyitás az égtérképen',
-                                    'aria-label' => 'Megnyitás az égtérképen',
-                                ]) ?>
+                                <?php
+                                // an observed one of the item, if any
+                                $observed = array_values(array_filter($objects, function ($object) {
+                                    return $object['is_observed'];
+                                }));
+                                $globe = '<i class="fa fa-globe" aria-hidden="true"></i>';
+                                ?>
+                                <?php if ($observed) { ?>
+                                    <?= Html::a($globe, $mapUrl($observed[0]), [
+                                        'title' => 'Megnyitás az égtérképen',
+                                        'aria-label' => 'Megnyitás az égtérképen',
+                                    ]) ?>
+                                <?php } else { ?>
+                                    <?= Html::tag('span', $globe, [
+                                        'class' => 'is-empty',
+                                        'role' => 'img',
+                                        'title' => 'Még nincs feltöltött észlelés',
+                                        'aria-label' => 'Még nincs feltöltött észlelés',
+                                        // a tap shows it on touch screens
+                                        'data-toggle' => 'tooltip',
+                                        'tabindex' => 0,
+                                    ]) ?>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>
