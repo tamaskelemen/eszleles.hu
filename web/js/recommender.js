@@ -84,10 +84,21 @@
         });
     }
 
+    // a started, not saved observation would be lost with the card
+    function hasDraft() {
+        let note = result.find('.rec-note__form');
+
+        return note.length > 0 && !note.prop('hidden') && $.trim(note.find('textarea').val()) !== '';
+    }
+
     /**
      * @param {boolean} keep whether the current object is kept if it still passes the filters
      */
     function load(keep) {
+        if (hasDraft() && !window.confirm('A megkezdett észlelést még nem mentetted el. Elveted?')) {
+            return;
+        }
+
         let params = form.serializeArray();
 
         if (keep && currentId !== null) {
@@ -148,6 +159,67 @@
     });
 
     $('#rec-next').on('click', function () {
+        load(false);
+    });
+
+    /* ---------- writing down an observation of the recommended object ---------- */
+
+    function toggleNote(note, isOpen) {
+        note.find('.rec-note__form').prop('hidden', !isOpen);
+        note.find('.rec-note__open').prop('hidden', isOpen).attr('aria-expanded', String(isOpen));
+
+        if (isOpen) {
+            note.find('textarea').trigger('focus');
+        }
+    }
+
+    result.on('click', '.rec-note__open', function () {
+        toggleNote($(this).closest('.rec-note'), true);
+    });
+
+    result.on('click', '.rec-note__cancel', function () {
+        let note = $(this).closest('.rec-note');
+
+        if ($.trim(note.find('textarea').val()) === '' || window.confirm('Elveted a megkezdett észlelést?')) {
+            note.find('textarea').val('');
+            toggleNote(note, false);
+        }
+    });
+
+    result.on('submit', '.rec-note__form', function (e) {
+        e.preventDefault();
+
+        let noteForm = $(this);
+        let note = noteForm.closest('.rec-note');
+        let error = noteForm.find('.rec-note__error');
+        let button = noteForm.find('[type=submit]').prop('disabled', true);
+
+        error.prop('hidden', true);
+
+        $.post(noteForm.attr('action'), noteForm.serialize())
+            .done(function (res) {
+                if (!res.ok) {
+                    error.text(res.errors.join(' ')).prop('hidden', false);
+                    return;
+                }
+
+                noteForm.remove();
+                note.find('.rec-note__link').attr('href', res.url);
+                note.find('.rec-note__done').prop('hidden', false);
+                note.closest('.rec-card').find('.rec-status')
+                    .addClass('rec-status--done')
+                    .html('<i class="fa fa-check" aria-hidden="true"></i> Most jegyezted fel.');
+                note.find('.rec-note__next').trigger('focus');
+            })
+            .fail(function () {
+                error.text('Az észlelést nem sikerült elmenteni, próbáld újra!').prop('hidden', false);
+            })
+            .always(function () {
+                button.prop('disabled', false);
+            });
+    });
+
+    result.on('click', '.rec-note__next', function () {
         load(false);
     });
 

@@ -16,6 +16,7 @@ use yii\helpers\Url;
 /* @var $observations Observe[] of the user */
 /* @var $images Observe[] */
 /* @var $observationCount int */
+/* @var $noteDefaults array|null defaults of the observation written down here, null for guests */
 
 $number = function ($value, $decimals = 1) {
     return str_replace('-', '−', number_format($value, $decimals, ',', ' '));
@@ -116,6 +117,10 @@ $moon = $context->moon;
             <p class="rec-card__links">
                 <?= Html::a('Megnézem az égtérképen', $object->getMapUrl()) ?>
             </p>
+
+            <?php if ($noteDefaults !== null) { ?>
+                <?= $this->render('_note', ['object' => $object, 'defaults' => $noteDefaults]) ?>
+            <?php } ?>
         </div>
 
         <div class="rec-card__media">

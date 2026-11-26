@@ -981,6 +981,10 @@ input[type="checkbox"] {
     white-space: normal;
 }
 
+.tooltip--lines .tooltip-inner {
+    white-space: pre-line;
+}
+
 .sky-objects__list {
     display: flex;
     flex-wrap: wrap;
@@ -4085,4 +4089,78 @@ html[data-night] .location-map .leaflet-tile-pane {
     margin-top: 2rem;
     color: var(--muted);
     font-size: .8125rem;
+}
+
+/* ---------- writing down an observation under a recommendation ---------- */
+
+.rec-note {
+    margin-top: 1.25rem;
+}
+
+.rec-note__head {
+    display: flex;
+    align-items: center;
+    gap: .15rem;
+}
+
+.rec-note__head label {
+    margin: 0;
+}
+
+.rec-note__head .info-tip {
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.rec-note__form textarea {
+    min-height: 8rem;
+}
+
+.rec-note__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: .5rem .75rem;
+    margin-top: .75rem;
+}
+
+.rec-note__field label {
+    margin-bottom: .15rem;
+    color: var(--muted);
+    font-size: .8125rem;
+}
+
+.rec-note__field .form-control {
+    min-height: 34px;
+    font-size: .875rem;
+}
+
+.rec-note__error {
+    margin: .75rem 0 0;
+    color: var(--lamp-hover);
+    font-size: .875rem;
+}
+
+.rec-note__actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .75rem;
+}
+
+.rec-note__done p {
+    margin-bottom: .75rem;
+    color: #fff;
+}
+
+.rec-note__done .fa-check {
+    color: var(--lamp);
+}
+
+.rec-note__cancel {
+    color: var(--muted);
+}
+
+.rec-note__cancel:hover,
+.rec-note__cancel:focus {
+    color: #fff;
 }

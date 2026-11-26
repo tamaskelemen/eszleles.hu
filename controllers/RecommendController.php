@@ -5,11 +5,14 @@ namespace app\controllers;
 use app\components\recommender\Context;
 use app\components\recommender\Recommender;
 use app\components\SkyPrograms;
+use app\models\forms\QuickObservationForm;
 use app\models\ObservationSkyObject;
 use app\models\Observe;
 use app\models\SkyObject;
 use Yii;
 use yii\db\Query;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 /**
@@ -22,6 +25,43 @@ class RecommendController extends Controller
 
     /** Thumbnails on the card */
     const IMAGE_LIMIT = 4;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['observe'],
+                'rules' => [
+                    ['actions' => ['observe'], 'allow' => true, 'roles' => ['@']],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => ['observe' => ['POST']],
+            ],
+        ];
+    }
+
+    /**
+     * Saves the observation written down under a recommendation, the page stays.
+     *
+     * @return \yii\web\Response ok, and url (of the observation) or errors
+     */
+    public function actionObserve()
+    {
+        $model = new QuickObservationForm();
+        $model->load(Yii::$app->request->post(), '');
+
+        if (!$model->save((int)Yii::$app->user->id)) {
+            return $this->asJson(['ok' => false, 'errors' => array_values($model->getFirstErrors())]);
+        }
+
+        return $this->asJson(['ok' => true, 'url' => $model->getObservation()->getViewUrl()]);
+    }
 
     /**
      * A recommendation for the filters of the request. The current object is kept if it still passes them.
@@ -97,6 +137,7 @@ class RecommendController extends Controller
                 return $observe->thumbnail !== null;
             })), 0, self::IMAGE_LIMIT),
             'observationCount' => count($observations),
+            'noteDefaults' => $userId === null ? null : QuickObservationForm::getDefaults($userId, Yii::$app->user->identity->location_name),
         ];
     }
 

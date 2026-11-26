@@ -31,6 +31,7 @@ return [
     'admin/azonositas/mentes' => '/admin/identification-bulk',
 
     'ajanlo' => 'recommend/next',
+    'ajanlo/eszleles' => 'recommend/observe',
 
     'egterkep' => 'sky-map/index',
     'egterkep/adatok' => 'sky-map/data',
