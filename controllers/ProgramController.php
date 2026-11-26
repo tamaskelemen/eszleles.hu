@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Badges;
+use app\components\Features;
 use app\components\ObservingPlans;
 use app\components\SkyPrograms;
 use app\models\ObservingPlan;
@@ -32,8 +33,9 @@ class ProgramController extends Controller
         $this->rememberForLogin();
 
         $user = Yii::$app->user;
-        $ownPlans = $user->isGuest ? [] : ObservingPlan::find()->ofUser($user->id)->orderBy(['updated_at' => SORT_DESC])->all();
-        $publicPlans = ObservingPlan::find()
+        $showsPlans = Features::isEnabled(Features::OBSERVING_PLANS);
+        $ownPlans = $user->isGuest || !$showsPlans ? [] : ObservingPlan::find()->ofUser($user->id)->orderBy(['updated_at' => SORT_DESC])->all();
+        $publicPlans = !$showsPlans ? [] : ObservingPlan::find()
             ->isPublic()
             ->andFilterWhere(['<>', 'observing_plans.user_id', $user->id])
             ->with('user')
@@ -46,6 +48,7 @@ class ProgramController extends Controller
             'programs' => SkyPrograms::getAll(),
             'totals' => SkyPrograms::getTotals(),
             'progress' => $this->findProgress(),
+            'showsPlans' => $showsPlans,
             'ownPlans' => $ownPlans,
             'publicPlans' => $publicPlans,
             'planTotals' => ObservingPlans::countItems($planIds),

@@ -2970,6 +2970,32 @@ body.skymap-is-fullscreen .tooltip {
     color: var(--muted);
 }
 
+/* top right corner of a plan card */
+.plans__icons {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: .25rem;
+    margin-left: auto;
+}
+
+.plans__icons .badges__map {
+    margin-left: 0;
+}
+
+/* inline in a line of text */
+.plan-stat {
+    min-width: 24px;
+    min-height: 24px;
+    vertical-align: middle;
+}
+
+.plan-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
 .plan-observations {
     white-space: nowrap;
 }

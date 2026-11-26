@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Features;
 use app\components\ObservingPlans;
 use app\components\Badges;
 use app\components\BadgeSync;
@@ -104,13 +105,15 @@ class UserController extends Controller
             $plans->isPublic();
         }
 
-        $plans = $plans->all();
+        $showsPlans = Features::isEnabled(Features::OBSERVING_PLANS);
+        $plans = $showsPlans ? $plans->all() : [];
         $planIds = array_column($plans, 'id');
 
         return $this->render('view', [
             'user' => $user,
             'isOwn' => $isOwn,
             'badges' => $badges,
+            'showsPlans' => $showsPlans,
             'plans' => $plans,
             'planTotals' => ObservingPlans::countItems($planIds),
             // the progress of the owner of the profile, as the badges

@@ -2,6 +2,7 @@
 
 use app\assets\AppAsset;
 use app\components\Data;
+use app\components\Features;
 use app\components\SkyMap;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -10,8 +11,10 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $gaps array */
 /* @var $userId int|null only the observations of this user are shown */
+/* @var $program array|null shown when the map is loaded: url (of the objects), name and param (of the page URL, removed when it is hidden) */
 
 $userId = $userId ?? null;
+$program = $program ?? null;
 
 $this->registerJsFile('/skymap/d3.min.js?v=7.9.0', ['depends' => AppAsset::class]);
 $this->registerJsFile('/js/sky-map.js?v=' . filemtime(Yii::getAlias('@webroot/js/sky-map.js')), ['depends' => AppAsset::class]);
@@ -24,9 +27,18 @@ $this->registerJsFile('/js/sky-map.js?v=' . filemtime(Yii::getAlias('@webroot/js
      data-gaps="<?= Html::encode(Json::encode($gaps)) ?>"
      data-horizon="<?= SkyMap::HORIZON_DEC ?>"
      <?= $userId === null ? '' : 'data-single-observer' ?>
-     <?php if (Yii::$app->user->isGuest) { ?>
+     <?php if ($program !== null) { ?>
+         data-program-url="<?= Html::encode($program['url']) ?>"
+         data-program-name="<?= Html::encode($program['name']) ?>"
+         data-program-param="<?= Html::encode($program['param']) ?>"
+     <?php } ?>
+     <?php if (!Features::isEnabled(Features::OBSERVING_PLANS)) { ?>
+         <?php /* no save button on the object panel */ ?>
+     <?php } else if (Yii::$app->user->isGuest) { ?>
+         data-saving
          data-login-url="<?= Url::to(['/site/login']) ?>"
      <?php } else { ?>
+         data-saving
          data-plans-url="<?= Url::to(['/plan/object-plans', 'id' => 0]) ?>"
          data-save-url="<?= Url::to(['/plan/toggle-object']) ?>"
          data-new-plan-url="<?= Url::to(['/plan/create', 'objektum' => 0]) ?>"

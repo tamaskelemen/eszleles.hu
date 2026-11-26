@@ -241,10 +241,28 @@ class SkyMap
      */
     public static function findProgramObjects($program)
     {
+        return self::findListObjects((new Query())->select('sky_object_id')->from('sky_list_items')->where(['list' => $program]));
+    }
+
+    /**
+     * @param int $planId
+     * @return array objects of the observing plan, without the number of observations
+     */
+    public static function findPlanObjects(int $planId)
+    {
+        return self::findListObjects((new Query())->select('sky_object_id')->from('observing_plan_items')->where(['plan_id' => $planId]));
+    }
+
+    /**
+     * @param Query $ids sky object ids
+     * @return array
+     */
+    private static function findListObjects(Query $ids)
+    {
         $rows = (new Query())
             ->select(['id', 'name', 'messier', 'common_name', 'type', 'constellation', 'ra', 'dec'])
             ->from('sky_objects')
-            ->where(['id' => (new Query())->select('sky_object_id')->from('sky_list_items')->where(['list' => $program])])
+            ->where(['id' => $ids])
             ->orderBy(['id' => SORT_ASC])
             ->all();
 

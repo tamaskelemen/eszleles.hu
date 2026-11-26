@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Features;
 use app\components\Flash;
 use app\components\ObservingPlans;
 use app\models\Observe;
@@ -13,6 +14,8 @@ use app\models\forms\ObservingPlanForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\db\Expression;
+use yii\db\Query;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -35,7 +38,7 @@ class PlanController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'update', 'delete', 'attach', 'detach', 'observations', 'object-plans', 'toggle-object'],
+                'only' => ['create', 'update', 'delete', 'copy', 'attach', 'detach', 'observations', 'object-plans', 'toggle-object'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -55,12 +58,26 @@ class PlanController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'copy' => ['POST'],
                     'attach' => ['POST'],
                     'detach' => ['POST'],
                     'toggle-object' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws NotFoundHttpException while the plans are hidden
+     */
+    public function beforeAction($action)
+    {
+        if (!Features::isEnabled(Features::OBSERVING_PLANS)) {
+            throw new NotFoundHttpException('A keresett oldal nem található');
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -71,7 +88,7 @@ class PlanController extends Controller
      */
     public function actionView($id)
     {
-        $plan = ObservingPlan::find()->ofId($id)->with('user')->one();
+        $plan = ObservingPlan::find()->ofId($id)->with('user', 'copiedFrom.user')->one();
 
         if ($plan === null || !$plan->isVisible()) {
             throw new NotFoundHttpException('A keresett oldal nem található');
@@ -162,6 +179,66 @@ class PlanController extends Controller
         Flash::addSuccess('Az észlelési tervet töröltük.');
 
         return $this->redirect(['/program/index']);
+    }
+
+    /**
+     * Copies a visible plan to the own ones. The copy is private, and keeps the observations the visitor attached by hand.
+     * @param int $id
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     */
+    public function actionCopy($id)
+    {
+        $source = ObservingPlan::find()->ofId($id)->one();
+
+        if ($source === null || !$source->isVisible()) {
+            throw new NotFoundHttpException('A keresett oldal nem található');
+        }
+
+        $userId = (int)Yii::$app->user->id;
+        $plan = new ObservingPlan([
+            'user_id' => $userId,
+            // the own plans would have the same name
+            'name' => $source->isOwn() ? StringHelper::truncate($source->name, 100 - 11, '') . ' (másolat)' : $source->name,
+            'description' => $source->description,
+            'is_public' => false,
+            'copied_from_id' => $source->id,
+        ]);
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            $plan->save(false);
+            $db = Yii::$app->db;
+            $items = (new Query())
+                ->select(['plan_id' => new Expression((string)$plan->id), 'sky_object_id', 'designation', 'position'])
+                ->from('observing_plan_items')
+                ->where(['plan_id' => $source->id]);
+            $db->createCommand('INSERT INTO observing_plan_items (plan_id, sky_object_id, designation, position) ' . $items->createCommand($db)->rawSql)->execute();
+
+            $attached = (new Query())
+                ->select(['n.id', 'a.observation_id'])
+                ->from(['a' => 'observing_plan_item_observations'])
+                ->innerJoin(['i' => 'observing_plan_items'], 'i.id = a.item_id')
+                ->innerJoin(['n' => 'observing_plan_items'], 'n.sky_object_id = i.sky_object_id')
+                ->innerJoin(['o' => 'observations'], 'o.id = a.observation_id')
+                ->where(['i.plan_id' => $source->id, 'n.plan_id' => $plan->id, 'o.observer_id' => $userId]);
+            $db->createCommand('INSERT INTO observing_plan_item_observations (item_id, observation_id) ' . $attached->createCommand($db)->rawSql)->execute();
+
+            // copying an own plan is not a sign of interest; updateAllCounters() leaves updated_at as it is
+            if (!$source->isOwn()) {
+                ObservingPlan::updateAllCounters(['copy_count' => 1], ['id' => $source->id]);
+            }
+
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        Flash::addSuccess('A tervet átmásoltuk a saját terveid közé. Ezt már módosíthatod, és csak te látod, amíg nyilvánossá nem teszed.');
+
+        return $this->redirect(['view', 'id' => $plan->id]);
     }
 
     /**

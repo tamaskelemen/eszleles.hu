@@ -9,6 +9,7 @@ use yii\helpers\Url;
 /* @var $gaps array */
 /* @var $missing string[] abbreviations of constellations */
 /* @var $unmapped int[] number of observations indexed by catalog */
+/* @var $plan app\models\ObservingPlan|null shown on the map when it is opened */
 
 $this->title = 'Égtérkép';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,7 +35,14 @@ $formatter = Yii::$app->formatter;
         <?= Html::a('jelezd nekünk', ['/bug-report/create']) ?>.
     </p>
 
-    <?= $this->render('_map', ['gaps' => $gaps]) ?>
+    <?= $this->render('_map', [
+        'gaps' => $gaps,
+        'program' => $plan === null ? null : [
+            'url' => Url::to(['/sky-map/plan', 'id' => $plan->id]),
+            'name' => $plan->name,
+            'param' => 'terv',
+        ],
+    ]) ?>
 
     <?= $this->render('_stats', ['stats' => $stats]) ?>
 

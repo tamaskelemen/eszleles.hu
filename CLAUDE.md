@@ -50,6 +50,8 @@ Note the console config (`config/console.php`) uses `db.php` only, not `db_local
 
 **Access control.** Controllers use `AccessControl`: create/update require login; delete requires `User::isAdmin()` (the `is_admin` column). `AdminController` is the admin panel.
 
+**Feature flags.** `components/Features::isEnabled()` reads `params['features']` (`config/params.php`). The observing plans ("Észlelési tervek") are built but switched off there; see `README-eszlelesi-tervek.md`.
+
 **Helpers.** `components/Flash` (flash messages), `components/Email` (templated mail from `mail/`), `components/Data` (deepsky object-type code lists), `components/Helper` (accent stripping for URLs).
 
 **Frontend assets.** Bootstrap 4, Font Awesome, lightgallery and JS are committed directly under `web/` (no build step); app styles in `web/css/site.css`.

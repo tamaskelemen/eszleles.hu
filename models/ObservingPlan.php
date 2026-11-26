@@ -15,11 +15,14 @@ use yii\db\Expression;
  * @property string $name
  * @property string|null $description
  * @property bool $is_public
+ * @property int|null $copied_from_id the plan this one was copied from
+ * @property int $copy_count how many times the others copied it, the deleted copies too
  * @property string $created_at
  * @property string $updated_at
  *
  * @property User $user
  * @property ObservingPlanItem[] $items
+ * @property ObservingPlan|null $copiedFrom
  */
 class ObservingPlan extends \yii\db\ActiveRecord
 {
@@ -64,6 +67,14 @@ class ObservingPlan extends \yii\db\ActiveRecord
     public function getItems()
     {
         return $this->hasMany(ObservingPlanItem::class, ['plan_id' => 'id'])->orderBy(['position' => SORT_ASC, 'id' => SORT_ASC]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery|ObservingPlansQuery
+     */
+    public function getCopiedFrom()
+    {
+        return $this->hasOne(ObservingPlan::class, ['id' => 'copied_from_id']);
     }
 
     /**

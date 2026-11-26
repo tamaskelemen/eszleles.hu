@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\components\Features;
 use app\components\SkyMap;
 use app\components\SkyPrograms;
 use app\models\ObservationSkyObject;
+use app\models\ObservingPlan;
 use app\models\Observe;
 use app\models\SkyObject;
 use Yii;
@@ -28,12 +30,16 @@ class SkyMapController extends Controller
         }
 
         $data = SkyMap::getData();
+        $planId = Features::isEnabled(Features::OBSERVING_PLANS) ? Yii::$app->request->get('terv') : null;
+        $plan = $planId === null ? null : ObservingPlan::find()->ofId((int)$planId)->one();
 
         return $this->render('index', [
             'stats' => $data['stats'],
             'gaps' => $data['gaps'],
             'missing' => $data['missing'],
             'unmapped' => $data['unmapped'],
+            // a plan that cannot be seen is left out without a word, the map is still useful
+            'plan' => $plan !== null && $plan->isVisible() ? $plan : null,
         ]);
     }
 
@@ -60,6 +66,23 @@ class SkyMapController extends Controller
         }
 
         return $this->asJson(SkyMap::findProgramObjects($key));
+    }
+
+    /**
+     * Objects of an observing plan, whether they are observed or not.
+     * @param int $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionPlan(int $id)
+    {
+        $plan = Features::isEnabled(Features::OBSERVING_PLANS) ? ObservingPlan::find()->ofId($id)->one() : null;
+
+        if ($plan === null || !$plan->isVisible()) {
+            throw new NotFoundHttpException("A keresett oldal nem található");
+        }
+
+        return $this->asJson(SkyMap::findPlanObjects($plan->id));
     }
 
     /**

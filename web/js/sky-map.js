@@ -18,6 +18,8 @@
     const horizon = Number(root.dataset.horizon);
     // the map of a profile, there are no observers to compare and no lists under the map
     const isSingleObserver = 'singleObserver' in root.dataset;
+    // objects can be saved to observing plans, it is behind a feature flag
+    const isSaving = 'saving' in root.dataset;
 
     const MAX_ZOOM = 24;
     // the edge of the map runs between Virgo and Hercules, where the fewest objects are cut apart
@@ -632,7 +634,7 @@
         out: () => zoomBy(.5),
         reset: () => moveTo(HOME),
         fullscreen: () => toggleFullscreen(!isFullscreen()),
-        hideProgram: hideProgram,
+        hideProgram: closeProgram,
     };
 
     const keys = {
@@ -742,7 +744,7 @@
 
         $(panel).empty().append(
             $('<button type="button" class="skymap__close" aria-label="Bezárás">&times;</button>').on('click', closePanel),
-            $('<div class="skymap__title">').append($('<h3>').text(object.label), saveButton(object)),
+            $('<div class="skymap__title">').append($('<h3>').text(object.label), isSaving ? saveButton(object) : null),
             $('<p>').text(description(object)),
             $('<p>').text(counts(object)),
             list
@@ -919,17 +921,29 @@
         hideTooltip();
     }
 
-    function showProgram(button) {
+    // closed by the visitor: the page URL does not open it again
+    function closeProgram() {
+        hideProgram();
+
+        if (root.dataset.programParam) {
+            const url = new URL(window.location);
+
+            url.searchParams.delete(root.dataset.programParam);
+            window.history.replaceState(window.history.state, '', url);
+        }
+    }
+
+    // button: the one that shows it, if any
+    function showProgram(programUrl, name, button) {
         hideProgram();
 
         const request = lastProgramRequest;
-        const name = button.dataset.name;
 
-        markProgramButton(button);
+        markProgramButton(button || null);
         root.scrollIntoView({behavior: 'smooth', block: 'start'});
         moveTo(HOME);
 
-        loading.then(() => d3.json(button.dataset.mapProgram))
+        loading.then(() => d3.json(programUrl))
             .then(function (items) {
                 if (request !== lastProgramRequest) {
                     return;
@@ -1100,9 +1114,9 @@
         $(this).tooltip('hide');
 
         if (this.getAttribute('aria-pressed') === 'true') {
-            hideProgram();
+            closeProgram();
         } else {
-            showProgram(this);
+            showProgram(this.dataset.mapProgram, this.dataset.name, this);
         }
     });
 
@@ -1154,7 +1168,12 @@
             objects = objectData;
             setBackground(backgroundData);
             updateMetric();
-            openFromUrl();
+
+            if (root.dataset.programUrl) {
+                showProgram(root.dataset.programUrl, root.dataset.programName);
+            } else {
+                openFromUrl();
+            }
         });
 
     loading.catch(function () {

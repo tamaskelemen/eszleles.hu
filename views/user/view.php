@@ -12,6 +12,7 @@ use yii\widgets\DetailView;
 /* @var $isOwn bool whether it is the profile of the visitor */
 /* @var $badges array see Badges, only the earned ones on the profile of others */
 /* @var $skyMapStats array|null null if there is nothing on the map */
+/* @var $showsPlans bool whether the observing plans are switched on, see Features */
 /* @var $plans app\models\ObservingPlan[] observing plans of the user, only the public ones for the others */
 /* @var $planTotals int[] number of objects indexed by plan id */
 /* @var $planDone int[] number of objects the user of the profile has observed indexed by plan id */
@@ -117,7 +118,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
 
     <?= $this->render('_badges', ['categories' => $badges, 'isOwn' => $isOwn]) ?>
 
-    <?php if ($plans || $isOwn) { ?>
+    <?php if ($showsPlans && ($plans || $isOwn)) { ?>
         <details class="profile-plans" id="tervek">
             <summary>
                 <h2 class="profile__section">Észlelési tervek (<?= count($plans) ?>)</h2>
@@ -131,6 +132,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
                     'done' => $planDone,
                     'showsOwner' => false,
                     'showsProgress' => true,
+                    'showsMap' => $hasMap,
                 ]) ?>
             <?php } else { ?>
                 <p>Még nincs észlelési terved. Állíts össze egy listát a megfigyelni kívánt objektumokból!</p>

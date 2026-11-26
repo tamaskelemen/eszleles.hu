@@ -39,10 +39,43 @@ $filters = [
             · <?= $plan->is_public ? 'nyilvános' : 'csak te látod' ?>
             · <?= Html::a('<i class="fa fa-pencil" aria-hidden="true"></i> Módosítás', ['update', 'id' => $plan->id]) ?>
         <?php } ?>
+        <?= $this->render('_copyCount', ['plan' => $plan]) ?>
     </p>
+
+    <?php if ($plan->copiedFrom !== null && $plan->copiedFrom->isVisible()) { ?>
+        <p class="plan-meta">
+            Másolat:
+            <?= Html::a(Html::encode($plan->copiedFrom->name), ['view', 'id' => $plan->copied_from_id]) ?>
+            (<?= Html::encode($plan->copiedFrom->user->name) ?>)
+        </p>
+    <?php } ?>
 
     <?php if ($plan->description) { ?>
         <p class="skymap-lead"><?= nl2br(Html::encode($plan->description)) ?></p>
+    <?php } ?>
+
+    <?php if ($total > 0) { ?>
+        <p class="plan-actions">
+            <?= Html::a('<i class="fa fa-globe" aria-hidden="true"></i> Mutasd az égtérképen', ['/sky-map/index', 'terv' => $plan->id], [
+                'class' => 'btn btn-outline btn-sm',
+            ]) ?>
+            <?php if ($isGuest) { ?>
+                <?= Html::a('<i class="fa fa-clone" aria-hidden="true"></i> Másolás a saját terveim közé', ['/site/login'], [
+                    'class' => 'btn btn-outline btn-sm',
+                    'title' => 'Lépj be, és a másolatot már a saját ízlésed szerint alakíthatod',
+                ]) ?>
+            <?php } else { ?>
+                <?= Html::a(
+                    '<i class="fa fa-clone" aria-hidden="true"></i> ' . ($plan->isOwn() ? 'Másolat készítése' : 'Másolás a saját terveim közé'),
+                    ['copy', 'id' => $plan->id],
+                    [
+                        'class' => 'btn btn-outline btn-sm',
+                        'title' => $plan->isOwn() ? 'Új terv ugyanezekkel az objektumokkal' : 'A másolatot már a saját ízlésed szerint alakíthatod',
+                        'data' => ['method' => 'post'],
+                    ]
+                ) ?>
+            <?php } ?>
+        </p>
     <?php } ?>
 
     <?php if ($isGuest) { ?>
