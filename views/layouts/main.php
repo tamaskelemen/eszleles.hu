@@ -128,6 +128,10 @@ foreach (Observe::getAllTypes() as $type => $label) {
                     <a class="nav-link" href="<?= Url::toRoute('/sky-map/index')?>">Égtérkép <span class="nav-beta">Béta</span></a>
                 </li>
 
+                <li class="nav-item <?= in_array($route, ['program/index', 'program/view', 'plan/view', 'plan/create', 'plan/update']) ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/program/index')?>">Észlelőprogram</a>
+                </li>
+
                 <li class="nav-item <?= in_array($route, ['site/faq']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/site/faq')?>">GY.I.K.</a>
                 </li>

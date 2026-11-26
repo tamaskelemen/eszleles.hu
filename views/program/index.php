@@ -7,6 +7,10 @@ use yii\helpers\Html;
 /* @var $programs array */
 /* @var $totals array */
 /* @var $progress array badge categories of the visitor indexed by program, empty for guests */
+/* @var $ownPlans app\models\ObservingPlan[] */
+/* @var $publicPlans app\models\ObservingPlan[] public plans of the others */
+/* @var $planTotals int[] number of objects indexed by plan id */
+/* @var $planDone int[] number of objects the visitor has observed indexed by plan id */
 
 $this->title = 'Észlelőprogramok';
 $this->params['breadcrumbs'][] = $this->title;
@@ -20,6 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <p class="skymap-credit"><?= SkyPrograms::getVisibilityNote() ?></p>
+
+    <?php if (Yii::$app->user->isGuest) { ?>
+        <?= $this->render('_guestCta') ?>
+    <?php } ?>
 
     <div class="badges__grid">
         <?php foreach (array_intersect_key($programs, $totals) as $key => $program) { ?>
@@ -36,4 +44,27 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php } ?>
     </div>
+
+    <h2 class="plans__title">Észlelési tervek</h2>
+
+    <p class="skymap-lead">
+        Saját listák a megfigyelni kívánt objektumokból. Bárki összeállíthat egyet, és nyilvánossá teheti, hogy mások is lássák.
+    </p>
+
+    <?php if (!Yii::$app->user->isGuest) { ?>
+        <h3 class="h4">Saját terveim</h3>
+
+        <?php if (empty($ownPlans)) { ?>
+            <p>Még nincs észlelési terved.</p>
+        <?php } else { ?>
+            <?= $this->render('_plans', ['plans' => $ownPlans, 'totals' => $planTotals, 'done' => $planDone, 'showsOwner' => false]) ?>
+        <?php } ?>
+
+        <p><?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Új észlelési terv', ['/plan/create'], ['class' => 'btn btn-primary']) ?></p>
+    <?php } ?>
+
+    <?php if (!empty($publicPlans)) { ?>
+        <h3 class="h4">Mások nyilvános tervei</h3>
+        <?= $this->render('_plans', ['plans' => $publicPlans, 'totals' => $planTotals, 'done' => $planDone, 'showsOwner' => true]) ?>
+    <?php } ?>
 </div>

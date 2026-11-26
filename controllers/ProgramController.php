@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\components\Badges;
+use app\components\ObservingPlans;
 use app\components\SkyPrograms;
+use app\models\ObservingPlan;
 use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -19,15 +21,35 @@ class ProgramController extends Controller
     const FILTER_DONE = 'meglevo';
     const FILTER_MISSING = 'hianyzo';
 
+    /** Number of public plans of other users on the index */
+    const PUBLIC_PLAN_LIMIT = 30;
+
     /**
      * @return string
      */
     public function actionIndex()
     {
+        $this->rememberForLogin();
+
+        $user = Yii::$app->user;
+        $ownPlans = $user->isGuest ? [] : ObservingPlan::find()->ofUser($user->id)->orderBy(['updated_at' => SORT_DESC])->all();
+        $publicPlans = ObservingPlan::find()
+            ->isPublic()
+            ->andFilterWhere(['<>', 'observing_plans.user_id', $user->id])
+            ->with('user')
+            ->orderBy(['updated_at' => SORT_DESC])
+            ->limit(self::PUBLIC_PLAN_LIMIT)
+            ->all();
+        $planIds = array_merge(array_column($ownPlans, 'id'), array_column($publicPlans, 'id'));
+
         return $this->render('index', [
             'programs' => SkyPrograms::getAll(),
             'totals' => SkyPrograms::getTotals(),
             'progress' => $this->findProgress(),
+            'ownPlans' => $ownPlans,
+            'publicPlans' => $publicPlans,
+            'planTotals' => ObservingPlans::countItems($planIds),
+            'planDone' => $user->isGuest ? [] : ObservingPlans::countDone($planIds, $user->id),
         ]);
     }
 
@@ -45,6 +67,8 @@ class ProgramController extends Controller
         if ($program === null || $totals === null) {
             throw new NotFoundHttpException("A keresett oldal nem található");
         }
+
+        $this->rememberForLogin();
 
         $user = Yii::$app->user;
         $items = SkyPrograms::findItems($key);
@@ -69,6 +93,16 @@ class ProgramController extends Controller
             'filter' => $filter,
             'pagination' => $pagination,
         ]);
+    }
+
+    /**
+     * Guests get back to the program after the login of the call to action.
+     */
+    private function rememberForLogin()
+    {
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+        }
     }
 
     /**

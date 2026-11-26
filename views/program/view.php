@@ -40,6 +40,10 @@ $filters = [
         <p class="skymap-credit"><?= SkyPrograms::getVisibilityNote() ?> A többi halványabban szerepel.</p>
     <?php } ?>
 
+    <?php if ($isGuest) { ?>
+        <?= $this->render('_guestCta') ?>
+    <?php } ?>
+
     <?php if ($progress !== null) { ?>
         <div class="badges__card program-progress">
             <?= $this->render('//_common-items/_badgeProgress', ['category' => $progress]) ?>

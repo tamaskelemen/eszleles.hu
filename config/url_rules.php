@@ -34,6 +34,10 @@ return [
     'egterkep/eszleloprogram/<key:[a-z0-9-]+>' => 'sky-map/program',
 
     'eszleloprogramok' => 'program/index',
+    'eszleloprogramok/terv/uj' => 'plan/create',
+    'eszleloprogramok/terv/<id:\d+>' => 'plan/view',
+    'eszleloprogramok/terv/<id:\d+>/modositas' => 'plan/update',
+    'eszleloprogramok/terv/<id:\d+>/torles' => 'plan/delete',
     'eszleloprogramok/<key:[a-z0-9-]+>' => 'program/view',
 
     'osszes' => 'observe/index',

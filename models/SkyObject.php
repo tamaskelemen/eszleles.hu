@@ -138,13 +138,14 @@ class SkyObject extends \yii\db\ActiveRecord
      * Reads the posted items of the sky object input.
      *
      * @param string[] $items
-     * @return array designations (or null) indexed by object id, unknown objects are left out
+     * @param int $limit the rest of the items is left out
+     * @return array designations (or null) indexed by object id in the order of the items, unknown objects are left out
      */
-    public static function findItems(array $items)
+    public static function findItems(array $items, $limit = self::ITEM_LIMIT)
     {
         $designations = [];
 
-        foreach (array_slice($items, 0, self::ITEM_LIMIT) as $item) {
+        foreach (array_slice($items, 0, $limit) as $item) {
             list($id, $designation) = array_pad(explode(self::ITEM_SEPARATOR, (string)$item, 2), 2, null);
 
             // the column is a 32 bit integer

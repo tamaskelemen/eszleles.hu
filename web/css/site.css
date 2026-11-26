@@ -2326,6 +2326,15 @@ time[data-toggle] {
     margin-bottom: 1.5rem;
 }
 
+.program-cta {
+    max-width: 44rem;
+    margin: 1.5rem 0;
+}
+
+.program-cta p {
+    margin-bottom: .75rem;
+}
+
 .program-filter .nav-link {
     color: var(--text);
 }
@@ -2892,4 +2901,16 @@ body.skymap-is-fullscreen .tooltip {
 .skymap-credit {
     color: var(--muted);
     font-size: .875rem;
+}
+
+.plans__title {
+    margin-top: 3rem;
+}
+
+.plans__grid {
+    margin-bottom: 1.5rem;
+}
+
+.plan-meta {
+    color: var(--muted);
 }
