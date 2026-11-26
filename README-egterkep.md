@@ -11,7 +11,7 @@ free text ("Trapézium (M42 Orion-köd)"), so most of the work is finding out wh
 | 1. Catalog import, title matcher, dry run | done |
 | 2. Storing the objects of the observations, upload form, admin pages, tags on the observation page | done |
 | 3. The map at `/egterkep`, with statistics | done |
-| 4. More catalogs | Sharpless, Barnard, LDN, LBN and vdB are done. Next: Abell, open clusters (Collinder, Stock, Trumpler, Berkeley). VizieR has them, its Harvard mirror is `vizier.cfa.harvard.edu` |
+| 4. More catalogs | Sharpless, Barnard, LDN, LBN, vdB, Palomar and Abell (planetary nebulae and ACO clusters) are done. Next: open clusters (Collinder, Stock, Trumpler, Berkeley). VizieR has them, its Harvard mirror is `vizier.cfa.harvard.edu` |
 
 ## How it works
 

@@ -41,6 +41,9 @@ class SkyMatcherTest extends \Codeception\Test\Unit
         'LDN 1357' => ['Cas', 44.1, 68.3, []],
         'LDN 1358' => ['Cas', 44.2, 68.6, []],
         'vdB 152' => ['Cep', 333.4, 70.3, []],
+        'Pal 5' => ['Ser', 229.0, -0.1, []],
+        'Abell 39' => ['Her', 246.9, 27.9, []],
+        'ACO 1656' => ['Com', 195.0, 28.0, ['Abell 1656']],
     ];
 
     public function testMatchTags()
@@ -109,6 +112,11 @@ class SkyMatcherTest extends \Codeception\Test\Unit
             'list of dark nebulae' => ['LDN 1357, 1355, 1358 - Cassiopeia', ['LDN 1357', 'LDN 1355', 'LDN 1358']],
             'barnard with a letter' => ['B 44a és B44', ['B 44A', 'B 44']],
             'van den bergh' => ['VdB152', ['vdB 152']],
+            'palomar' => ['Palomar 5 gömbhalmaz', ['Pal 5']],
+            'palomar, short' => ['Pal5', ['Pal 5']],
+            'abell planetary' => ['Abell 39 - Hercules', ['Abell 39']],
+            'abell cluster' => ['Abell 1656 Coma-halmaz', ['ACO 1656']],
+            'aco' => ['ACO1656', ['ACO 1656']],
             'list with type' => ['HCG 44, NGC 3185, 3187, 3193 GX (Leo)', ['NGC 3185', 'NGC 3187', 'NGC 3193']],
             'list with a word after it' => ['M81-82 galaxisok', ['NGC 3031', 'NGC 3034']],
             'exposure is not a list' => ['M42, 43 perc', ['NGC 1976']],

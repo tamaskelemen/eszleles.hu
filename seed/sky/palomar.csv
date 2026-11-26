@@ -1,0 +1,16 @@
+name;type;ra;dec;constellation;size;same_as
+Pal 1;GCl;53.346;79.581;Cep;0.96;
+Pal 2;GCl;71.525;31.381;Aur;1.34;
+Pal 3;GCl;151.381;0.071;Sex;1.32;
+Pal 4;GCl;172.32;28.974;UMa;1.08;
+Pal 5;GCl;229.022;-0.111;Ser;5.92;
+Pal 6;GCl;265.926;-26.222;Oph;2.12;
+Pal 7;GCl;272.684;-7.208;Ser;4.7;IC 1276
+Pal 8;GCl;280.375;-19.826;Sgr;1.14;
+Pal 9;GCl;283.776;-22.701;Sgr;1.36;NGC 6717
+Pal 10;GCl;289.509;18.572;Sge;1.98;
+Pal 11;GCl;296.31;-8.007;Aql;2.98;MWSC 3171
+Pal 12;GCl;326.662;-21.251;Cap;2.56;MWSC 3561
+Pal 13;GCl;346.685;12.772;Peg;0.92;
+Pal 14;GCl;242.77;14.958;Her;2.3;
+Pal 15;GCl;255.01;-0.542;Oph;2.42;

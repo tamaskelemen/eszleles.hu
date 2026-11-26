@@ -33,7 +33,6 @@ class SkyMap
 
     /** Catalogs we do not have or only partly, key of the matcher => name on the page */
     const UNMAPPED_CATALOGS = [
-        'ABELL' => 'Abell',
         'CR' => self::UNMAPPED_CLUSTERS,
         'STOCK' => self::UNMAPPED_CLUSTERS,
         'MEL' => self::UNMAPPED_CLUSTERS,

@@ -52,6 +52,7 @@ class SkyObject extends \yii\db\ActiveRecord
             'GPair' => 'galaxispár',
             'GTrpl' => 'galaxishármas',
             'GGroup' => 'galaxiscsoport',
+            'GCluster' => 'galaxishalmaz',
             'PN' => 'planetáris köd',
             'HII' => 'HII-régió',
             'DrkN' => 'sötét köd',

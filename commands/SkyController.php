@@ -20,7 +20,7 @@ class SkyController extends Controller
 {
     const CATALOG_FILES = ['NGC.csv', 'addendum.csv'];
     /** Catalogs in our own format, see the README of seed/sky */
-    const EXTRA_FILES = ['sharpless.csv', 'barnard.csv', 'ldn.csv', 'lbn.csv', 'vdb.csv'];
+    const EXTRA_FILES = ['sharpless.csv', 'barnard.csv', 'ldn.csv', 'lbn.csv', 'vdb.csv', 'palomar.csv', 'abell.csv', 'aco.csv'];
     const ALIAS_FILE = 'aliases.csv';
     const LIST_DIRECTORY = 'lists/';
 
@@ -286,6 +286,17 @@ class SkyController extends Controller
             }
 
             $aliases[$key] = $this->findIds($row['same_as'] ?: $row['name'], $ids, $row['name']);
+
+            // optional column, other designations of the object separated by a comma
+            foreach (array_filter(explode(',', $row['aliases'] ?? '')) as $designation) {
+                $aliasKey = SkyMatcher::designationKey($designation);
+
+                if ($aliasKey === null) {
+                    throw new \Exception("The matcher does not know this catalog: $designation ({$row['name']})");
+                }
+
+                $aliases[$aliasKey] = $aliases[$key];
+            }
         }
 
         return $aliases;
