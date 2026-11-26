@@ -20,8 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p class="skymap-lead">
-        Mélyég-objektumok listái, amelyeket érdemes végigészlelni. Az számít késznek, amelyikről van azonosított észlelésed.
-        Minden szintért jelvény jár a profilodon, az előrehaladásodat csak te látod.
+        Mélyég-objektumok listái, amelyeket érdemes végigészlelni. Ötletet adhatnak, hogy milyen sorrendben fedezd fel az égboltot.
+        <?= $this->render('//_common-items/_infoTip', [
+            'label' => 'Mi számít késznek?',
+            'text' => 'Az számít késznek, amelyikről van azonosított észlelésed. Minden szintért jelvény jár a profilodon, az előrehaladásodat csak te látod.',
+        ]) ?>
     </p>
 
     <p class="skymap-credit"><?= SkyPrograms::getVisibilityNote() ?></p>
