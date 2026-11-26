@@ -96,6 +96,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
         <?php if ($isOwn) { ?>
             <div class="profile__actions dropdown">
                 <button class="btn btn-outline dropdown-toggle" type="button" id="profileSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
                     Beállítások
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileSettings">
