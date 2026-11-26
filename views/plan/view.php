@@ -6,6 +6,7 @@ use app\controllers\ProgramController;
 use app\models\SkyObject;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\JqueryAsset;
 
 /* @var $this yii\web\View */
 /* @var $plan app\models\ObservingPlan */
@@ -97,7 +98,7 @@ $filters = [
                         $own = $observations[$id] ?? [];
                         $label = Html::encode(SkyObject::buildLabel($object));
                         ?>
-                        <tr class="<?= $own ? 'is-done' : '' ?> <?= $object['dec'] >= SkyPrograms::VISIBLE_DEC ? '' : 'is-hidden' ?>">
+                        <tr id="terv-<?= $object['item_id'] ?>" class="<?= $own ? 'is-done' : '' ?> <?= $object['dec'] >= SkyPrograms::VISIBLE_DEC ? '' : 'is-hidden' ?>">
                             <th scope="row"><?= $positions[$id] + 1 ?></th>
                             <td>
                                 <?= $object['is_observed']
@@ -108,11 +109,52 @@ $filters = [
                             <td><?= Html::encode(Data::listConstellation($object['constellation'])) ?></td>
                             <td><?= str_replace(['-', '.'], ['−', ','], sprintf('%.1f', $object['dec'])) ?>°</td>
                             <?php if (!$isGuest) { ?>
-                                <td>
+                                <td class="plan-observations">
+                                    <?php
+                                    $hidden = 0;
+
+                                    foreach ($own as $i => $observation) {
+                                        // the first one, and the ones attached by hand, so that they can be removed
+                                        if ($i > 0 && !$observation['is_manual']) {
+                                            $hidden++;
+                                            continue;
+                                        }
+                                        ?>
+                                        <span class="plan-observation">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            <?= Html::a(
+                                                Html::encode(substr((string)$observation['date'], 0, 10) ?: 'megvan'),
+                                                Url::to(["/{$observation['type']}/view", 'id' => $observation['id']]),
+                                                ['title' => $observation['is_manual'] ? 'Te választottad ki' : 'Azonosított észlelés']
+                                            ) ?>
+                                            <?php if ($observation['is_manual']) { ?>
+                                                <?= Html::a('&times;', ['detach'], [
+                                                    'class' => 'plan-observation__remove',
+                                                    'title' => 'Eltávolítás',
+                                                    'aria-label' => 'Eltávolítás: ' . substr((string)$observation['date'], 0, 10),
+                                                    'data' => [
+                                                        'method' => 'post',
+                                                        'params' => ['item_id' => $object['item_id'], 'observation_id' => $observation['id'], 'szures' => $filter],
+                                                    ],
+                                                ]) ?>
+                                            <?php } ?>
+                                        </span>
+                                    <?php } ?>
+                                    <?= $hidden ? '(+' . $hidden . ')' : '' ?>
                                     <?php if ($own) { ?>
-                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                        <?= Html::a(Html::encode(substr((string)$own[0]['date'], 0, 10) ?: 'megvan'), Url::to(["/{$own[0]['type']}/view", 'id' => $own[0]['id']])) ?>
-                                        <?= count($own) > 1 ? '(+' . (count($own) - 1) . ')' : '' ?>
+                                        <button type="button" class="plan-attach plan-attach--more"
+                                                data-toggle="modal" data-target="#plan-attach"
+                                                data-item-id="<?= $object['item_id'] ?>" data-label="<?= $label ?>"
+                                                title="Még egy észlelésem" aria-label="Még egy észlelésem: <?= $label ?>">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    <?php } else { ?>
+                                        <button type="button" class="btn btn-outline btn-sm plan-attach"
+                                                data-toggle="modal" data-target="#plan-attach"
+                                                data-item-id="<?= $object['item_id'] ?>" data-label="<?= $label ?>"
+                                                aria-label="Észleltem: <?= $label ?>">
+                                            <i class="fa fa-check" aria-hidden="true"></i> Észleltem
+                                        </button>
                                     <?php } ?>
                                 </td>
                             <?php } ?>
@@ -120,6 +162,43 @@ $filters = [
                     <?php } ?>
                 </tbody>
             </table>
+        </div>
+    <?php } ?>
+
+    <?php if (!$isGuest && !empty($items)) {
+        $this->registerJsFile('/js/plan-attach.js?v=' . filemtime(Yii::getAlias('@webroot/js/plan-attach.js')), [
+            'depends' => [JqueryAsset::class],
+        ]);
+        ?>
+        <div class="modal fade" id="plan-attach" tabindex="-1" role="dialog" aria-labelledby="plan-attach-title" aria-hidden="true"
+             data-url="<?= Url::to(['observations']) ?>">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <?= Html::beginForm(['attach'], 'post') ?>
+                        <input type="hidden" name="item_id">
+                        <input type="hidden" name="observation_id">
+                        <?= Html::hiddenInput('szures', $filter) ?>
+
+                        <div class="modal-header">
+                            <h2 class="modal-title h5" id="plan-attach-title">Melyik észlelésed?</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Bezárás">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-muted small">
+                                Ha nem ismertük fel, hogy már észlelted ezt az objektumot (<b class="plan-attach__object"></b>),
+                                pl. egy nagy látómezős képen több is rajta van, válaszd ki itt a megfelelő észlelésed.
+                                Csak a saját észleléseid közül választhatsz.
+                            </p>
+                            <label for="plan-attach-search" class="sr-only">Keresés az észleléseid címében</label>
+                            <input type="text" id="plan-attach-search" class="form-control" autocomplete="off" maxlength="100"
+                                   placeholder="Keresés az észleléseid címében">
+                            <div class="list-group plan-attach__results" aria-live="polite"></div>
+                        </div>
+                    <?= Html::endForm() ?>
+                </div>
+            </div>
         </div>
     <?php } ?>
 </div>

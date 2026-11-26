@@ -38,6 +38,11 @@ return [
     'eszleloprogramok/terv/<id:\d+>' => 'plan/view',
     'eszleloprogramok/terv/<id:\d+>/modositas' => 'plan/update',
     'eszleloprogramok/terv/<id:\d+>/torles' => 'plan/delete',
+    'eszleloprogramok/terv/hozzarendeles' => 'plan/attach',
+    'eszleloprogramok/terv/hozzarendeles/torles' => 'plan/detach',
+    'eszleloprogramok/terv/eszleleseim' => 'plan/observations',
+    'eszleloprogramok/terv/objektum/<id:\d+>' => 'plan/object-plans',
+    'eszleloprogramok/terv/mentes' => 'plan/toggle-object',
     'eszleloprogramok/<key:[a-z0-9-]+>' => 'program/view',
 
     'osszes' => 'observe/index',

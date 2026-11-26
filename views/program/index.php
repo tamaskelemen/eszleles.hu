@@ -59,9 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php } else { ?>
             <?= $this->render('_plans', ['plans' => $ownPlans, 'totals' => $planTotals, 'done' => $planDone, 'showsOwner' => false]) ?>
         <?php } ?>
-
-        <p><?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Új észlelési terv', ['/plan/create'], ['class' => 'btn btn-primary']) ?></p>
     <?php } ?>
+
+    <?php /* guests are sent to the login by PlanController, and come back to the form */ ?>
+    <p><?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Új észlelési terv', ['/plan/create'], ['class' => 'btn btn-primary']) ?></p>
 
     <?php if (!empty($publicPlans)) { ?>
         <h3 class="h4">Mások nyilvános tervei</h3>

@@ -1099,6 +1099,61 @@ input[type="checkbox"] {
     text-shadow: none;
 }
 
+/* Bootstrap dialogs and lists in the colors of the site */
+.modal-content {
+    background-color: var(--field-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--text);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, .5);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--line);
+}
+
+.modal-header .close {
+    min-width: 44px;
+    min-height: 44px;
+    margin: -1rem -1rem -1rem auto;
+    opacity: .7;
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus {
+    opacity: 1;
+}
+
+.modal-backdrop.show {
+    opacity: .7;
+}
+
+.modal-content .text-muted {
+    color: var(--muted) !important;
+}
+
+.list-group-item {
+    background-color: var(--field);
+    border-color: var(--line);
+    color: var(--text);
+}
+
+.list-group-item-action:hover,
+.list-group-item-action:focus {
+    background-color: var(--line);
+    color: #fff;
+}
+
+.list-group-item-action:active {
+    background-color: var(--line-strong);
+    color: #fff;
+}
+
+.list-group-item .text-muted {
+    color: var(--muted) !important;
+}
+
 .card {
     background: none;
     border: 0;
@@ -2913,4 +2968,205 @@ body.skymap-is-fullscreen .tooltip {
 
 .plan-meta {
     color: var(--muted);
+}
+
+.plan-observations {
+    white-space: nowrap;
+}
+
+.plan-observation {
+    display: inline-flex;
+    align-items: center;
+    margin-right: .5rem;
+}
+
+.plan-observation__remove {
+    min-width: 32px;
+    min-height: 32px;
+    line-height: 32px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.plan-observation__remove:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.plan-attach {
+    white-space: nowrap;
+}
+
+.plan-attach--more {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.plan-attach--more:hover,
+.plan-attach--more:focus-visible {
+    color: var(--text);
+}
+
+.plan-attach__object {
+    color: var(--text);
+}
+
+.plan-attach__results {
+    max-height: 22rem;
+    margin-top: .75rem;
+    overflow-y: auto;
+}
+
+
+
+
+.skymap__title {
+    display: flex;
+    align-items: flex-start;
+    gap: .25rem;
+    padding-right: 2.5rem;
+}
+
+.skymap__panel .skymap__title h3 {
+    flex: 1;
+    min-width: 0;
+    padding-right: 0;
+}
+
+.skymap__save {
+    position: relative;
+    flex: none;
+    margin-top: -.5rem;
+}
+
+.skymap__save-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.skymap__save-button svg {
+    transition: transform .15s ease;
+}
+
+.skymap__save-button:hover svg,
+.skymap__save-button:focus-visible svg {
+    transform: scale(1.1);
+}
+
+.skymap__save-button.is-saved path {
+    fill: currentColor;
+}
+
+.skymap__save-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 4;
+    width: 16rem;
+    max-width: calc(100vw - 2rem);
+    padding: .75rem;
+    background-color: var(--field-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .35);
+}
+
+.skymap__save-menu[hidden] {
+    display: none;
+}
+
+.skymap__panel .skymap__save-menu p {
+    color: var(--text);
+}
+
+.skymap__panel .skymap__save-menu .skymap__save-head {
+    margin-bottom: .5rem;
+    font-weight: bold;
+}
+
+.skymap__panel .skymap__save-menu .skymap__save-message {
+    color: var(--danger, #e57373);
+}
+
+.skymap__save-plan {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-height: 44px;
+}
+
+.skymap__save-plan input {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.skymap__save-plan label {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.skymap__save-open {
+    flex: none;
+    min-width: 32px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.skymap__save-new {
+    display: block;
+    margin-top: .5rem;
+    padding-top: .5rem;
+    border-top: 1px solid var(--line-strong);
+}
+
+.profile-plans {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 80px;
+}
+
+.profile-plans summary {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.profile-plans summary::-webkit-details-marker {
+    display: none;
+}
+
+.profile-plans summary h2 {
+    margin: 0;
+}
+
+.profile-plans summary .fa {
+    color: var(--muted);
+    transition: transform .15s ease;
+}
+
+.profile-plans[open] summary .fa {
+    transform: rotate(180deg);
+}
+
+.profile-plans[open] summary {
+    margin-bottom: 1rem;
 }

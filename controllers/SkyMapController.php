@@ -7,6 +7,7 @@ use app\components\SkyPrograms;
 use app\models\ObservationSkyObject;
 use app\models\Observe;
 use app\models\SkyObject;
+use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -21,6 +22,11 @@ class SkyMapController extends Controller
      */
     public function actionIndex()
     {
+        // guests get back to the map after logging in to save an object
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+        }
+
         $data = SkyMap::getData();
 
         return $this->render('index', [

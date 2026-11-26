@@ -24,6 +24,13 @@ $this->registerJsFile('/js/sky-map.js?v=' . filemtime(Yii::getAlias('@webroot/js
      data-gaps="<?= Html::encode(Json::encode($gaps)) ?>"
      data-horizon="<?= SkyMap::HORIZON_DEC ?>"
      <?= $userId === null ? '' : 'data-single-observer' ?>
+     <?php if (Yii::$app->user->isGuest) { ?>
+         data-login-url="<?= Url::to(['/site/login']) ?>"
+     <?php } else { ?>
+         data-plans-url="<?= Url::to(['/plan/object-plans', 'id' => 0]) ?>"
+         data-save-url="<?= Url::to(['/plan/toggle-object']) ?>"
+         data-new-plan-url="<?= Url::to(['/plan/create', 'objektum' => 0]) ?>"
+     <?php } ?>
 >
     <div class="skymap__controls">
         <?php if ($userId === null) { ?>

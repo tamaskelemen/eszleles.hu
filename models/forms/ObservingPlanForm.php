@@ -76,6 +76,20 @@ class ObservingPlanForm extends Model
     }
 
     /**
+     * Fills the objects of a new plan, as if they had been chosen on the form.
+     * @param array $objects designations (or null) indexed by object id
+     */
+    public function prefill(array $objects)
+    {
+        $this->skyObjectTitle = '';
+        $this->skyObjectItems = [];
+
+        foreach ($objects as $id => $designation) {
+            $this->skyObjectItems[] = $id . ($designation === null ? '' : SkyObject::ITEM_SEPARATOR . $designation);
+        }
+    }
+
+    /**
      * @return ObservingPlan
      */
     public function getPlan()

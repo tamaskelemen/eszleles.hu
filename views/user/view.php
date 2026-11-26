@@ -12,6 +12,9 @@ use yii\widgets\DetailView;
 /* @var $isOwn bool whether it is the profile of the visitor */
 /* @var $badges array see Badges, only the earned ones on the profile of others */
 /* @var $skyMapStats array|null null if there is nothing on the map */
+/* @var $plans app\models\ObservingPlan[] observing plans of the user, only the public ones for the others */
+/* @var $planTotals int[] number of objects indexed by plan id */
+/* @var $planDone int[] number of objects the user of the profile has observed indexed by plan id */
 
 $this->title = $user->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -113,6 +116,31 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
     </header>
 
     <?= $this->render('_badges', ['categories' => $badges, 'isOwn' => $isOwn]) ?>
+
+    <?php if ($plans || $isOwn) { ?>
+        <details class="profile-plans" id="tervek">
+            <summary>
+                <h2 class="profile__section">Észlelési tervek (<?= count($plans) ?>)</h2>
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </summary>
+
+            <?php if ($plans) { ?>
+                <?= $this->render('//program/_plans', [
+                    'plans' => $plans,
+                    'totals' => $planTotals,
+                    'done' => $planDone,
+                    'showsOwner' => false,
+                    'showsProgress' => true,
+                ]) ?>
+            <?php } else { ?>
+                <p>Még nincs észlelési terved. Állíts össze egy listát a megfigyelni kívánt objektumokból!</p>
+            <?php } ?>
+
+            <?php if ($isOwn) { ?>
+                <p><?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i> Új észlelési terv', ['/plan/create'], ['class' => 'btn btn-primary']) ?></p>
+            <?php } ?>
+        </details>
+    <?php } ?>
 
     <?php if ($hasMap) { ?>
         <h2 class="profile__section" id="egterkep"><a class="anchor-link" href="#egterkep">Égtérkép</a></h2>

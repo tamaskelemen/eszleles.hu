@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\components\ObservingPlans;
 use app\components\Badges;
 use app\components\BadgeSync;
 use app\components\Flash;
 use app\components\SkyMap;
+use app\models\ObservingPlan;
 use app\models\forms\AvatarForm;
 use app\models\forms\PasswordChangeForm;
 use app\models\Notification;
@@ -95,10 +97,24 @@ class UserController extends Controller
             $badges = Badges::groupStored($user->badges);
         }
 
+        // the others see the public ones only
+        $plans = ObservingPlan::find()->ofUser($user->id)->orderBy(['updated_at' => SORT_DESC]);
+
+        if (!$isOwn) {
+            $plans->isPublic();
+        }
+
+        $plans = $plans->all();
+        $planIds = array_column($plans, 'id');
+
         return $this->render('view', [
             'user' => $user,
             'isOwn' => $isOwn,
             'badges' => $badges,
+            'plans' => $plans,
+            'planTotals' => ObservingPlans::countItems($planIds),
+            // the progress of the owner of the profile, as the badges
+            'planDone' => ObservingPlans::countDone($planIds, $user->id),
             'observations' => $observations,
             'skyMapStats' => SkyMap::getUserStats($user->id),
         ]);

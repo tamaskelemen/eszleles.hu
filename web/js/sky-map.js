@@ -742,7 +742,7 @@
 
         $(panel).empty().append(
             $('<button type="button" class="skymap__close" aria-label="Bezárás">&times;</button>').on('click', closePanel),
-            $('<h3>').text(object.label),
+            $('<div class="skymap__title">').append($('<h3>').text(object.label), saveButton(object)),
             $('<p>').text(description(object)),
             $('<p>').text(counts(object)),
             list
@@ -776,6 +776,119 @@
                     list.empty().append('<li>Az észleléseket nem sikerült betölteni.</li>');
                 }
             });
+    }
+
+    /* ---------- saving to observing plans ---------- */
+
+    const BOOKMARK = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">'
+        + '<path d="M6 3.5h12a.5.5 0 0 1 .5.5v16.5L12 16l-6.5 4.5V4a.5.5 0 0 1 .5-.5z" fill="none" '
+        + 'stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+
+    function saveButton(object) {
+        const wrap = $('<div class="skymap__save">');
+        const button = $('<button type="button" class="skymap__save-button" aria-haspopup="true" aria-expanded="false">')
+            .html(BOOKMARK)
+            .appendTo(wrap);
+        const menu = $('<div class="skymap__save-menu" hidden>').appendTo(wrap);
+        let plans = null;
+
+        function mark() {
+            const isSaved = (plans || []).some(plan => plan.hasObject);
+
+            button.toggleClass('is-saved', isSaved)
+                .attr('aria-label', isSaved ? 'Mentve észlelési tervbe' : 'Mentés észlelési tervbe')
+                .attr('title', isSaved ? 'Mentve észlelési tervbe' : 'Mentés észlelési tervbe');
+        }
+
+        function close() {
+            menu.prop('hidden', true);
+            button.attr('aria-expanded', 'false');
+        }
+
+        function render(message) {
+            menu.empty().append($('<p class="skymap__save-head">').text('Mentés észlelési tervbe'));
+
+            if (message) {
+                menu.append($('<p class="skymap__save-message" role="alert">').text(message));
+            }
+
+            (plans || []).forEach(function (plan) {
+                const id = `skymap-save-${object.id}-${plan.id}`;
+
+                $('<div class="skymap__save-plan">').append(
+                    $('<input type="checkbox">').attr('id', id).prop('checked', plan.hasObject).on('change', function () {
+                        const checkbox = $(this).prop('disabled', true);
+
+                        $.post(root.dataset.saveUrl, {plan_id: plan.id, sky_object_id: object.id})
+                            .done(function (result) {
+                                plans = result.plans;
+                                mark();
+                                render(result.message);
+                            })
+                            .fail(function () {
+                                checkbox.prop('disabled', false).prop('checked', plan.hasObject);
+                                render('A mentés nem sikerült.');
+                            });
+                    }),
+                    $('<label>').attr('for', id).text(plan.name),
+                    $('<a class="skymap__save-open">').attr({href: plan.url, title: 'A terv megnyitása', 'aria-label': 'Megnyitás: ' + plan.name})
+                        .html('<i class="fa fa-external-link" aria-hidden="true"></i>')
+                ).appendTo(menu);
+            });
+
+            menu.append($('<a class="skymap__save-new">')
+                .attr('href', root.dataset.newPlanUrl.replace(/0(?=\?|$)/, object.id))
+                .html('<i class="fa fa-plus" aria-hidden="true"></i> Új terv ezzel az objektummal'));
+        }
+
+        if (root.dataset.loginUrl) {
+            button.attr({'aria-label': 'Mentés észlelési tervbe', title: 'Mentés észlelési tervbe'});
+            menu.append(
+                $('<p class="skymap__save-head">').text('Mentsd el egy észlelési tervbe'),
+                $('<p>').text('Lépj be, és összeállíthatod a saját listádat a megfigyelni kívánt objektumokból.'),
+                $('<a class="btn btn-primary btn-sm">').attr('href', root.dataset.loginUrl).text('Belépés')
+            );
+        } else {
+            mark();
+            $.getJSON(root.dataset.plansUrl.replace(/0(?=\?|$)/, object.id), function (found) {
+                plans = found;
+                mark();
+            });
+        }
+
+        button.on('click', function () {
+            const isOpen = !menu.prop('hidden');
+
+            if (isOpen) {
+                close();
+                return;
+            }
+
+            if (!root.dataset.loginUrl) {
+                render();
+            }
+
+            menu.prop('hidden', false);
+            button.attr('aria-expanded', 'true');
+        });
+
+        wrap.on('keydown', function (event) {
+            if (event.key === 'Escape' && !menu.prop('hidden')) {
+                // do not close the panel as well
+                event.stopPropagation();
+                close();
+                button.trigger('focus');
+            }
+        });
+
+        // one panel is open at a time
+        $(document).off('click.skymapSave').on('click.skymapSave', function (event) {
+            if (!$.contains(wrap[0], event.target)) {
+                close();
+            }
+        });
+
+        return wrap;
     }
 
     function focusObject(object) {
