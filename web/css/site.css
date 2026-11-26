@@ -232,6 +232,7 @@ html[data-night] body::after {
     border: 0;
     color: rgba(255, 255, 255, .75);
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .night-toggle:hover {
