@@ -39,7 +39,7 @@ $cell = function (array $counts) {
             </thead>
             <tbody>
             <?php foreach (['Összesen' => $total, 'Utolsó 30 nap' => $last30] as $label => $row) { ?>
-                <tr class="table-info">
+                <tr class="table-summary">
                     <th><?= $label ?></th>
                     <?php foreach (array_keys($events) as $event) { ?>
                         <td class="text-right"><?= $cell($row['events'][$event]) ?></td>

@@ -1348,6 +1348,12 @@ input[type="checkbox"] {
     background-color: var(--field);
 }
 
+.table tbody tr.table-summary,
+.table-striped tbody tr.table-summary:nth-of-type(odd) {
+    background-color: var(--field-raised);
+    color: var(--text);
+}
+
 .table-responsive {
     border: 0;
 }

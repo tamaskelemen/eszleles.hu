@@ -24,26 +24,14 @@ class BugReportController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'index'],
+                'only' => ['create'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index'],
+                        'actions' => ['create'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['index', 'view', 'delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'denyCallback' =>  function ($rule, $action) {
-                            if (!Yii::$app->user->identity->isAdmin()) {
-                                Flash::addWarning('Ehhez a művelethez nincs elég jogosultságod.');
-                                return $this->goBack();
-                            }
-                        }
                     ],
                 ],
-
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -55,14 +43,30 @@ class BugReportController extends Controller
     }
 
     /**
+     * Everything but submitting a report is the admin's, shown in the admin layout.
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws NotFoundHttpException
+     */
+    public function beforeAction($action)
+    {
+        if ($action->id !== 'create') {
+            if (Yii::$app->user->isGuest || !Yii::$app->user->getIdentity()->is_admin) {
+                throw new NotFoundHttpException('A keresett oldal nem található');
+            }
+
+            $this->layout = 'mainAdmin';
+        }
+
+        return parent::beforeAction($action);
+    }
+
+    /**
      * Lists all BugReport models.
      * @return mixed
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
-            return $this->goHome();
-        }
         $searchModel = new BugReportSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -80,9 +84,6 @@ class BugReportController extends Controller
      */
     public function actionView($id)
     {
-        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
-            return $this->goHome();
-        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -122,9 +123,6 @@ class BugReportController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
-            return $this->goHome();
-        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -145,9 +143,6 @@ class BugReportController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->is_admin) {
-            return $this->goHome();
-        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -57,24 +57,15 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/admin/recommender')?>">Ajánló</a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item <?= strpos($route, 'bug-report/') === 0 ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/bug-report/index')?>">Hibajelentések</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="/naplok">Naplók</a>
+                </li>
+
                 <?php if (!Yii::$app->user->isGuest) { ?>
-                    <li class="nav-item dropdown <?= in_array($route, ['deepsky/create', 'planet/create', 'moon/create', 'meteor/create']) ? 'active' : ''  ?>">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Feltöltés
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="<?= Url::toRoute('/deepsky/create') ?>">Mélyég</a>
-                            <a class="dropdown-item" href="<?= Url::toRoute('/planet/create') ?>">Bolygók</a>
-                            <a class="dropdown-item" href="<?= Url::toRoute('/moon/create') ?>">Hold</a>
-                            <a class="dropdown-item" href="<?= Url::toRoute('/meteor/create') ?>">Meteor</a>
-                        </div>
-                    </li>
-
-
                     <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
                         <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>">Profil (<?= Html::encode(Yii::$app->user->getIdentity()->email) ?>)</a>
                     </li>
