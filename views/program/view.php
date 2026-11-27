@@ -135,14 +135,11 @@ $filters = [
                                         'aria-label' => 'Megnyitás az égtérképen',
                                     ]) ?>
                                 <?php } else { ?>
-                                    <?= Html::tag('span', $globe, [
+                                    <?php // still greyed out, but the map shows where it is in the sky, as from the recommender ?>
+                                    <?= Html::a($globe, $mapUrl($first), [
                                         'class' => 'is-empty',
-                                        'role' => 'img',
-                                        'title' => 'Még nincs feltöltött észlelés',
-                                        'aria-label' => 'Még nincs feltöltött észlelés',
-                                        // a tap shows it on touch screens
-                                        'data-toggle' => 'tooltip',
-                                        'tabindex' => 0,
+                                        'title' => 'Még nincs feltöltött észlelés – megnézem az égtérképen',
+                                        'aria-label' => 'Még nincs feltöltött észlelés – megnézem az égtérképen',
                                     ]) ?>
                                 <?php } ?>
                             </td>

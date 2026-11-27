@@ -2786,7 +2786,11 @@ time[data-toggle] {
 .program-table__map .is-empty {
     color: var(--muted);
     opacity: .6;
-    cursor: help;
+}
+
+.program-table__map .is-empty:hover,
+.program-table__map .is-empty:focus {
+    opacity: 1;
 }
 
 /* on phones: number on the left, then the object, its details and own observation below each other */
