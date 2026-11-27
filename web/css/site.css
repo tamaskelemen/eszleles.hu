@@ -2397,6 +2397,18 @@ time[data-toggle] {
     height: 7.5rem;
 }
 
+.avatar--nav {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: -.25rem 0; /* keeps the navbar at its text height */
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
 .avatar-edit {
     display: flex;
     flex-wrap: wrap;

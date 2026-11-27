@@ -154,7 +154,10 @@ foreach (Observe::getAllTypes() as $type => $label) {
                     </li>
                 <?php } else { ?>
                     <li class="nav-item <?= in_array($route,['user/profile', 'user/index']) ? 'active' : '' ?>">
-                        <a class="nav-link" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>" title="<?= Html::encode(Yii::$app->user->getIdentity()->email) ?>">Profilom</a>
+                        <a class="nav-link nav-profile" href="<?= Url::toRoute(['/user/profile', 'id' => Yii::$app->user->getId() ]) ?>" title="<?= Html::encode(Yii::$app->user->getIdentity()->email) ?>">
+                            <?= Html::img(Yii::$app->user->getIdentity()->getAvatarUrl(), ['class' => 'avatar avatar--nav', 'alt' => '']) ?>
+                            Profilom
+                        </a>
                     </li>
                 <?php } ?>
 
