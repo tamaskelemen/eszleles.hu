@@ -2263,6 +2263,32 @@ time[data-toggle] {
     max-width: 68ch;
 }
 
+.obs-related {
+    margin-top: var(--section);
+}
+
+.obs-related h2 {
+    margin-bottom: 1rem;
+}
+
+.obs-card__reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    margin: 0 0 .5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.obs-card__reasons li {
+    padding: .05rem .5rem;
+    background-color: var(--field-raised);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: .8125rem;
+}
+
 @media (min-width: 992px) {
     .obs-body {
         grid-template-columns: minmax(0, 1fr) 360px;

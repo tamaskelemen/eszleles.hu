@@ -115,4 +115,6 @@ $this->registerMetaTag([
             ])?>
         </section>
     </div>
+
+    <?= $this->render('_related', ['model' => $model]) ?>
 </article>

@@ -6,6 +6,7 @@ use yii\helpers\Url;
 
 /** @var $this yii\web\View */
 /** @var $model Observe */
+/** @var $reasons string[]|null why it is shown, under an observation as a related one */
 
 $commentCount = count($model->comments);
 ?>
@@ -18,6 +19,14 @@ $commentCount = count($model->comments);
     </div>
 
     <div class="obs-card__body">
+        <?php if (!empty($reasons)) { ?>
+            <ul class="obs-card__reasons">
+                <?php foreach ($reasons as $reason) { ?>
+                    <li><?= Html::encode($reason) ?></li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+
         <div class="obs-card__type">
             <?= $this->render('_typeIcon', ['type' => $model->type]) ?>
             <?= Observe::getTypeName($model->type) ?>
