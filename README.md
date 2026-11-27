@@ -37,7 +37,21 @@ DIRECTORY STRUCTURE
 REQUIREMENTS
 ------------
 
-The minimum requirement by this project template that your Web server supports PHP 5.6.0.
+- PHP 8.3 or newer, with the extensions
+  - `pdo_pgsql` (database)
+  - `intl` — without it the formatter falls back to English day and month names, e.g. in the date above the navbar
+  - `gd` (image thumbnails), `json`, `simplexml`, `xmlwriter`
+- PostgreSQL (14 in the Docker setup)
+- Apache with `mod_rewrite` (or another web server pointing to `web/`)
+- Composer
+
+On Debian/Ubuntu, for example:
+
+    sudo apt install php8.3 php8.3-pgsql php8.3-intl php8.3-gd php8.3-xml
+    sudo systemctl restart apache2
+
+Check the extensions with `php -m`, and for the web server's PHP with `phpinfo()`, the two can differ.
+The Docker image (`yiisoftware/yii2-php:8.3-apache`) already has all of them.
 
 
 INSTALLATION
