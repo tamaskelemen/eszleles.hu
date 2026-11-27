@@ -103,7 +103,7 @@ $sunTimes = [
     <div class="container">
         <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">
             <img class="brand-logo" src="/brand-logo.png" alt="VCSE logo" >
-            VCSE Észlelések
+            Észlelés.hu
         </a>
 
         <?php if (!Yii::$app->user->isGuest) { ?>
