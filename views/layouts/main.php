@@ -10,6 +10,8 @@ use app\assets\AppAsset;
 use app\assets\BootstrapAsset;
 use app\assets\FontAwesomeAsset;
 use app\models\Observe;
+use app\components\Astro;
+use app\components\recommender\Context;
 
 FontAwesomeAsset::register($this);
 AppAsset::register($this);
@@ -20,6 +22,14 @@ $isBrowsing = $route === 'observe/index';
 foreach (Observe::getAllTypes() as $type => $label) {
     $isBrowsing = $isBrowsing || $route === "{$type}/index";
 }
+
+// the night at the location of the user, Budapest for guests and when it is not given
+$place = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->getLocation();
+$place = $place ?? Context::DEFAULT_PLACE;
+$sunTimes = [
+    'night' => Astro::night($place['latitude'], $place['longitude']),
+    'placeName' => $place['name'] ?: 'saját helyszín',
+];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -87,6 +97,8 @@ foreach (Observe::getAllTypes() as $type => $label) {
 
 <a class="skip-link" href="#tartalom">Ugrás a tartalomra</a>
 
+<?= $this->render('//_common-items/_topBar', $sunTimes) ?>
+
 <nav class="navbar navbar-dark navbar-expand-lg sticky-top" aria-label="Főmenü">
     <div class="container">
         <a class="navbar-brand" href="<?= Url::toRoute('/') ?>">
@@ -130,10 +142,6 @@ foreach (Observe::getAllTypes() as $type => $label) {
 
                 <li class="nav-item <?= in_array($route, ['program/index', 'program/view', 'plan/view', 'plan/create', 'plan/update']) ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= Url::toRoute('/program/index')?>">Észlelőprogram</a>
-                </li>
-
-                <li class="nav-item <?= in_array($route, ['site/faq']) ? 'active' : '' ?>">
-                    <a class="nav-link" href="<?= Url::toRoute('/site/faq')?>">GY.I.K.</a>
                 </li>
             </ul>
 

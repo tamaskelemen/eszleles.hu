@@ -273,6 +273,125 @@ html[data-night] body::after {
     height: 44px;
 }
 
+/* the thin strip above the navbar: the date, and sunset, sunrise and the astronomical darkness */
+.top-bar {
+    position: relative;
+    z-index: 1030; /* the tips open over the sticky navbar */
+    background-color: var(--sky-deep);
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .75rem;
+    line-height: 1.2;
+}
+
+.top-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 26px;
+}
+
+.top-bar__date {
+    white-space: nowrap;
+}
+
+.top-bar__date-short {
+    display: none;
+}
+
+.sun-times {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-variant-numeric: tabular-nums;
+}
+
+.sun-times__item {
+    position: relative;
+}
+
+.sun-times__button {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
+    cursor: default;
+}
+
+.sun-times__button svg {
+    flex: none;
+    color: var(--lamp);
+}
+
+.sun-times__place {
+    white-space: nowrap;
+}
+
+/* shown at once on hover, and on tap by top-bar.js, the title attribute is slow and does nothing on touch */
+.sun-times__tip {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    display: none;
+    padding: .35rem .55rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background-color: var(--field-raised);
+    color: var(--text);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* sunset and sunrise are near the left edge on phones */
+.sun-times__item:nth-child(-n+3) .sun-times__tip {
+    right: auto;
+    left: 0;
+}
+
+.sun-times__tip-place {
+    color: var(--muted);
+}
+
+.sun-times__item:hover .sun-times__tip,
+.sun-times__button:focus-visible + .sun-times__tip,
+.sun-times__item.is-open .sun-times__tip {
+    display: block;
+}
+
+@media (max-width: 575px) {
+    .top-bar__inner {
+        gap: .5rem;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .top-bar__date-long,
+    .sun-times__place {
+        display: none;
+    }
+
+    .top-bar__date-short {
+        display: inline;
+    }
+
+    .sun-times {
+        gap: .6rem;
+    }
+
+    .sun-times__button {
+        gap: .15rem;
+    }
+}
+
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255, 255, 255, .75);
     white-space: nowrap;

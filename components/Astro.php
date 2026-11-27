@@ -12,6 +12,13 @@ class Astro
     /** Sidereal days are shorter, solar hours per sidereal hour */
     const SIDEREAL_RATE = 1.00273790935;
 
+    /** The upper limb touches the horizon: semidiameter and refraction */
+    const SUNSET_ALTITUDE = -0.833;
+    /** The end of the astronomical twilight */
+    const DARK_ALTITUDE = -18;
+    /** Coarse scan step of the crossing search, in seconds, short enough not to skip a crossing */
+    const CROSSING_STEP = 600;
+
     /**
      * @param int $timestamp unix time
      * @return float days since J2000.0
@@ -210,6 +217,108 @@ class Astro
         $minutes = (int)round(abs($dec) * 60);
 
         return ($dec < 0 ? '−' : '+') . sprintf('%02d° %02d′', intdiv($minutes, 60), $minutes % 60);
+    }
+
+    /**
+     * @param int $timestamp
+     * @param float $latitude
+     * @param float $longitude
+     * @return float altitude of the Sun's center, without refraction
+     */
+    public static function sunAltitude($timestamp, $latitude, $longitude)
+    {
+        $sun = self::sun($timestamp);
+
+        return self::horizontal($sun['ra'], $sun['dec'], $latitude, self::localSiderealTime($timestamp, $longitude))['altitude'];
+    }
+
+    /**
+     * The night in progress, or the coming one while the Sun is up. The astronomical darkness is the part of it when
+     * the Sun is below -18°, it is missing on short summer nights in the north.
+     *
+     * @param float $latitude
+     * @param float $longitude
+     * @param int|null $timestamp now if null
+     * @return array sunset, sunrise, darkBegin, darkEnd as unix times, any of them null if it does not happen
+     */
+    public static function night($latitude, $longitude, $timestamp = null)
+    {
+        $now = $timestamp ?? time();
+        $altitude = function ($t) use ($latitude, $longitude) {
+            return self::sunAltitude($t, $latitude, $longitude);
+        };
+        $day = 86400;
+
+        if ($altitude($now) < self::SUNSET_ALTITUDE) {
+            $sunset = self::lastCrossing($altitude, self::SUNSET_ALTITUDE, false, $now - $day, $now);
+            $sunrise = self::crossing($altitude, self::SUNSET_ALTITUDE, true, $now, $now + $day);
+        } else {
+            $sunset = self::crossing($altitude, self::SUNSET_ALTITUDE, false, $now, $now + $day);
+            $sunrise = $sunset === null ? null : self::crossing($altitude, self::SUNSET_ALTITUDE, true, $sunset, $sunset + $day);
+        }
+
+        $darkBegin = $darkEnd = null;
+        if ($sunset !== null && $sunrise !== null) {
+            $darkBegin = self::crossing($altitude, self::DARK_ALTITUDE, false, $sunset, $sunrise);
+            $darkEnd = $darkBegin === null ? null : self::crossing($altitude, self::DARK_ALTITUDE, true, $darkBegin, $sunrise);
+        }
+
+        return ['sunset' => $sunset, 'sunrise' => $sunrise, 'darkBegin' => $darkBegin, 'darkEnd' => $darkEnd];
+    }
+
+
+    /**
+     * @param callable $altitude of a unix time
+     * @param float $limit
+     * @param bool $rising crossing upwards or downwards
+     * @param int $from
+     * @param int $to
+     * @return int|null the first time between the two when the altitude crosses the limit
+     */
+    private static function crossing($altitude, $limit, $rising, $from, $to)
+    {
+        $previousTime = $from;
+        $previous = $altitude($from);
+        while ($previousTime < $to) {
+            $t = min($previousTime + self::CROSSING_STEP, $to);
+            $current = $altitude($t);
+            if ($rising ? ($previous < $limit && $current >= $limit) : ($previous >= $limit && $current < $limit)) {
+                return self::bisect($altitude, $limit, $rising, $previousTime, $t);
+            }
+            $previousTime = $t;
+            $previous = $current;
+        }
+
+        return null;
+    }
+
+    /**
+     * @see crossing() the same, but the last one
+     */
+    private static function lastCrossing($altitude, $limit, $rising, $from, $to)
+    {
+        $last = null;
+        while (($found = self::crossing($altitude, $limit, $rising, $from, $to)) !== null) {
+            $last = $found;
+            $from = $found + 1;
+        }
+
+        return $last;
+    }
+
+    private static function bisect($altitude, $limit, $rising, $from, $to)
+    {
+        while ($to - $from > 30) {
+            $middle = intdiv($from + $to, 2);
+            $isAbove = $altitude($middle) >= $limit;
+            if ($isAbove === $rising) {
+                $to = $middle;
+            } else {
+                $from = $middle;
+            }
+        }
+
+        return $to;
     }
 
     /**
