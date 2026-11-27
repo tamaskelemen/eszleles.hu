@@ -4,15 +4,19 @@ namespace app\controllers;
 
 use app\components\BadgeSync;
 use app\components\Flash;
+use app\components\feed\RelatedObservationsSource;
+use app\components\related\RelatedObservations;
 use app\models\Comment;
 use app\models\forms\CommentForm;
 use Yii;
 use app\models\Observe;
 use app\models\ObserveSearch;
 use app\models\forms\DeepSkyForm;
+use app\widgets\InfiniteList;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
@@ -169,6 +173,24 @@ class ObserveController extends Controller
         Flash::addSuccess('Az észlelés törölve.');
 
         return $this->redirect(Yii::$app->request->referrer ?: ['search']);
+    }
+
+    /**
+     * The next batch of the related observations under an observation, see InfiniteList.
+     * @param int $id
+     * @param string|null $utana cursor of the batch
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    public function actionRelated($id, $utana = null)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return InfiniteList::respond(
+            new RelatedObservationsSource($this->findModel($id)),
+            $utana,
+            RelatedObservations::BATCH
+        );
     }
 
     /**

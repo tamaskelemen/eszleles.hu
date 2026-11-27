@@ -14,6 +14,7 @@ return [
 
     'felhasznalok' => '/user/index',
     'profil/<id:\d+>' => '/user/profile',
+    'profil/<id:\d+>/eszlelesek' => '/user/observations',
     'profil/modositas' => '/user/update',
     'profil/jelszo-valtoztatas' => '/user/change-password',
     'profil/profilkep' => '/user/avatar',
@@ -55,6 +56,7 @@ return [
 
     'osszes' => 'observe/index',
     'kereses' => 'observe/search',
+    'eszleles/<id:\d+>/kapcsolodok' => 'observe/related',
     //melyeg
     'melyeg' => 'deepsky/index',
     'melyeg/<id:\d+>' => 'deepsky/view',

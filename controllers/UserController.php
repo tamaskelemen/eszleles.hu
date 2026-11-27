@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Features;
+use app\components\feed\UserObservationsSource;
 use app\components\ObservingPlans;
 use app\components\Badges;
 use app\components\BadgeSync;
@@ -13,12 +14,16 @@ use app\models\forms\AvatarForm;
 use app\models\forms\LocationForm;
 use app\models\forms\PasswordChangeForm;
 use app\models\Notification;
+use app\models\Image;
 use app\models\Observe;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
+use app\widgets\InfiniteList;
+use yii\db\Expression;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -27,6 +32,10 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
+    /** The observations on the profile: this many at first, then batches of OBSERVATIONS_BATCH */
+    const OBSERVATIONS_FIRST = 20;
+    const OBSERVATIONS_BATCH = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -88,7 +97,15 @@ class UserController extends Controller
     public function actionProfile($id)
     {
         $user = $this->findModel($id);
-        $observations = Observe::find()->where(['observer_id' => $user->id])->orderBy(['uploaded_at' => SORT_DESC])->with('observer', 'comments', 'thumbnail')->all();
+        $observationCount = (int)Observe::find()->ofUser($user->id)->count();
+        // the latest one with an image gives the preview
+        $previewObservation = Observe::find()
+            ->ofUser($user->id)
+            ->andWhere(['exists', Image::find()
+                ->where(new Expression('observe_id = observations.id'))
+                ->andWhere(['size' => Image::SIZE_THUMBNAIL])])
+            ->orderBy(new Expression(UserObservationsSource::UPLOADED . ' DESC, id DESC'))
+            ->one();
         $isOwn = (int)Yii::$app->user->id === $user->id;
 
         if ($isOwn) {
@@ -120,9 +137,36 @@ class UserController extends Controller
             'planTotals' => ObservingPlans::countItems($planIds),
             // the progress of the owner of the profile, as the badges
             'planDone' => ObservingPlans::countDone($planIds, $user->id),
-            'observations' => $observations,
+            'observationCount' => $observationCount,
+            'previewObservation' => $previewObservation,
+            'observationList' => [
+                'source' => new UserObservationsSource($user->id),
+                'url' => ['/user/observations', 'id' => $user->id],
+                'first' => self::OBSERVATIONS_FIRST,
+                'loadAll' => true,
+            ],
             'skyMapStats' => SkyMap::getUserStats($user->id),
         ]);
+    }
+
+    /**
+     * The next batch of the observations on the profile, see InfiniteList.
+     * @param int $id
+     * @param string|null $utana cursor of the batch
+     * @param bool $osszes whether all the rest is asked for
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    public function actionObservations($id, $utana = null, $osszes = false)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $user = $this->findModel($id);
+
+        return InfiniteList::respond(
+            new UserObservationsSource($user->id),
+            $utana,
+            $osszes ? null : self::OBSERVATIONS_BATCH
+        );
     }
 
 //    /**

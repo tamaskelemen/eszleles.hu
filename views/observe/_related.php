@@ -1,26 +1,23 @@
 <?php
 
+use app\components\feed\RelatedObservationsSource;
 use app\components\related\RelatedObservations;
 use app\models\Observe;
+use app\widgets\InfiniteList;
 
 /* @var $this yii\web\View */
 /* @var $model Observe */
 
-$related = RelatedObservations::find($model);
-if (!$related) {
+if (!RelatedObservations::count($model)) {
     return;
 }
 ?>
 <section class="obs-related">
     <h2>Ez is érdekelhet</h2>
-    <div class="obs-grid">
-        <?php foreach ($related as $item) { ?>
-            <div class="obs-cell">
-                <?= $this->render('//_common-items/_listItem', [
-                    'model' => $item['observation'],
-                    'reasons' => $item['reasons'],
-                ]) ?>
-            </div>
-        <?php } ?>
-    </div>
+    <?= InfiniteList::widget([
+        'source' => new RelatedObservationsSource($model),
+        'url' => ['/observe/related', 'id' => $model->id],
+        'first' => RelatedObservations::BATCH,
+        'maxLoads' => RelatedObservations::TOTAL / RelatedObservations::BATCH - 1,
+    ]) ?>
 </section>

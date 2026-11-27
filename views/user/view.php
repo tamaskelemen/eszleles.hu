@@ -1,13 +1,16 @@
 <?php
 
 use app\components\Badges;
+use app\widgets\InfiniteList;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
-/* @var $observations app\models\Observe[] */
+/* @var $observationCount int */
+/* @var $previewObservation app\models\Observe|null the latest observation with an image */
+/* @var $observationList array config of the InfiniteList of the observations */
 /* @var $isOwn bool whether it is the profile of the visitor */
 /* @var $badges array see Badges, only the earned ones on the profile of others */
 /* @var $skyMapStats array|null null if there is nothing on the map */
@@ -29,14 +32,7 @@ $this->registerMetaTag([
     'property' => 'og:description',
     'content' => $user->introduction ?: $shareText,
 ], 'og:description');
-// the latest observation with an image gives the preview
-$previewImage = '/pictures/eszleloret-og.jpg';
-foreach ($observations as $observation) {
-    if ($observation->thumbnail) {
-        $previewImage = $observation->getImagePath();
-        break;
-    }
-}
+$previewImage = $previewObservation ? $previewObservation->getImagePath() : '/pictures/eszleloret-og.jpg';
 $this->registerMetaTag(['property' => 'og:image', 'content' => Url::to($previewImage, true)], 'og:image');
 
 // the highest one of every category
@@ -78,7 +74,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
 
                 <p class="profile__meta">
                     <i class="fa fa-upload" aria-hidden="true"></i>
-                    <?= count($observations) ?> észlelés
+                    <?= $observationCount ?> észlelés
                 </p>
 
                 <?php if ($user->introduction) { ?>
@@ -160,13 +156,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
         <?php } ?>
     <?php } ?>
 
-    <h2 class="profile__section" id="eszlelesek"><a class="anchor-link" href="#eszlelesek">Észlelések (<?= count($observations) ?>)</a></h2>
+    <h2 class="profile__section" id="eszlelesek"><a class="anchor-link" href="#eszlelesek">Észlelések (<?= $observationCount ?>)</a></h2>
 
-    <div class="obs-grid">
-        <?php foreach ($observations as $observation) { ?>
-            <div class="obs-cell">
-                <?= $this->render('../_common-items/_listItem', ['model' => $observation]) ?>
-            </div>
-        <?php } ?>
-    </div>
+    <?= InfiniteList::widget($observationList) ?>
 </div>

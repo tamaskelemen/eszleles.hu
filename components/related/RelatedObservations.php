@@ -19,7 +19,9 @@ use yii\db\Query;
  * Finds the observations shown under an observation ("Ez is érdekelhet"), each with the reasons it is related.
  *
  * The candidates are of the same type, each matching reason adds its weight, the largest sums are shown (ties in a
- * random order). If none of them is of the same object, the last card is a random observation of any type.
+ * random order). The whole list (TOTAL) is picked at once and cached, it is shown in batches of BATCH as it is scrolled
+ * (see RelatedObservationsSource). If none of the first batch is of the same object, its last card is a random
+ * observation of any type.
  */
 class RelatedObservations
 {
@@ -37,7 +39,13 @@ class RelatedObservations
 
     const RANDOM_LABEL = 'Random';
 
-    /** At most this many cards come from the observer of the shown observation */
+    /** Size of a batch, the first one is shown with the page */
+    const BATCH = 4;
+
+    /** At most this many are shown: the first batch and 5 more */
+    const TOTAL = self::BATCH * 6;
+
+    /** At most this many cards of a batch come from the observer of the shown observation */
     const MAX_FROM_SAME_OBSERVER = 2;
 
     /** The latest this many observations of the type are compared */
@@ -47,17 +55,16 @@ class RelatedObservations
 
     /**
      * @param Observe $observation
+     * @param int $offset
      * @param int $limit
      * @return array[] list of ['observation' => Observe, 'reasons' => string[]]
      */
-    public static function find(Observe $observation, $limit = 4)
+    public static function find(Observe $observation, $offset = 0, $limit = self::BATCH)
     {
-        $picks = Yii::$app->cache->getOrSet(['related-observations', $observation->id, $limit], function () use ($observation, $limit) {
-            return self::pick($observation, $limit);
-        }, self::CACHE_DURATION);
+        $picks = array_slice(self::findIds($observation), $offset, $limit, true);
 
         $models = Observe::find()
-            ->with(['observer', 'comments'])
+            ->with(['observer', 'comments', 'thumbnail'])
             ->where(['id' => array_keys($picks)])
             ->indexBy('id')
             ->all();
@@ -69,6 +76,26 @@ class RelatedObservations
             }
         }
         return $result;
+    }
+
+    /**
+     * @param Observe $observation
+     * @return int number of related observations, at most TOTAL
+     */
+    public static function count(Observe $observation)
+    {
+        return count(self::findIds($observation));
+    }
+
+    /**
+     * @param Observe $observation
+     * @return array labels of the reasons by observation id, in the order of the cards
+     */
+    private static function findIds(Observe $observation)
+    {
+        return Yii::$app->cache->getOrSet(['related-observations', $observation->id, self::TOTAL], function () use ($observation) {
+            return self::pick($observation, self::TOTAL);
+        }, self::CACHE_DURATION);
     }
 
     /**
@@ -132,35 +159,45 @@ class RelatedObservations
         });
 
         $picks = [];
-        $fromSameObserver = 0;
         $hasSameObject = false;
-        foreach ($ranked as $item) {
-            if (count($picks) >= $limit) {
-                break;
-            }
-            $candidate = $item['candidate'];
-            if ($observation->observer_id && (int)$candidate['observer_id'] === (int)$observation->observer_id) {
-                if ($fromSameObserver >= self::MAX_FROM_SAME_OBSERVER) {
-                    continue;
+        $queue = $ranked;
+        while ($queue && count($picks) < $limit) {
+            // the ones over the limit of the observer are kept for the next batch
+            $deferred = [];
+            $fromSameObserver = 0;
+            $inBatch = 0;
+            while ($queue && $inBatch < self::BATCH && count($picks) < $limit) {
+                $item = array_shift($queue);
+                $candidate = $item['candidate'];
+                if ($observation->observer_id && (int)$candidate['observer_id'] === (int)$observation->observer_id) {
+                    if ($fromSameObserver >= self::MAX_FROM_SAME_OBSERVER) {
+                        $deferred[] = $item;
+                        continue;
+                    }
+                    $fromSameObserver++;
                 }
-                $fromSameObserver++;
+
+                $labels = [];
+                foreach ($item['reasons'] as $reason) {
+                    $labels[] = $reason->getLabel();
+                    // only the first batch is shown for sure
+                    $hasSameObject = $hasSameObject || ($reason->isSameObject() && count($picks) < self::BATCH);
+                }
+                if (!$labels) {
+                    $labels[] = 'Szintén ' . mb_strtolower(Observe::getTypeName($observation->type)) . ' észlelés';
+                }
+                $picks[$candidate['id']] = $labels;
+                $inBatch++;
             }
 
-            $labels = [];
-            foreach ($item['reasons'] as $reason) {
-                $labels[] = $reason->getLabel();
-                $hasSameObject = $hasSameObject || $reason->isSameObject();
+            // only the observer's ones are left, they would fill the next batches
+            if (!$queue) {
+                break;
             }
-            if (!$labels) {
-                $labels[] = 'Szintén ' . mb_strtolower(Observe::getTypeName($observation->type)) . ' észlelés';
-            }
-            $picks[$candidate['id']] = $labels;
+            $queue = array_merge($deferred, $queue);
         }
 
         if (!$hasSameObject) {
-            if (count($picks) >= $limit) {
-                array_pop($picks);
-            }
             $randomId = (new Query())
                 ->select('id')
                 ->from(Observe::tableName())
@@ -168,7 +205,13 @@ class RelatedObservations
                 ->orderBy(new Expression('random()'))
                 ->scalar();
             if ($randomId) {
-                $picks[$randomId] = [self::RANDOM_LABEL];
+                // the last card of the first batch, the rest move on by one
+                $position = min(self::BATCH, count($picks) + 1) - 1;
+                $ids = array_keys($picks);
+                array_splice($ids, $position, 0, [$randomId]);
+                $labels = array_values($picks);
+                array_splice($labels, $position, 0, [[self::RANDOM_LABEL]]);
+                $picks = array_slice(array_combine($ids, $labels), 0, $limit, true);
             }
         }
 

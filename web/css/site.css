@@ -4340,3 +4340,26 @@ html[data-night] .location-map .leaflet-tile-pane {
 .rec-note__cancel:focus {
     color: #fff;
 }
+
+/* InfiniteList */
+.infinite__sentinel {
+    height: 1px;
+}
+
+.infinite__status:empty {
+    display: none;
+}
+
+.infinite__status {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+.infinite__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .75rem;
+    margin-top: 2rem;
+}
