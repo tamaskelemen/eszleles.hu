@@ -1,7 +1,6 @@
 <?php
 
 use app\components\Badges;
-use app\components\Helper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
@@ -86,18 +85,7 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
                     <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
                 <?php } ?>
 
-                <p class="social">
-                    <?= Helper::isWebUrl($user->website) ? Html::a(Html::encode($user->website), $user->website) : Html::encode($user->website) ?>
-                    <?php foreach ($user->getSocialLinks() as $site => $link) {
-                        if ($link) { ?>
-                            <?= Html::a(
-                                Html::img("/pictures/icons/$site.svg", ['alt'=>"$site logo"]),
-                                $link
-                            ) ?>
-                        <?php }
-                    }
-                    ?>
-                </p>
+                <?= $this->render('//_common-items/_social-links', ['user' => $user]) ?>
 
                 <?php if ($topBadges) { ?>
                     <div class="badges__list" aria-label="Legmagasabb jelvények" role="group">

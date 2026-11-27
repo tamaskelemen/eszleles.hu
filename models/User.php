@@ -25,6 +25,9 @@ use yii\base\NotSupportedException;
  * @property string $instagram
  * @property string $website
  * @property string $github
+ * @property string|null $twitter X (Twitter)
+ * @property string|null $threads
+ * @property string|null $astrobin
  * @property string $introduction
  * @property string|null $avatar_path the profile picture, see getAvatarUrl()
  * @property string|null $avatar_source see AVATAR_SOURCE_*, or the id of the auth client the picture is copied from
@@ -43,6 +46,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const AVATAR_SOURCE_UPLOAD = 'upload';
     const AVATAR_SOURCE_REMOVED = 'removed';
 
+    /** profile links, in display order; each has an icon in web/pictures/icons/<attribute>.svg */
+    const LINK_ATTRIBUTES = ['website', 'facebook', 'instagram', 'twitter', 'threads', 'astrobin', 'github'];
+
     /**
      * {@inheritdoc}
      */
@@ -55,7 +61,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['!status'], 'integer'],
             [['email', '!password_hash', '!password_reset_token', '!auth_key'], 'string', 'max' => 255],
             ['introduction', 'string'],
-            [['facebook', 'instagram', 'website', 'github'], 'string'],
+            [self::LINK_ATTRIBUTES, 'trim'],
+            [self::LINK_ATTRIBUTES, 'string', 'max' => 255],
         ];
     }
 
@@ -75,7 +82,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'website' => 'Weboldal',
             'facebook' => 'Facebook',
             'instagram' => 'Instagram',
-            'github' => 'Github',
+            'github' => 'GitHub',
+            'twitter' => 'X (Twitter)',
+            'threads' => 'Threads',
+            'astrobin' => 'AstroBin',
             'introduction' => 'Bemutatkozás',
         ];
     }
@@ -286,15 +296,17 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * @return array
+     * @return string[] the filled profile links that are web URLs, keyed by attribute, see LINK_ATTRIBUTES
      */
     public function getSocialLinks()
     {
-        return array_filter([
-            'facebook' => $this->facebook,
-//            'instagram' => $this->instagram,
-            'github' => $this->github,
-        ], [Helper::class, 'isWebUrl']);
+        $links = [];
+        foreach (self::LINK_ATTRIBUTES as $attribute) {
+            if (Helper::isWebUrl($this->$attribute)) {
+                $links[$attribute] = $this->$attribute;
+            }
+        }
+        return $links;
     }
 
     /**

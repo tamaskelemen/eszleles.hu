@@ -23,22 +23,7 @@ use yii\helpers\Url;
         </div>
     </div>
 
-    <p class="social">
-        <?php foreach ($user->getSocialLinks() as $site => $link) {
-            if ($link) { ?>
-                <?= Html::a(
-                        Html::img(
-                            "/pictures/icons/$site.svg",
-                            [
-                                'alt' => "$site logo",
-                                'title' => ucfirst($site),
-                            ]),
-                        $link
-                ) ?>
-            <?php }
-        }
-        ?>
-    </p>
+    <?= $this->render('//_common-items/_social-links', ['user' => $user]) ?>
 
     <?php if ($user->badges) { ?>
         <div class="badges__list badges__list--small" aria-label="Legmagasabb jelvények" role="group">
