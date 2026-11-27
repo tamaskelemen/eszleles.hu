@@ -12,7 +12,7 @@ if (!$related) {
 }
 ?>
 <section class="obs-related">
-    <h2>Kapcsolódó észlelések</h2>
+    <h2>Ez is érdekelhet</h2>
     <div class="obs-grid">
         <?php foreach ($related as $item) { ?>
             <div class="obs-cell">

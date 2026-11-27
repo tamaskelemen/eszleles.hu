@@ -16,7 +16,7 @@ use yii\db\Expression;
 use yii\db\Query;
 
 /**
- * Finds the observations shown under an observation ("Kapcsolódó észlelések"), each with the reasons it is related.
+ * Finds the observations shown under an observation ("Ez is érdekelhet"), each with the reasons it is related.
  *
  * The candidates are of the same type, each matching reason adds its weight, the largest sums are shown (ties in a
  * random order). If none of them is of the same object, the last card is a random observation of any type.
