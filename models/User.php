@@ -27,6 +27,7 @@ use yii\base\NotSupportedException;
  * @property string $github
  * @property string|null $twitter X (Twitter)
  * @property string|null $threads
+ * @property string|null $tiktok
  * @property string|null $astrobin
  * @property string $introduction
  * @property string|null $avatar_path the profile picture, see getAvatarUrl()
@@ -47,7 +48,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const AVATAR_SOURCE_REMOVED = 'removed';
 
     /** profile links, in display order; each has an icon in web/pictures/icons/<attribute>.svg */
-    const LINK_ATTRIBUTES = ['website', 'facebook', 'instagram', 'twitter', 'threads', 'astrobin', 'github'];
+    const LINK_ATTRIBUTES = ['website', 'facebook', 'instagram', 'twitter', 'threads', 'tiktok', 'astrobin', 'github'];
 
     /**
      * {@inheritdoc}
@@ -85,6 +86,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'github' => 'GitHub',
             'twitter' => 'X (Twitter)',
             'threads' => 'Threads',
+            'tiktok' => 'TikTok',
             'astrobin' => 'AstroBin',
             'introduction' => 'Bemutatkozás',
         ];
