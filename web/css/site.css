@@ -2471,6 +2471,11 @@ time[data-toggle] {
     max-width: 62ch;
 }
 
+.profile__membership {
+    color: var(--muted);
+    margin-bottom: .75rem;
+}
+
 .profile__main {
     display: flex;
     align-items: flex-start;

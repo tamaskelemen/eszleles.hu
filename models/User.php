@@ -312,4 +312,34 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return !in_array($this->avatar_source, [self::AVATAR_SOURCE_UPLOAD, self::AVATAR_SOURCE_REMOVED], true);
     }
+
+    /**
+     * @return string|null how long the user has been a member, e.g. "2 éve és 3 hónapja tag", null if unknown
+     */
+    public function getMembershipDuration()
+    {
+        if (!$this->created_at) {
+            return null;
+        }
+
+        $diff = (new \DateTime($this->created_at))->diff(new \DateTime());
+
+        if ($diff->invert) {
+            return 'Ma csatlakozott';
+        }
+
+        if ($diff->y > 0) {
+            return $diff->m > 0 ? "{$diff->y} éve és {$diff->m} hónapja tag" : "{$diff->y} éve tag";
+        }
+
+        if ($diff->m > 0) {
+            return "{$diff->m} hónapja tag";
+        }
+
+        if ($diff->d > 0) {
+            return "{$diff->d} napja tag";
+        }
+
+        return 'Ma csatlakozott';
+    }
 }

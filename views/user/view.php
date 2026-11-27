@@ -70,6 +70,13 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
                     ]) ?>
                 </div>
 
+                <?php if ($membership = $user->getMembershipDuration()) { ?>
+                    <p class="profile__membership">
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                        <?= Html::encode($membership) ?>
+                    </p>
+                <?php } ?>
+
                 <?php if ($user->introduction) { ?>
                     <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
                 <?php } ?>
