@@ -2471,9 +2471,13 @@ time[data-toggle] {
     max-width: 62ch;
 }
 
-.profile__membership {
+.profile__meta {
     color: var(--muted);
-    margin-bottom: .75rem;
+    margin-bottom: .5rem;
+}
+
+.profile__meta + :not(.profile__meta) {
+    margin-top: .75rem;
 }
 
 .profile__main {

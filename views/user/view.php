@@ -71,11 +71,16 @@ $hasMap = $skyMapStats !== null || in_array(Badges::GROUP_PROGRAM, array_column(
                 </div>
 
                 <?php if ($membership = $user->getMembershipDuration()) { ?>
-                    <p class="profile__membership">
+                    <p class="profile__meta">
                         <i class="fa fa-calendar-o" aria-hidden="true"></i>
                         <?= Html::encode($membership) ?>
                     </p>
                 <?php } ?>
+
+                <p class="profile__meta">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    <?= count($observations) ?> észlelés
+                </p>
 
                 <?php if ($user->introduction) { ?>
                     <p class="profile__intro"><?= Html::encode($user->introduction) ?></p>
