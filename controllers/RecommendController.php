@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\recommender\Context;
 use app\components\recommender\Recommender;
+use app\components\recommender\Stats;
 use app\components\SkyPrograms;
 use app\models\forms\QuickObservationForm;
 use app\models\ObservationSkyObject;
@@ -60,6 +61,8 @@ class RecommendController extends Controller
             return $this->asJson(['ok' => false, 'errors' => array_values($model->getFirstErrors())]);
         }
 
+        Stats::record(Stats::EVENT_OBSERVE, (int)Yii::$app->user->id);
+
         return $this->asJson(['ok' => true, 'url' => $model->getObservation()->getViewUrl()]);
     }
 
@@ -78,6 +81,9 @@ class RecommendController extends Controller
         $excludeIds = array_slice(array_filter(array_map([self::class, 'parseId'], explode(',', (string)$request->get('exclude')))), 0, self::EXCLUDE_LIMIT);
 
         $object = $recommender->recommend($values, $currentId, $excludeIds);
+
+        // the page tells why it asked, see recommender.js
+        Stats::record((string)$request->get('reason'), Yii::$app->user->isGuest ? null : (int)Yii::$app->user->id);
 
         return $this->asJson([
             'id' => $object === null ? null : $object->id,

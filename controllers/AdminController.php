@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\BadgeSync;
 use app\components\Flash;
+use app\components\recommender\Stats;
 use app\components\SkyLinker;
 use app\components\SkyMap;
 use app\models\Activity;
@@ -185,4 +186,17 @@ class AdminController extends Controller
         return $this->redirect(Url::previous('identification') ?? ['/admin/identification']);
     }
 
+    /**
+     * Usage of the recommender of the home page.
+     * @return string
+     */
+    public function actionRecommender()
+    {
+        return $this->render('recommender', [
+            'events' => Stats::getAllEvents(),
+            'daily' => Stats::getDaily(30),
+            'last30' => Stats::getTotals(date('Y-m-d', strtotime('-29 days'))),
+            'total' => Stats::getTotals(),
+        ]);
+    }
 }
