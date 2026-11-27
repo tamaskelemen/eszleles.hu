@@ -53,6 +53,10 @@ $route = Yii::$app->controller->route;
                     <a class="nav-link" href="<?= Url::toRoute('/admin/identification')?>">Azonosítás</a>
                 </li>
 
+                <li class="nav-item <?= $route === 'admin/recommender' ? 'active' : '' ?>">
+                    <a class="nav-link" href="<?= Url::toRoute('/admin/recommender')?>">Ajánló</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="<?= Url::toRoute('/bug-report/index')?>">Hibajelentések</a>
                 </li>

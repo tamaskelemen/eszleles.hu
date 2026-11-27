@@ -93,8 +93,9 @@
 
     /**
      * @param {boolean} keep whether the current object is kept if it still passes the filters
+     * @param {string} reason why it is asked, for the usage stats: open, next or filter
      */
-    function load(keep) {
+    function load(keep, reason) {
         if (hasDraft() && !window.confirm('A megkezdett észlelést még nem mentetted el. Elveted?')) {
             return;
         }
@@ -105,6 +106,7 @@
             params.push({ name: 'current', value: currentId });
         }
         params.push({ name: 'exclude', value: history.join(',') });
+        params.push({ name: 'reason', value: reason });
 
         if (request) {
             request.abort();
@@ -137,7 +139,7 @@
         clearTimeout(timer);
         // a dragged handle or quick clicks send one request
         timer = setTimeout(function () {
-            load(true);
+            load(true, 'filter');
         }, 300);
     });
 
@@ -150,7 +152,7 @@
                 // nothing was saved
             }
             updateRange();
-            load(true);
+            load(true, 'filter');
         });
     });
 
@@ -159,7 +161,7 @@
     });
 
     $('#rec-next').on('click', function () {
-        load(false);
+        load(false, 'next');
     });
 
     /* ---------- writing down an observation of the recommended object ---------- */
@@ -220,10 +222,10 @@
     });
 
     result.on('click', '.rec-note__next', function () {
-        load(false);
+        load(false, 'next');
     });
 
     restore();
     updateRange();
-    load(false);
+    load(false, 'open');
 })(jQuery);
